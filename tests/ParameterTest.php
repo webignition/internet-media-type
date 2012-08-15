@@ -63,9 +63,9 @@ class ParameterTest extends PHPUnit_Framework_TestCase {
                 'expectedOutput' => ''
             ),
             array(
-                'attribute' => '{anything}',
+                'attribute' => 'attributeValue',
                 'value' => '',
-                'expectedOutput' => ''
+                'expectedOutput' => 'attributevalue'
             )            
         );
         
@@ -78,4 +78,18 @@ class ParameterTest extends PHPUnit_Framework_TestCase {
             $this->assertEquals($testDataSet['expectedOutput'], (string)$parameter);
         } 
     }
+    
+    public function testChaining() {
+//        $parameter1 = new \webignition\InternetMediaType\Parameter();
+//        $this->assertEquals('', (string)$parameter1);
+//
+//        $parameter2 = new \webignition\InternetMediaType\Parameter();
+//        $this->assertEquals('', (string)$parameter2);
+//        
+//        $parameter3 = new \webignition\InternetMediaType\Parameter();
+//        $this->assertEquals('', (string)$parameter3);
+        
+//        $parameter1 = new \webignition\InternetMediaType\Parameter();
+//        $this->assertEquals('attribute1=value1', $parameter1->setAttribute('attribute1')->setValue('value1'));
+    }    
 }

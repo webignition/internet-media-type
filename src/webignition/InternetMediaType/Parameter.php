@@ -124,8 +124,16 @@ class Parameter {
      * @return string
      */
     public function __toString() {
-        if (!$this->hasAttribute() || !$this->hasValue()) {
+        if (!$this->hasAttribute() && !$this->hasValue()) {
             return '';
+        }
+        
+        if (!$this->hasAttribute()) {
+            return '';
+        }
+        
+        if (!$this->hasValue()) {
+            return $this->getAttribute();
         }
         
         return $this->getAttribute() . self::ATTRIBUTE_VALUE_SEPARATOR . $this->getValue();
