@@ -23,21 +23,7 @@ use webignition\InternetMediaType\Parameter\Parameter;
  * http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html#sec3.7
  *  
  */
-class Parser {    
-    
-    /**
-     *
-     * @var \webignition\InternetMediaType\Parameter\Parser\AttributeParser 
-     */
-    private $attributeParser = null;
-    
-    
-    /**
-     *
-     * @var \webignition\InternetMediaType\Parameter\Parser\ValueParser
-     */
-    private $valueParser = null;
-    
+class Parser {
     
     /**
      *
@@ -46,7 +32,6 @@ class Parser {
      */
     public function parse($parameterString) {
         $inputString = trim($parameterString);
-
         $attribute = $this->getAttributeParser()->parse($inputString);
         $value = $this->getValueParser($attribute)->parse($parameterString);
         
@@ -63,11 +48,7 @@ class Parser {
      * @return \webignition\InternetMediaType\Parameter\Parser\AttributeParser 
      */
     private function getAttributeParser() {
-        if (is_null($this->attributeParser)) {
-            $this->attributeParser = new AttributeParser();
-        }
-        
-        return $this->attributeParser;
+        return new AttributeParser();
     }
     
     
@@ -77,11 +58,8 @@ class Parser {
      * @return \webignition\InternetMediaType\Parameter\Parser\ValueParser
      */
     private function getValueParser($attribute) {
-        if (is_null($this->valueParser)) {
-            $this->valueParser = new ValueParser();            
-        }
-        
-        $this->valueParser->setAttribute($attribute);
-        return $this->valueParser;
+        $valueParser = new ValueParser();
+        $valueParser->setAttribute($attribute);
+        return $valueParser;
     }   
 }
