@@ -1,12 +1,14 @@
 <?php
 
-namespace webignition\InternetMediaType;
+namespace webignition\InternetMediaType\Parameter\Parser;
+
+use webignition\InternetMediaType\Parameter\Parser\AttributeParser;
+use webignition\InternetMediaType\Parameter\Parser\ValueParser;
+use webignition\InternetMediaType\Parameter\Parameter;
 
 
 /**
- * A parameter value present in an Internet media type
- * 
- * If media type == 'text/html; charset=UTF8', parameter == 'charset=UTF8'
+ * Parsers a parameter string value into a Parameter object
  * 
  * Defined as:
  * 
@@ -14,128 +16,72 @@ namespace webignition\InternetMediaType;
  * attribute               = token
  * value                   = token | quoted-string
  * 
- * The type, subtype, and parameter attribute names are case-insensitive
- * 
  * http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html#sec3.6
+ * 
+ * Linear white space (LWS) MUST NOT be used between the type and subtype, nor between an attribute and its value.
+ * 
+ * http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html#sec3.7
  *  
  */
-class Parameter {
-    
-    const ATTRIBUTE_VALUE_SEPARATOR = '=';
-    const EMPTY_ATTRIBUTE = '';
-    const EMPTY_VALUE = '';
+class Parser {    
     
     /**
-     * The parameter attribute.
-     * 
-     * For a parameter of 'charset=UTF8', this woud be 'charset'
-     * 
-     * @var string
+     *
+     * @var \webignition\InternetMediaType\Parameter\Parser\AttributeParser 
      */
-    private $attribute;
+    private $attributeParser = null;
     
     
     /**
-     * The parameter value
-     * 
-     * For a parameter of 'charset=UTF8', this would be 'UTF8'
-     * 
-     * @var string
+     *
+     * @var \webignition\InternetMediaType\Parameter\Parser\ValueParser
      */
-    private $value;
+    private $valueParser = null;
+    
+    
+    /**
+     *
+     * @param string $parameterString
+     * @return \webignition\InternetMediaType\Parameter 
+     */
+    public function parse($parameterString) {
+        $inputString = trim($parameterString);
+
+        $attribute = $this->getAttributeParser()->parse($inputString);
+        $value = $this->getValueParser($attribute)->parse($parameterString);
+        
+        $parameter = new Parameter();
+        $parameter->setAttribute($attribute);
+        $parameter->setValue($value);        
+        
+        return $parameter;
+    }
+    
+    
+    /**
+     *
+     * @return \webignition\InternetMediaType\Parameter\Parser\AttributeParser 
+     */
+    private function getAttributeParser() {
+        if (is_null($this->attributeParser)) {
+            $this->attributeParser = new AttributeParser();
+        }
+        
+        return $this->attributeParser;
+    }
     
     
     /**
      *
      * @param string $attribute
-     * @return \webignition\InternetMediaType\Parameter 
+     * @return \webignition\InternetMediaType\Parameter\Parser\ValueParser
      */
-    public function setAttribute($attribute) {        
-        $this->attribute = trim(strtolower($attribute));
-        return $this;
-    }
-    
-    
-    /**
-     *
-     * @return string
-     */
-    public function getAttribute() {
-        return ($this->hasAttribute()) ? $this->attribute : '';
-    }
-    
-    
-    /**
-     *
-     * @param string $value
-     * @return \webignition\InternetMediaType\Parameter 
-     */
-    public function setValue($value) {
-        $this->value = trim($value);
-        return $this;        
-    }
-    
-    
-    /**
-     *
-     * @return string
-     */
-    public function getValue() {
-        return (string)$this->value;
-    }
-    
-    
-    /**
-     *
-     * @return boolean
-     */
-    private function hasAttribute() {
-        if (is_null($this->attribute)) {
-            return false;
-        }
-         
-        if ($this->attribute == self::EMPTY_ATTRIBUTE) {
-            return false;
+    private function getValueParser($attribute) {
+        if (is_null($this->valueParser)) {
+            $this->valueParser = new ValueParser();            
         }
         
-        return true;
-    }
-    
-    
-    /**
-     *
-     * @return boolean
-     */    
-    private function hasValue() {
-        if (is_null($this->value)) {
-            return false;
-        }
-         
-        if ($this->value == self::EMPTY_VALUE) {
-            return false;
-        }
-        
-        return true;
-    }
-    
-    
-    /**
-     *
-     * @return string
-     */
-    public function __toString() {
-        if (!$this->hasAttribute() && !$this->hasValue()) {
-            return '';
-        }
-        
-        if (!$this->hasAttribute()) {
-            return '';
-        }
-        
-        if (!$this->hasValue()) {
-            return $this->getAttribute();
-        }
-        
-        return $this->getAttribute() . self::ATTRIBUTE_VALUE_SEPARATOR . $this->getValue();
-    }
+        $this->valueParser->setAttribute($attribute);
+        return $this->valueParser;
+    }   
 }

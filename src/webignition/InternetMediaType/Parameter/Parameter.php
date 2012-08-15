@@ -2,6 +2,7 @@
 
 namespace webignition\InternetMediaType\Parameter;
 
+use webignition\QuotedString\QuotedString;
 
 /**
  * A parameter value present in an Internet media type
@@ -40,7 +41,7 @@ class Parameter {
      * 
      * For a parameter of 'charset=UTF8', this would be 'UTF8'
      * 
-     * @var string
+     * @var string|QuotedString
      */
     private $value;
     
@@ -67,21 +68,30 @@ class Parameter {
     
     /**
      *
-     * @param string $value
+     * @param string|QuotedString $value
      * @return \webignition\InternetMediaType\Parameter 
      */
     public function setValue($value) {
-        $this->value = trim($value);
+        if (is_string($value)) {
+            $this->value = trim($value);
+        } else {
+            $this->value = $value;
+        }        
+        
         return $this;        
     }
     
     
     /**
      *
-     * @return string
+     * @return string|QuotedString
      */
     public function getValue() {
-        return (string)$this->value;
+        if (is_null($this->value)) {
+            return '';
+        }
+        
+        return $this->value;
     }
     
     
