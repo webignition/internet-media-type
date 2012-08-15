@@ -10,7 +10,7 @@ class ParameterTest extends PHPUnit_Framework_TestCase {
             null => ''
         );
         
-        $parameter = new \webignition\InternetMediaType\Parameter();
+        $parameter = new \webignition\InternetMediaType\Parameter\Parameter();
         $this->assertEquals('', $parameter->getValue());
         
         foreach ($testData as $input => $expectedOutput) {
@@ -30,7 +30,7 @@ class ParameterTest extends PHPUnit_Framework_TestCase {
             null => ''
         );
         
-        $parameter = new \webignition\InternetMediaType\Parameter();
+        $parameter = new \webignition\InternetMediaType\Parameter\Parameter();
         $this->assertEquals('', $parameter->getValue());
         
         foreach ($testData as $input => $expectedOutput) {
@@ -69,7 +69,7 @@ class ParameterTest extends PHPUnit_Framework_TestCase {
             )            
         );
         
-        $parameter = new \webignition\InternetMediaType\Parameter();
+        $parameter = new \webignition\InternetMediaType\Parameter\Parameter();
         $this->assertEquals('', (string)$parameter);
         
         foreach ($testData as $testDataSet) {
@@ -80,13 +80,13 @@ class ParameterTest extends PHPUnit_Framework_TestCase {
     }
     
     public function testChaining() {
-        $parameter1 = new \webignition\InternetMediaType\Parameter();
+        $parameter1 = new \webignition\InternetMediaType\Parameter\Parameter();
         $this->assertEquals('', (string)$parameter1);
 
-        $parameter2 = new \webignition\InternetMediaType\Parameter();
+        $parameter2 = new \webignition\InternetMediaType\Parameter\Parameter();
         $this->assertEquals('attributename', (string)$parameter2->setAttribute('attributename'));
         
-        $parameter3 = new \webignition\InternetMediaType\Parameter();
+        $parameter3 = new \webignition\InternetMediaType\Parameter\Parameter();
         $this->assertEquals('attribute3=value3', $parameter3->setAttribute('attribute3')->setValue('value3'));
     }    
 }

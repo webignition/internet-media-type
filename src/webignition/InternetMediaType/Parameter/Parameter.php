@@ -1,6 +1,6 @@
 <?php
 
-namespace webignition\InternetMediaType;
+namespace webignition\InternetMediaType\Parameter;
 
 
 /**
@@ -137,5 +137,5 @@ class Parameter {
         }
         
         return $this->getAttribute() . self::ATTRIBUTE_VALUE_SEPARATOR . $this->getValue();
-    }
+    }    
 }
