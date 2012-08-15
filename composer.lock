@@ -1,7 +1,14 @@
 {
-    "hash": "6bc50f88645a317462656e41874907e5",
+    "hash": "7b6bd1c4da65b219362ff4b1a9c8835e",
     "packages": [
-
+        {
+            "package": "webignition/quoted-string",
+            "version": "0.2"
+        },
+        {
+            "package": "webignition/string-parser",
+            "version": "0.1"
+        }
     ],
     "packages-dev": null,
     "aliases": [
