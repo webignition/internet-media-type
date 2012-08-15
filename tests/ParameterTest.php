@@ -87,6 +87,6 @@ class ParameterTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals('attributename', (string)$parameter2->setAttribute('attributename'));
         
         $parameter3 = new \webignition\InternetMediaType\Parameter();
-        $this->assertEquals('attribute3=value3', $parameter1->setAttribute('attribute3')->setValue('value3'));
+        $this->assertEquals('attribute3=value3', $parameter3->setAttribute('attribute3')->setValue('value3'));
     }    
 }
