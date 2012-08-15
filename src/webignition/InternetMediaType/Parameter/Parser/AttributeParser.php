@@ -1,87 +1,66 @@
 <?php
 
-namespace webignition\InternetMediaType;
+namespace webignition\InternetMediaType\Parameter\Parser;
 
+use webignition\StringParser\StringParser;
 
 /**
- * A parameter value present in an Internet media type
- * 
- * If media type == 'text/html; charset=UTF8', parameter == 'charset=UTF8'
- * 
- * Defined as:
- * 
- * parameter               = attribute "=" value
- * attribute               = token
- * value                   = token | quoted-string
- * 
- * The type, subtype, and parameter attribute names are case-insensitive
- * 
- * http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html#sec3.6
+ * Parses out the attribute name from an internet media type parameter string
  *  
  */
-class Parameter {
+class AttributeParser extends StringParser {
     
     const ATTRIBUTE_VALUE_SEPARATOR = '=';
-    const EMPTY_ATTRIBUTE = '';
-    const EMPTY_VALUE = '';
+    const STATE_IN_ATTRIBUTE_NAME = 1;
+    const STATE_INVALID_INTERNAL_CHARACTER = 2;
+    const STATE_LEFT_ATTRIBUTE_NAME = 3;
     
     /**
-     * The parameter attribute.
-     * 
-     * For a parameter of 'charset=UTF8', this woud be 'charset'
-     * 
-     * @var string
+     * Collection of characters not valid in an attribute name
+     *  
+     * @var array
      */
-    private $attribute;
-    
-    
-    /**
-     * The parameter value
-     * 
-     * For a parameter of 'charset=UTF8', this would be 'UTF8'
-     * 
-     * @var string
-     */
-    private $value;
-    
+    private $invalidCharacters = array(
+        ' ',
+        '"',
+        '\\'
+    );
     
     /**
      *
-     * @param string $attribute
-     * @return \webignition\InternetMediaType\Parameter 
-     */
-    public function setAttribute($attribute) {        
-        $this->attribute = trim(strtolower($attribute));
-        return $this;
-    }
-    
-    
-    /**
-     *
+     * @param string $inputString
      * @return string
      */
-    public function getAttribute() {
-        return ($this->hasAttribute()) ? $this->attribute : '';
+    public function parse($inputString) {
+        return parent::parse(trim($inputString));
     }
     
-    
-    /**
-     *
-     * @param string $value
-     * @return \webignition\InternetMediaType\Parameter 
-     */
-    public function setValue($value) {
-        $this->value = trim($value);
-        return $this;        
-    }
-    
-    
-    /**
-     *
-     * @return string
-     */
-    public function getValue() {
-        return (string)$this->value;
+    protected function parseCurrentCharacter() {
+        switch ($this->getCurrentState()) {
+            case self::STATE_UNKNOWN:
+                $this->setCurrentState(self::STATE_IN_ATTRIBUTE_NAME);
+                break;
+            
+            case self::STATE_IN_ATTRIBUTE_NAME:
+                if ($this->isCurrentCharacterInvalid()) {
+                    $this->setCurrentState(self::STATE_INVALID_INTERNAL_CHARACTER);
+                } elseif ($this->isCurrentCharacterAttributeValueSeparator()) {
+                    $this->setCurrentState(self::STATE_LEFT_ATTRIBUTE_NAME);
+                } else {
+                    $this->appendOutputString();
+                    $this->incrementCurrentCharacterPointer();
+                }
+                
+                break;
+                
+            case self::STATE_LEFT_ATTRIBUTE_NAME:
+                $this->stop();
+                break;
+            
+            case self::STATE_INVALID_INTERNAL_CHARACTER:
+                throw new AttributeParserException('Invalid internal character after at position '.$this->getCurrentCharacterPointer(), 1);
+                break;
+        }
     }
     
     
@@ -89,53 +68,17 @@ class Parameter {
      *
      * @return boolean
      */
-    private function hasAttribute() {
-        if (is_null($this->attribute)) {
-            return false;
-        }
-         
-        if ($this->attribute == self::EMPTY_ATTRIBUTE) {
-            return false;
-        }
-        
-        return true;
+    private function isCurrentCharacterInvalid() {
+        return in_array($this->getCurrentCharacter(), $this->invalidCharacters);
     }
     
     
     /**
      *
      * @return boolean
-     */    
-    private function hasValue() {
-        if (is_null($this->value)) {
-            return false;
-        }
-         
-        if ($this->value == self::EMPTY_VALUE) {
-            return false;
-        }
-        
-        return true;
-    }
-    
-    
-    /**
-     *
-     * @return string
      */
-    public function __toString() {
-        if (!$this->hasAttribute() && !$this->hasValue()) {
-            return '';
-        }
-        
-        if (!$this->hasAttribute()) {
-            return '';
-        }
-        
-        if (!$this->hasValue()) {
-            return $this->getAttribute();
-        }
-        
-        return $this->getAttribute() . self::ATTRIBUTE_VALUE_SEPARATOR . $this->getValue();
+    private function isCurrentCharacterAttributeValueSeparator() {
+        return $this->getCurrentCharacter() == self::ATTRIBUTE_VALUE_SEPARATOR;
     }
+
 }
