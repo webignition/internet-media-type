@@ -22,6 +22,8 @@ namespace webignition\InternetMediaType;
 class Parameter {
     
     const ATTRIBUTE_VALUE_SEPARATOR = '=';
+    const EMPTY_ATTRIBUTE = '';
+    const EMPTY_VALUE = '';
     
     /**
      * The parameter attribute.
@@ -49,7 +51,7 @@ class Parameter {
      * @return \webignition\InternetMediaType\Parameter 
      */
     public function setAttribute($attribute) {        
-        $this->attribute = strtolower($attribute);
+        $this->attribute = trim(strtolower($attribute));
         return $this;
     }
     
@@ -59,7 +61,7 @@ class Parameter {
      * @return string
      */
     public function getAttribute() {
-        return (is_null($this->attribute)) ? '' : $this->attribute;
+        return ($this->hasAttribute()) ? $this->attribute : '';
     }
     
     
@@ -69,7 +71,7 @@ class Parameter {
      * @return \webignition\InternetMediaType\Parameter 
      */
     public function setValue($value) {
-        $this->value = $value;
+        $this->value = trim($value);
         return $this;        
     }
     
@@ -85,9 +87,47 @@ class Parameter {
     
     /**
      *
+     * @return boolean
+     */
+    private function hasAttribute() {
+        if (is_null($this->attribute)) {
+            return false;
+        }
+         
+        if ($this->attribute == self::EMPTY_ATTRIBUTE) {
+            return false;
+        }
+        
+        return true;
+    }
+    
+    
+    /**
+     *
+     * @return boolean
+     */    
+    private function hasValue() {
+        if (is_null($this->value)) {
+            return false;
+        }
+         
+        if ($this->value == self::EMPTY_VALUE) {
+            return false;
+        }
+        
+        return true;
+    }
+    
+    
+    /**
+     *
      * @return string
      */
     public function __toString() {
+        if (!$this->hasAttribute() || !$this->hasValue()) {
+            return '';
+        }
+        
         return $this->getAttribute() . self::ATTRIBUTE_VALUE_SEPARATOR . $this->getValue();
     }
 }

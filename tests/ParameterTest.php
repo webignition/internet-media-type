@@ -56,11 +56,21 @@ class ParameterTest extends PHPUnit_Framework_TestCase {
                 'attribute' => 'ATTribUTE3',
                 'value' => 'VALUE3',
                 'expectedOutput' => 'attribute3=VALUE3'
+            ),
+            array(
+                'attribute' => '',
+                'value' => '{anything}',
+                'expectedOutput' => ''
+            ),
+            array(
+                'attribute' => '{anything}',
+                'value' => '',
+                'expectedOutput' => ''
             )            
         );
         
         $parameter = new \webignition\InternetMediaType\Parameter();
-        $this->assertEquals('', $parameter->getValue());
+        $this->assertEquals('', (string)$parameter);
         
         foreach ($testData as $testDataSet) {
             $parameter->setAttribute($testDataSet['attribute']);
