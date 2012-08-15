@@ -80,16 +80,13 @@ class ParameterTest extends PHPUnit_Framework_TestCase {
     }
     
     public function testChaining() {
-//        $parameter1 = new \webignition\InternetMediaType\Parameter();
-//        $this->assertEquals('', (string)$parameter1);
-//
-//        $parameter2 = new \webignition\InternetMediaType\Parameter();
-//        $this->assertEquals('', (string)$parameter2);
-//        
-//        $parameter3 = new \webignition\InternetMediaType\Parameter();
-//        $this->assertEquals('', (string)$parameter3);
+        $parameter1 = new \webignition\InternetMediaType\Parameter();
+        $this->assertEquals('', (string)$parameter1);
+
+        $parameter2 = new \webignition\InternetMediaType\Parameter();
+        $this->assertEquals('attributename', (string)$parameter2->setAttribute('attributename'));
         
-//        $parameter1 = new \webignition\InternetMediaType\Parameter();
-//        $this->assertEquals('attribute1=value1', $parameter1->setAttribute('attribute1')->setValue('value1'));
+        $parameter3 = new \webignition\InternetMediaType\Parameter();
+        $this->assertEquals('attribute3=value3', $parameter1->setAttribute('attribute3')->setValue('value3'));
     }    
 }
