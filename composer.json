@@ -1,0 +1,20 @@
+{
+    "name": "webignition/internet-media-type",
+    "description": "PHP model of an http://en.wikipedia.org/wiki/Internet_media_type",
+    "keywords": ["internet media type", "media type", "media-type", "content type", "content-type"],
+    "homepage": "https://github.com/webignition/internet-media-type",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jon Cram",
+            "email": "jon@webignition.net"
+        }
+    ],
+    "autoload": {
+        "psr-0": { "": "src/" }
+    },    
+    "require": {
+        "php": ">=5.3.0"
+    }      
+}
