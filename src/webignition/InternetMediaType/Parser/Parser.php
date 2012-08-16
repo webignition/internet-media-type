@@ -44,7 +44,7 @@ class Parser {
     /**
      *
      * @param string $internetMediaTypeString
-     * @return \webignition\InternetMediaType\Parameter 
+     * @return \webignition\InternetMediaType\InternetMediaType
      */
     public function parse($internetMediaTypeString) {
         $inputString = trim($internetMediaTypeString);
