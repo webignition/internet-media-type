@@ -1,6 +1,6 @@
 <?php
 
-class InternetMediaTypeTest extends PHPUnit_Framework_TestCase {
+class ParserTest extends PHPUnit_Framework_TestCase {
 
     public function testParseNoParameters() {  
         $parser = new \webignition\InternetMediaType\Parser\Parser();
@@ -46,5 +46,6 @@ class InternetMediaTypeTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals('attribute2', $attribute2Parameter->getAttribute());
         $this->assertInstanceOf('\webignition\QuotedString\QuotedString', $attribute2Parameter->getValue());
         $this->assertEquals('parameter number two', $attribute2Parameter->getValue()->getValue());
-    }     
+    }   
+    
 }

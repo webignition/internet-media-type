@@ -28,6 +28,10 @@ use webignition\InternetMediaType\Parameter\Parameter;
  */
 class InternetMediaType {
     
+    const TYPE_SUBTYPE_SEPARATOR = '/';  
+    const PARAMETER_ATTRIBUTE_VALUE_SEPARATOR = '=';
+    const ATTRIBUTE_PARAMETER_SEPARATOR = ';';
+    
     /**
      * Main media type.
      * 
@@ -149,6 +153,67 @@ class InternetMediaType {
      */
     public function getParameters() {
         return $this->parameters;
+    }
+    
+    
+    /**
+     *
+     * @return boolean 
+     */
+    public function hasType() {
+        if (is_null($this->type)) {
+            return false;
+        }
+        
+        if ($this->getType() == '') {
+            return false;
+        }
+        
+        return true;
+    }
+    
+    
+    /**
+     *
+     * @return boolean 
+     */
+    public function hasSubtype() {
+        if (is_null($this->subtype)) {
+            return false;
+        }
+        
+        if ($this->getSubtype() == '') {
+            return false;
+        }
+        
+        return true;
+    }    
+    
+    
+    public function __toString() {
+        $string = '';
+        
+        if (!$this->hasType()) {
+            return $string;
+        }
+        
+        if (!$this->hasSubtype()) {
+            return $string;
+        }
+        
+        $string = $this->getType() . self::TYPE_SUBTYPE_SEPARATOR . $this->getSubtype();
+        
+        if (count($this->getParameters()) === 0) {
+            return $string;
+        }
+        
+        $parameterString = '';        
+        foreach ($this->getParameters() as $parameter) {
+            $parameterString .= ' ' . $parameter->getAttribute() . self::PARAMETER_ATTRIBUTE_VALUE_SEPARATOR . (string)$parameter->getValue();
+        }
+        
+        $string .= self::ATTRIBUTE_PARAMETER_SEPARATOR . $parameterString;        
+        return trim($string);
     }
     
 }
