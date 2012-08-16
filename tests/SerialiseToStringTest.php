@@ -2,6 +2,7 @@
 
 use webignition\InternetMediaType\InternetMediaType;
 use webignition\InternetMediaType\Parameter\Parameter;
+use webignition\InternetMediaType\Parser\Parser as InternetMediaTypeParser;
 
 class SerialiseToStringTest extends PHPUnit_Framework_TestCase {
 
@@ -49,4 +50,17 @@ class SerialiseToStringTest extends PHPUnit_Framework_TestCase {
         
         $this->assertEquals('text/html; attribute1=value1 attribute2=value2 attribute3=value3', (string)$mediaType);
     }    
+    
+    public function testGetTypeSubtypeString() {
+        $mediaType = new InternetMediaType();
+        $mediaType->setType('text');
+        $mediaType->setSubtype('html');
+        
+        $this->assertEquals('text/html', $mediaType->getTypeSubtypeString());
+        
+        $mediaTypeParser = new InternetMediaTypeParser();
+        $mediaType = $mediaTypeParser->parse('application/json; charset=UTF-8');
+        
+        $this->assertEquals('application/json', $mediaType->getTypeSubtypeString());
+    }
 }

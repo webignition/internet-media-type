@@ -191,17 +191,7 @@ class InternetMediaType {
     
     
     public function __toString() {
-        $string = '';
-        
-        if (!$this->hasType()) {
-            return $string;
-        }
-        
-        if (!$this->hasSubtype()) {
-            return $string;
-        }
-        
-        $string = $this->getType() . self::TYPE_SUBTYPE_SEPARATOR . $this->getSubtype();
+        $string = $this->getTypeSubtypeString();
         
         if (count($this->getParameters()) === 0) {
             return $string;
@@ -214,6 +204,26 @@ class InternetMediaType {
         
         $string .= self::ATTRIBUTE_PARAMETER_SEPARATOR . $parameterString;        
         return trim($string);
+    }
+    
+    
+    /**
+     * Get a string of the form {type}/{subtype}
+     * 
+     * @return string
+     */
+    public function getTypeSubtypeString() {
+        $string = '';
+        
+        if (!$this->hasType()) {
+            return $string;
+        }
+        
+        if (!$this->hasSubtype()) {
+            return $string;
+        }
+        
+        return $this->getType() . self::TYPE_SUBTYPE_SEPARATOR . $this->getSubtype();
     }
     
 }
