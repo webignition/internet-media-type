@@ -199,10 +199,13 @@ class InternetMediaType {
         
         $parameterString = '';        
         foreach ($this->getParameters() as $parameter) {
-            $parameterString .= ' ' . $parameter->getAttribute() . self::PARAMETER_ATTRIBUTE_VALUE_SEPARATOR . (string)$parameter->getValue();
+            $parameterString .= (string)$parameter.' ';            
         }
         
-        $string .= self::ATTRIBUTE_PARAMETER_SEPARATOR . $parameterString;        
+        if (trim($parameterString) !== '') {
+            $string .= self::ATTRIBUTE_PARAMETER_SEPARATOR . ' ' . $parameterString; 
+        }        
+               
         return trim($string);
     }
     

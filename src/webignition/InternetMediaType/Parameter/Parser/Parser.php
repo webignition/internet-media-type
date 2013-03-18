@@ -25,6 +25,13 @@ use webignition\InternetMediaType\Parameter\Parameter;
  */
 class Parser {
     
+    
+    /**
+     *
+     * @var boolean
+     */
+    private $ignoreInvalidAttributes = false;    
+    
     /**
      *
      * @param string $parameterString
@@ -33,11 +40,16 @@ class Parser {
     public function parse($parameterString) {
         $inputString = trim($parameterString);
         $attribute = $this->getAttributeParser()->parse($inputString);
-        $value = $this->getValueParser($attribute)->parse($parameterString);
         
+        if ($attribute == '') {
+            return new Parameter();
+        }
+        
+        $value = $this->getValueParser($attribute)->parse($parameterString);
+
         $parameter = new Parameter();
         $parameter->setAttribute($attribute);
-        $parameter->setValue($value);        
+        $parameter->setValue($value);
         
         return $parameter;
     }
@@ -48,7 +60,12 @@ class Parser {
      * @return \webignition\InternetMediaType\Parameter\Parser\AttributeParser 
      */
     private function getAttributeParser() {
-        return new AttributeParser();
+        $attributeParser = new AttributeParser();
+        if ($this->ignoreInvalidAttributes === true) {
+            $attributeParser->setIgnoreInvalidAttributes(true);
+        }
+        
+        return $attributeParser;
     }
     
     
@@ -62,4 +79,13 @@ class Parser {
         $valueParser->setAttribute($attribute);
         return $valueParser;
     }   
+    
+    
+    /**
+     * 
+     * @param boolean $ignoreInvalidAttributes
+     */
+    public function setIgnoreInvalidAttributes($ignoreInvalidAttributes) {
+        $this->ignoreInvalidAttributes = filter_var($ignoreInvalidAttributes, FILTER_VALIDATE_BOOLEAN);
+    }    
 }

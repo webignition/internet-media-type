@@ -28,6 +28,12 @@ class AttributeParser extends StringParser {
     
     /**
      *
+     * @var boolean
+     */
+    private $ignoreInvalidAttributes = false;     
+    
+    /**
+     *
      * @param string $inputString
      * @return string
      */
@@ -43,7 +49,13 @@ class AttributeParser extends StringParser {
             
             case self::STATE_IN_ATTRIBUTE_NAME:
                 if ($this->isCurrentCharacterInvalid()) {
-                    $this->setCurrentState(self::STATE_INVALID_INTERNAL_CHARACTER);
+                    if ($this->ignoreInvalidAttributes === true) {
+                        $this->incrementCurrentCharacterPointer();
+                        $this->setCurrentState(self::STATE_LEFT_ATTRIBUTE_NAME);
+                        $this->clearOutputString();                        
+                    } else {
+                        $this->setCurrentState(self::STATE_INVALID_INTERNAL_CHARACTER);
+                    }
                 } elseif ($this->isCurrentCharacterAttributeValueSeparator()) {
                     $this->setCurrentState(self::STATE_LEFT_ATTRIBUTE_NAME);
                 } else {
@@ -57,7 +69,7 @@ class AttributeParser extends StringParser {
                 $this->stop();
                 break;
             
-            case self::STATE_INVALID_INTERNAL_CHARACTER:
+            case self::STATE_INVALID_INTERNAL_CHARACTER:                
                 throw new AttributeParserException('Invalid internal character after at position '.$this->getCurrentCharacterPointer(), 1);
                 break;
         }
@@ -80,5 +92,14 @@ class AttributeParser extends StringParser {
     private function isCurrentCharacterAttributeValueSeparator() {
         return $this->getCurrentCharacter() == self::ATTRIBUTE_VALUE_SEPARATOR;
     }
+    
+    
+    /**
+     * 
+     * @param boolean $ignoreInvalidAttributes
+     */
+    public function setIgnoreInvalidAttributes($ignoreInvalidAttributes) {
+        $this->ignoreInvalidAttributes = filter_var($ignoreInvalidAttributes, FILTER_VALIDATE_BOOLEAN);
+    }    
 
 }

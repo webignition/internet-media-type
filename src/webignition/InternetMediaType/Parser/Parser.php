@@ -38,7 +38,14 @@ class Parser {
      *
      * @var \webignition\InternetMediaType\Parameter\Parser\Parser 
      */
-    private $parameterParser = null;    
+    private $parameterParser = null;  
+    
+    
+    /**
+     *
+     * @var boolean
+     */
+    private $ignoreInvalidAttributes = false;
     
     
     /**
@@ -98,6 +105,9 @@ class Parser {
     private function getParameterParser() {
         if (is_null($this->parameterParser)) {
             $this->parameterParser = new ParameterParser();            
+            if ($this->ignoreInvalidAttributes === true) {
+                $this->parameterParser->setIgnoreInvalidAttributes(true);
+            }
         }
         
         return $this->parameterParser;
@@ -160,5 +170,12 @@ class Parser {
     }
     
     
-  
+    /**
+     * 
+     * @param boolean $ignoreInvalidAttributes
+     */
+    public function setIgnoreInvalidAttributes($ignoreInvalidAttributes) {
+        $this->ignoreInvalidAttributes = filter_var($ignoreInvalidAttributes, FILTER_VALIDATE_BOOLEAN);
+    }
+    
 }

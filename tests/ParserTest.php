@@ -46,6 +46,15 @@ class ParserTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals('attribute2', $attribute2Parameter->getAttribute());
         $this->assertInstanceOf('\webignition\QuotedString\QuotedString', $attribute2Parameter->getValue());
         $this->assertEquals('parameter number two', $attribute2Parameter->getValue()->getValue());
-    }   
+    } 
+    
+    
+    public function testIgnoreInvalidAttributes() {  
+        $parser = new \webignition\InternetMediaType\Parser\Parser();
+        $parser->setIgnoreInvalidAttributes(true);
+        $internetMediaType = $parser->parse('application/x-javascript; charset: UTF-8');
+        
+        $this->assertEquals('application/x-javascript', (string)$internetMediaType);        
+    }     
     
 }
