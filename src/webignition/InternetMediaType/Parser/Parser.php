@@ -7,6 +7,7 @@ use webignition\InternetMediaType\Parser\TypeParser;
 use webignition\InternetMediaType\Parser\SubtypeParser;
 use webignition\InternetMediaType\Parameter\Parser\Parser as ParameterParser;
 use webignition\InternetMediaType\Parameter\Parameter;
+use webignition\InternetMediaType\Parser\SubtypeParserException;
 
 
 
@@ -50,6 +51,13 @@ class Parser {
     
     /**
      *
+     * @var boolean
+     */
+    private $attemptToRecoverFromInvalidInternalCharacter = false;
+    
+    
+    /**
+     *
      * @param string $internetMediaTypeString
      * @return \webignition\InternetMediaType\InternetMediaType
      */
@@ -58,7 +66,22 @@ class Parser {
         
         $internetMediaType = new InternetMediaType();
         $internetMediaType->setType($this->getTypeParser()->parse($inputString));
-        $internetMediaType->setSubtype($this->getSubypeParser()->parse($inputString));
+        
+        try {
+            $internetMediaType->setSubtype($this->getSubypeParser()->parse($inputString));
+        } catch (SubtypeParserException $subtypeParserException) {
+            if ($subtypeParserException->isInvalidInternalCharacterException()) {
+                if ($this->attemptToRecoverFromInvalidInternalCharacter === true) {
+                    $fixer = new TypeFixer();
+                    $fixer->setParser($this);
+                    $fixer->setInputString($inputString);
+                    $fixer->setPosition($subtypeParserException->getPosition());
+                    $fixResult = $fixer->fix();
+                    
+                    return $fixResult;
+                }
+            }
+        }
         
         $parameterString = $this->getParameterString($inputString, $internetMediaType->getType(), $internetMediaType->getSubtype());        
         $parameterStrings = $this->getParameterStrings($parameterString);       
@@ -176,6 +199,16 @@ class Parser {
      */
     public function setIgnoreInvalidAttributes($ignoreInvalidAttributes) {
         $this->ignoreInvalidAttributes = filter_var($ignoreInvalidAttributes, FILTER_VALIDATE_BOOLEAN);
-    }
+    }   
+    
+
+    /**
+     * 
+     * @param boolean $attemptToRecoverFromInvalidInternalCharacter
+     */
+    public function setAttemptToRecoverFromInvalidInternalCharacter($attemptToRecoverFromInvalidInternalCharacter) {
+        $this->attemptToRecoverFromInvalidInternalCharacter = filter_var($attemptToRecoverFromInvalidInternalCharacter, FILTER_VALIDATE_BOOLEAN);
+    }    
+    
     
 }

@@ -70,7 +70,12 @@ class SubtypeParser extends StringParser {
                 break;
             
             case self::STATE_INVALID_INTERNAL_CHARACTER:
-                throw new SubtypeParserException('Invalid internal character after at position '.$this->getCurrentCharacterPointer(), 1);
+                throw new SubtypeParserException(
+                    'Invalid internal character after at position '.$this->getCurrentCharacterPointer(),
+                    SubtypeParserException::INTERNAL_INVALID_CHARACTER_CODE,
+                    $this->getCurrentCharacterPointer()
+                );
+                
                 break;
         }
     }
