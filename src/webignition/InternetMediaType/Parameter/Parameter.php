@@ -86,11 +86,7 @@ class Parameter {
      *
      * @return string|QuotedString
      */
-    public function getValue() {
-        if (is_null($this->value)) {
-            return '';
-        }
-        
+    public function getValue() {        
         return $this->value;
     }
     

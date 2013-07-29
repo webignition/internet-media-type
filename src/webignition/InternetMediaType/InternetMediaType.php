@@ -25,6 +25,13 @@ use webignition\InternetMediaType\Parameter\Parameter;
  * 
  * http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html#sec3.7 
  * 
+ * Note: may have multiple parameters as per Content-Type example
+ * in http://www.w3.org/Protocols/rfc1341/rfc1341.html section 7.3.2:
+ * 
+ *       Content-Type: Message/Partial;
+ *           number=2; total=3;
+ *           id="oc=jpbe0M2Yt4s@thumper.bellcore.com";
+ * 
  */
 class InternetMediaType {
     
@@ -196,17 +203,32 @@ class InternetMediaType {
         if (count($this->getParameters()) === 0) {
             return $string;
         }
+              
+        $parameterStringParts = array();
         
-        $parameterString = '';        
         foreach ($this->getParameters() as $parameter) {
-            $parameterString .= (string)$parameter.' ';            
+            $parameterStringParts[] = (string)$parameter;     
         }
         
-        if (trim($parameterString) !== '') {
-            $string .= self::ATTRIBUTE_PARAMETER_SEPARATOR . ' ' . $parameterString; 
-        }        
+        if (!$this->isEmptyParameterStringCollection($parameterStringParts)) {
+            $string .= self::ATTRIBUTE_PARAMETER_SEPARATOR . ' ' . implode(self::ATTRIBUTE_PARAMETER_SEPARATOR.' ', $parameterStringParts); 
+        }      
                
         return trim($string);
+    }
+    
+    private function isEmptyParameterStringCollection($parameterStringCollection) {
+        if (count($parameterStringCollection) === 0) {
+            return true;
+        }
+        
+        foreach ($parameterStringCollection as $value) {
+            if ($value != '') {
+                return false;
+            }
+        }
+        
+        return true;
     }
     
     

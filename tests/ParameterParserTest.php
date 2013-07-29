@@ -19,4 +19,13 @@ class ParameterParserTest extends PHPUnit_Framework_TestCase {
         $this->assertInstanceOf('\webignition\QuotedString\QuotedString', $parameter->getValue());
         $this->assertEquals('utf-8', $parameter->getValue()->getValue());
     }   
+    
+    public function testParseNullValueParameter() {
+        $parser = new \webignition\InternetMediaType\Parameter\Parser\Parser();       
+        $parameter = $parser->parse('foo');
+        
+        $this->assertEquals('foo', $parameter->getAttribute());
+        $this->assertNull($parameter->getValue());
+        $this->assertEquals('foo', (string)$parameter);
+    }     
 }

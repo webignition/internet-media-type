@@ -43,11 +43,15 @@ class ValueParser extends StringParser {
      * @param string $inputString
      * @return string|QuotedString
      */
-    public function parse($inputString) {        
-        $output = parent::parse($this->getNonAttributePart($inputString));
+    public function parse($inputString) {                
+        $output = parent::parse($this->getNonAttributePart($inputString));       
         
         if ($this->getCurrentState() == self::STATE_IN_NON_QUOTED_VALUE) {
             return $output;
+        }
+        
+        if ($output == '') {
+            return null;
         }
         
         $quotedStringParser = new QuotedStringParser();
@@ -77,7 +81,7 @@ class ValueParser extends StringParser {
     }
     
     
-    private function deriveState() {
+    private function deriveState() {        
         if ($this->isCurrentCharacterQuotedStringDelimiter()) {
             $this->setCurrentState(self::STATE_IN_QUOTED_VALUE);
         } else {

@@ -48,7 +48,7 @@ class SerialiseToStringTest extends PHPUnit_Framework_TestCase {
         $parameter3->setValue('value3');                
         $mediaType->addParameter($parameter3);        
         
-        $this->assertEquals('text/html; attribute1=value1 attribute2=value2 attribute3=value3', (string)$mediaType);
+        $this->assertEquals('text/html; attribute1=value1; attribute2=value2; attribute3=value3', (string)$mediaType);
     }    
     
     public function testGetTypeSubtypeString() {
@@ -63,4 +63,25 @@ class SerialiseToStringTest extends PHPUnit_Framework_TestCase {
         
         $this->assertEquals('application/json', $mediaType->getTypeSubtypeString());
     }
+    
+    public function testWithSlightlyInvalidMediaTypeString() {
+        $mediaType = new InternetMediaType();
+        $mediaType->setType('text');
+        $mediaType->setSubtype('javascript');
+        
+        $parameter1 = new Parameter();
+        $parameter1->setAttribute('UTF-8');
+        
+        $mediaType->addParameter($parameter1);
+        
+        $parameter2 = new Parameter();
+        $parameter2->setAttribute('charset');
+        $parameter2->setValue('UTF-8');
+        
+        $mediaType->addParameter($parameter1);
+        $mediaType->addParameter($parameter2);        
+        
+        $this->assertEquals('text/javascript', $mediaType->getTypeSubtypeString());        
+        $this->assertEquals('text/javascript; utf-8; charset=UTF-8', (string)$mediaType);
+    }     
 }
