@@ -66,7 +66,12 @@ class ParameterTest extends PHPUnit_Framework_TestCase {
                 'attribute' => 'attributeValue',
                 'value' => '',
                 'expectedOutput' => 'attributevalue'
-            )            
+            ),            
+            array(
+                'attribute' => 'attributeValue',
+                'value' => null,
+                'expectedOutput' => 'attributevalue'
+            ),             
         );
         
         $parameter = new \webignition\InternetMediaType\Parameter\Parameter();
