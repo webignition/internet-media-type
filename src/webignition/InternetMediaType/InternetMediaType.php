@@ -145,7 +145,7 @@ class InternetMediaType {
     /**
      *
      * @param string $attribute
-     * @return \webignition\InternetMediaType\InternetMediaType|null
+     * @return \webignition\InternetMediaType\InternetMediaType\Parameter\Parameter|null
      */
     public function getParameter($attribute) {
         $attribute = trim(strtolower($attribute));

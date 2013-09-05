@@ -40,7 +40,7 @@ class TypeFixer {
      * 
      * @param string $inputString
      */
-    public function setInputString($inputString) {
+    public function setInputString($inputString) {        
         $this->inputString = $inputString;
     }
     
@@ -70,6 +70,9 @@ class TypeFixer {
      */
     public function fix() {
         $possibleFixedTypes = $this->commaSeparatedTypeFix();
+        if (count($possibleFixedTypes) === 0) {
+            $possibleFixedTypes = $this->spaceSeparatingTypeAndAttributeFix();
+        }
         
         $bestFixIndex = null;        
         foreach ($possibleFixedTypes as $fixIndex => $possibleFixedType) {
@@ -120,6 +123,40 @@ class TypeFixer {
                 'input' => substr($this->inputString, $this->position + 1),
                 'internet-media-type' => null
             )
+        );
+        
+        foreach ($possibleTypes as $possibleTypeIndex => $possibleType) {
+            $possibleType['internet-media-type'] = $this->parser->parse($possibleType['input']);       
+            $possibleTypes[$possibleTypeIndex] = $possibleType;
+            
+        }
+        
+        return $possibleTypes;
+    }
+    
+    
+    /**
+     * Attempt to fix media types that are formatted as:
+     * 
+     * type/subtype attribute=value
+     * 
+     * i.e. a media type and parameters separated by a space not a semicolon  
+     */    
+    private function spaceSeparatingTypeAndAttributeFix() {
+        if ($this->position === 0) {
+            return array();
+        }
+        
+        if ($this->inputString[$this->position] !== ' ') {
+            return array();
+        }
+        
+        $possibleTypes = array(
+            array(
+                'input' => substr($this->inputString, 0, $this->position) . ';' . substr($this->inputString, $this->position + 1),
+                'internet-media-type' => null
+            ),
+
         );
         
         foreach ($possibleTypes as $possibleTypeIndex => $possibleType) {
