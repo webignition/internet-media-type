@@ -1,10 +1,12 @@
 <?php
 
+namespace webignition\Tests\InternetMediaType;
+
 use webignition\InternetMediaType\InternetMediaType;
 use webignition\InternetMediaType\Parameter\Parameter;
 use webignition\InternetMediaType\Parser\Parser as InternetMediaTypeParser;
 
-class SerialiseToStringTest extends PHPUnit_Framework_TestCase {
+class SerialiseToStringTest extends BaseTest {
 
     public function testSerialiseNoParameters() {
         $mediaType = new InternetMediaType();

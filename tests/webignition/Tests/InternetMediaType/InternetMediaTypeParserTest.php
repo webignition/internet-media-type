@@ -1,6 +1,8 @@
 <?php
 
-class InternetMediaTypeParserTest extends PHPUnit_Framework_TestCase {
+namespace webignition\Tests\InternetMediaType;
+
+class InternetMediaTypeParserTest extends BaseTest {
 
     public function testParseValidType() {
         $parser = new \webignition\InternetMediaType\Parser\TypeParser();

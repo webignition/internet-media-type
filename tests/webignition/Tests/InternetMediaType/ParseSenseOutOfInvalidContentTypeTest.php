@@ -1,6 +1,8 @@
 <?php
 
-class ParseSenseOutOfInvalidContentTypeTest extends PHPUnit_Framework_TestCase {
+namespace webignition\Tests\InternetMediaType;
+
+class ParseSenseOutOfInvalidContentTypeTest extends BaseTest {
 
     public function testParseCommaSeparatedContentTypeDuplicated() {  
         $parser = new \webignition\InternetMediaType\Parser\Parser();

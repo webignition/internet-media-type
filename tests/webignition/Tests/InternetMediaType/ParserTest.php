@@ -1,6 +1,8 @@
 <?php
 
-class ParserTest extends PHPUnit_Framework_TestCase {
+namespace webignition\Tests\InternetMediaType;
+
+class ParserTest extends BaseTest {
 
     public function testParseNoParameters() {  
         $parser = new \webignition\InternetMediaType\Parser\Parser();

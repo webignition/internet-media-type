@@ -1,6 +1,8 @@
 <?php
 
-class ParameterAttributeParserTest extends PHPUnit_Framework_TestCase {
+namespace webignition\Tests\InternetMediaType;
+
+class ParameterAttributeParserTest extends BaseTest {
 
     public function testParseValidAttributeName() {
         $parser = new \webignition\InternetMediaType\Parameter\Parser\AttributeParser();

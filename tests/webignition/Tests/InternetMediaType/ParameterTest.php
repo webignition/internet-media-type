@@ -1,6 +1,8 @@
 <?php
 
-class ParameterTest extends PHPUnit_Framework_TestCase {
+namespace webignition\Tests\InternetMediaType;
+
+class ParameterTest extends BaseTest {
 
     public function testSetAttribute() {
         $testData = array(

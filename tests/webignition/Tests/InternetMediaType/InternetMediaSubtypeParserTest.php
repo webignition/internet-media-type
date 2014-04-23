@@ -1,6 +1,8 @@
 <?php
 
-class InternetMediaSubtypeParserTest extends PHPUnit_Framework_TestCase {
+namespace webignition\Tests\InternetMediaType;
+
+class InternetMediaSubtypeParserTest extends BaseTest {
 
     public function testParseSubtypeWithNoParameters() {
         $parser = new \webignition\InternetMediaType\Parser\SubtypeParser();

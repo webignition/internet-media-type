@@ -1,6 +1,8 @@
 <?php
 
-class ParameterValueParserTest extends PHPUnit_Framework_TestCase {
+namespace webignition\Tests\InternetMediaType;
+
+class ParameterValueParserTest extends BaseTest {
 
     public function testParseNonQuotedValue() {
         $parser = new \webignition\InternetMediaType\Parameter\Parser\ValueParser();
