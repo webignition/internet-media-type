@@ -1,20 +1,34 @@
 <?php
 
-namespace webignition\Tests\InternetMediaType;
+namespace webignition\Tests\InternetMediaType\Parser;
+
+use webignition\Tests\InternetMediaType\BaseTest;
 
 class ParserTest extends BaseTest {
+    
+    
+    /**
+     *
+     * @var \webignition\InternetMediaType\Parser\Parser
+     */
+    protected $parser;
+    
+    
+    public function setUp() {
+        parent::setUp();
+        $this->parser = new \webignition\InternetMediaType\Parser\Parser();
+    }
+    
 
     public function testParseNoParameters() {  
-        $parser = new \webignition\InternetMediaType\Parser\Parser();
-        $internetMediaType = $parser->parse('text/html');
+        $internetMediaType = $this->parser->parse('text/html');
         
         $this->assertEquals('text', $internetMediaType->getType());
         $this->assertEquals('html', $internetMediaType->getSubtype());
     }
     
     public function testParseWithSingleParameter() {  
-        $parser = new \webignition\InternetMediaType\Parser\Parser();
-        $internetMediaType = $parser->parse('text/html; charset=ISO-8859-4');
+        $internetMediaType = $this->parser->parse('text/html; charset=ISO-8859-4');
         $parameters = $internetMediaType->getParameters();
         
         $this->assertEquals('text', $internetMediaType->getType());
@@ -28,8 +42,7 @@ class ParserTest extends BaseTest {
     }    
     
     public function testParseWithMultipleParameters() {  
-        $parser = new \webignition\InternetMediaType\Parser\Parser();
-        $internetMediaType = $parser->parse('text/html; charset=ISO-8859-4; attribute1=parameter1; attribute2="parameter number two"');
+        $internetMediaType = $this->parser->parse('text/html; charset=ISO-8859-4; attribute1=parameter1; attribute2="parameter number two"');
         $parameters = $internetMediaType->getParameters();
         
         $this->assertEquals('text', $internetMediaType->getType());
@@ -52,11 +65,10 @@ class ParserTest extends BaseTest {
     
     
     public function testIgnoreInvalidAttributes() {  
-        $parser = new \webignition\InternetMediaType\Parser\Parser();
-        $parser->setIgnoreInvalidAttributes(true);
-        $internetMediaType = $parser->parse('application/x-javascript; charset: UTF-8');
+        $this->parser->setIgnoreInvalidAttributes(true);
+        $internetMediaType = $this->parser->parse('application/x-javascript; charset: UTF-8');
         
         $this->assertEquals('application/x-javascript', (string)$internetMediaType);        
-    }     
+    }   
     
 }
