@@ -30,22 +30,40 @@ class AttributeParser extends StringParser {
      *
      * @var boolean
      */
-    private $ignoreInvalidAttributes = false;   
+    private $hasAttemptedToFixAttributeInvalidInternalCharacter = false;    
     
     
     
     /**
      *
-     * @var boolean
+     * @var \webignition\InternetMediaType\Parser\Configuration  
      */
-    private $attemptToRecoverFromInvalidInternalCharacter = false;
+    private $configuration;
     
     
     /**
-     *
-     * @var boolean
+     * 
+     * @param \webignition\InternetMediaType\Parser\Configuration $configuration
+     * @return \webignition\InternetMediaType\Parser\Parser
      */
-    private $hasAttemptedToFixAttributeInvalidInternalCharacter = false;
+    public function setConfiguration(\webignition\InternetMediaType\Parser\Configuration $configuration) {
+        $this->configuration = $configuration;
+        return $this;
+    }
+    
+    
+    /**
+     * 
+     * @return \webignition\InternetMediaType\Parser\Configuration
+     */
+    public function getConfiguration() {
+        if (is_null($this->configuration)) {
+            $this->configuration = new \webignition\InternetMediaType\Parser\Configuration();
+        }
+        
+        return $this->configuration;
+    }
+
     
     /**
      *
@@ -109,11 +127,11 @@ class AttributeParser extends StringParser {
      * @return boolean
      */
     private function shouldIgnoreInvalidCharacter() {
-        if (!$this->ignoreInvalidAttributes) {
+        if (!$this->getConfiguration()->ignoreInvalidAttributes()) {
             return false;
         }
         
-        if (!$this->attemptToRecoverFromInvalidInternalCharacter) {
+        if (!$this->getConfiguration()->attemptToRecoverFromInvalidInternalCharacter()) {
             return true;
         }
         
@@ -130,7 +148,7 @@ class AttributeParser extends StringParser {
      * @return boolean
      */
     private function shouldAttemptToFixInvalidInternalCharacter() {
-        return $this->attemptToRecoverFromInvalidInternalCharacter && !$this->hasAttemptedToFixAttributeInvalidInternalCharacter;
+        return $this->getConfiguration()->attemptToRecoverFromInvalidInternalCharacter() && !$this->hasAttemptedToFixAttributeInvalidInternalCharacter;
     }
     
     
@@ -149,24 +167,6 @@ class AttributeParser extends StringParser {
      */
     private function isCurrentCharacterAttributeValueSeparator() {
         return $this->getCurrentCharacter() == self::ATTRIBUTE_VALUE_SEPARATOR;
-    }
-    
-    
-    /**
-     * 
-     * @param boolean $ignoreInvalidAttributes
-     */
-    public function setIgnoreInvalidAttributes($ignoreInvalidAttributes) {
-        $this->ignoreInvalidAttributes = filter_var($ignoreInvalidAttributes, FILTER_VALIDATE_BOOLEAN);
-    }  
-    
-    
-    /**
-     * 
-     * @param boolean $attemptToRecoverFromInvalidInternalCharacter
-     */
-    public function setAttemptToRecoverFromInvalidInternalCharacter($attemptToRecoverFromInvalidInternalCharacter) {
-        $this->attemptToRecoverFromInvalidInternalCharacter = true;
     }
 
 }

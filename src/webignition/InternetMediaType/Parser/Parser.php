@@ -44,16 +44,9 @@ class Parser {
     
     /**
      *
-     * @var boolean
+     * @var \webignition\InternetMediaType\Parser\Configuration  
      */
-    private $ignoreInvalidAttributes = false;
-    
-    
-    /**
-     *
-     * @var boolean
-     */
-    private $attemptToRecoverFromInvalidInternalCharacter = false;
+    private $configuration;
     
     
     /**
@@ -70,7 +63,7 @@ class Parser {
         try {
             $internetMediaType->setSubtype($this->getSubypeParser()->parse($inputString));
         } catch (SubtypeParserException $subtypeParserException) {            
-            if ($subtypeParserException->isInvalidInternalCharacterException() && $this->attemptToRecoverFromInvalidInternalCharacter === true) {
+            if ($subtypeParserException->isInvalidInternalCharacterException() && $this->getConfiguration()->attemptToRecoverFromInvalidInternalCharacter()) {
                 $fixer = new TypeFixer();
                 $fixer->setParser($this);
                 $fixer->setInputString($inputString);
@@ -125,14 +118,8 @@ class Parser {
      */
     private function getParameterParser() {
         if (is_null($this->parameterParser)) {
-            $this->parameterParser = new ParameterParser();            
-            if ($this->ignoreInvalidAttributes === true) {
-                $this->parameterParser->setIgnoreInvalidAttributes(true);
-            }
-            
-            if ($this->attemptToRecoverFromInvalidInternalCharacter === true) {
-                $this->parameterParser->setAttemptToRecoverFromInvalidInternalCharacter(true);
-            }            
+            $this->parameterParser = new ParameterParser();
+            $this->parameterParser->setConfiguration($this->getConfiguration());          
         }
         
         return $this->parameterParser;
@@ -197,10 +184,38 @@ class Parser {
     
     /**
      * 
+     * @param \webignition\InternetMediaType\Parser\Configuration $configuration
+     * @return \webignition\InternetMediaType\Parser\Parser
+     */
+    public function setConfiguration(\webignition\InternetMediaType\Parser\Configuration  $configuration) {
+        $this->configuration = $configuration;
+        return $this;
+    }
+    
+    
+    /**
+     * 
+     * @return \webignition\InternetMediaType\Parser\Configuration
+     */
+    public function getConfiguration() {
+        if (is_null($this->configuration)) {
+            $this->configuration = new \webignition\InternetMediaType\Parser\Configuration();
+        }
+        
+        return $this->configuration;
+    }
+    
+    
+    /**
+     * 
      * @param boolean $ignoreInvalidAttributes
      */
     public function setIgnoreInvalidAttributes($ignoreInvalidAttributes) {
-        $this->ignoreInvalidAttributes = filter_var($ignoreInvalidAttributes, FILTER_VALIDATE_BOOLEAN);
+        if (filter_var($ignoreInvalidAttributes, FILTER_VALIDATE_BOOLEAN)) {
+            $this->getConfiguration()->enableIgnoreInvalidAttributes();
+        } else {
+            $this->getConfiguration()->disableIgnoreInvalidAttributes();
+        }
     }   
     
 
@@ -209,8 +224,11 @@ class Parser {
      * @param boolean $attemptToRecoverFromInvalidInternalCharacter
      */
     public function setAttemptToRecoverFromInvalidInternalCharacter($attemptToRecoverFromInvalidInternalCharacter) {
-        $this->attemptToRecoverFromInvalidInternalCharacter = filter_var($attemptToRecoverFromInvalidInternalCharacter, FILTER_VALIDATE_BOOLEAN);
-    }    
-    
+        if (filter_var($attemptToRecoverFromInvalidInternalCharacter, FILTER_VALIDATE_BOOLEAN)) {
+            $this->getConfiguration()->enableAttemptToRecoverFromInvalidInternalCharacter();
+        } else {
+            $this->getConfiguration()->disableAttemptToRecoverFromInvalidInternalCharacter();
+        }
+    }      
     
 }

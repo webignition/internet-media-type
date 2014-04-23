@@ -28,16 +28,33 @@ class Parser {
     
     /**
      *
-     * @var boolean
+     * @var \webignition\InternetMediaType\Parser\Configuration  
      */
-    private $ignoreInvalidAttributes = false;    
+    private $configuration;
     
     
     /**
-     *
-     * @var boolean
+     * 
+     * @param \webignition\InternetMediaType\Parser\Configuration $configuration
+     * @return \webignition\InternetMediaType\Parser\Parser
      */
-    private $attemptToRecoverFromInvalidInternalCharacter = false;    
+    public function setConfiguration(\webignition\InternetMediaType\Parser\Configuration  $configuration) {
+        $this->configuration = $configuration;
+        return $this;
+    }
+    
+    
+    /**
+     * 
+     * @return \webignition\InternetMediaType\Parser\Configuration
+     */
+    public function getConfiguration() {
+        if (is_null($this->configuration)) {
+            $this->configuration = new \webignition\InternetMediaType\Parser\Configuration();
+        }
+        
+        return $this->configuration;
+    }    
     
     /**
      *
@@ -68,13 +85,7 @@ class Parser {
      */
     private function getAttributeParser() {
         $attributeParser = new AttributeParser();
-        if ($this->ignoreInvalidAttributes === true) {
-            $attributeParser->setIgnoreInvalidAttributes(true);
-        }
-        
-        if ($this->attemptToRecoverFromInvalidInternalCharacter === true) {
-            $attributeParser->setAttemptToRecoverFromInvalidInternalCharacter(true);
-        }         
+        $attributeParser->setConfiguration($this->getConfiguration());
         
         return $attributeParser;
     }
@@ -89,23 +100,5 @@ class Parser {
         $valueParser = new ValueParser();
         $valueParser->setAttribute($attribute);
         return $valueParser;
-    }   
-    
-    
-    /**
-     * 
-     * @param boolean $ignoreInvalidAttributes
-     */
-    public function setIgnoreInvalidAttributes($ignoreInvalidAttributes) {
-        $this->ignoreInvalidAttributes = filter_var($ignoreInvalidAttributes, FILTER_VALIDATE_BOOLEAN);
-    } 
-    
-    
-    /**
-     * 
-     * @param boolean $attemptToRecoverFromInvalidInternalCharacter
-     */
-    public function setAttemptToRecoverFromInvalidInternalCharacter($attemptToRecoverFromInvalidInternalCharacter) {
-        $this->attemptToRecoverFromInvalidInternalCharacter = true;
-    }    
+    }  
 }
