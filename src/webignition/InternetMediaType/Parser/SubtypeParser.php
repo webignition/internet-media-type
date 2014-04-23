@@ -29,6 +29,46 @@ class SubtypeParser extends StringParser {
         '\\'
     );
     
+    
+    /**
+     *
+     * @var boolean
+     */
+    private $hasAttemptedToFixAttributeInvalidInternalCharacter = false;    
+    
+    
+    
+    /**
+     *
+     * @var \webignition\InternetMediaType\Parser\Configuration  
+     */
+    private $configuration;
+    
+    
+    /**
+     * 
+     * @param \webignition\InternetMediaType\Parser\Configuration $configuration
+     * @return \webignition\InternetMediaType\Parser\Parser
+     */
+    public function setConfiguration(\webignition\InternetMediaType\Parser\Configuration $configuration) {
+        $this->configuration = $configuration;
+        return $this;
+    }
+    
+    
+    /**
+     * 
+     * @return \webignition\InternetMediaType\Parser\Configuration
+     */
+    public function getConfiguration() {
+        if (is_null($this->configuration)) {
+            $this->configuration = new \webignition\InternetMediaType\Parser\Configuration();
+        }
+        
+        return $this->configuration;
+    }    
+    
+    
     /**
      *
      * @param string $inputString
@@ -37,6 +77,7 @@ class SubtypeParser extends StringParser {
     public function parse($inputString) {
         return parent::parse(trim($inputString));
     }
+    
     
     protected function parseCurrentCharacter() {        
         switch ($this->getCurrentState()) {
@@ -70,15 +111,33 @@ class SubtypeParser extends StringParser {
                 break;
             
             case self::STATE_INVALID_INTERNAL_CHARACTER:
+                if ($this->shouldAttemptToFixInvalidInternalCharacter()) {
+                    $this->hasAttemptedToFixAttributeInvalidInternalCharacter = true;
+                    
+                    $fixer = new TypeFixer();
+                    $fixer->setInputString($this->getInputString());
+                    $fixer->setPosition($this->getCurrentCharacterPointer());
+                    $fixedType = $fixer->fix();
+                    
+                    return $this->parse($fixedType);
+                }
+                
                 throw new SubtypeParserException(
                     'Invalid internal character after at position '.$this->getCurrentCharacterPointer(),
                     SubtypeParserException::INTERNAL_INVALID_CHARACTER_CODE,
                     $this->getCurrentCharacterPointer()
                 );
-                
-                break;
         }
     }
+    
+    
+    /**
+     * 
+     * @return boolean
+     */
+    private function shouldAttemptToFixInvalidInternalCharacter() {
+        return $this->getConfiguration()->attemptToRecoverFromInvalidInternalCharacter() && !$this->hasAttemptedToFixAttributeInvalidInternalCharacter;
+    }    
     
     
     /**

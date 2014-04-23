@@ -13,6 +13,7 @@ use webignition\InternetMediaType\InternetMediaType;
 class TypeFixer {
     
     const COMMA_SEPARATED_TYPE_SEPARATOR = ', ';
+    const TYPE_SUBTYPE_SEPARATOR = '/';
 
     
     /**
@@ -27,13 +28,6 @@ class TypeFixer {
      * @var int
      */
     private $position;
-    
-    
-    /**
-     *
-     * @var Parser 
-     */
-    private $parser;
     
     
     /**
@@ -54,44 +48,16 @@ class TypeFixer {
     }
     
     
-    /**
-     * 
-     * @param \webignition\InternetMediaType\Parser\Parser $parser
-     */
-    public function setParser(Parser $parser) {
-        $this->parser = $parser;
-    }
-    
-    
     
     /**
      * 
-     * @return InternetMediaType|null
+     * @return string|null
      */
     public function fix() {
-        $possibleFixedTypes = $this->commaSeparatedTypeFix();
-        if (count($possibleFixedTypes) === 0) {
-            $possibleFixedTypes = $this->spaceSeparatingTypeAndAttributeFix();
-        }
-        
-        $bestFixIndex = null;        
-        foreach ($possibleFixedTypes as $fixIndex => $possibleFixedType) {
-            if ($possibleFixedType['internet-media-type'] instanceof InternetMediaType) {
-                if (is_null($bestFixIndex)) {
-                    $bestFixIndex = $fixIndex;
-                } else {
-                    if (strlen($possibleFixedType['internet-media-type']) > strlen($possibleFixedTypes[$bestFixIndex]['internet-media-type'])) {
-                        $bestFixIndex = $fixIndex;
-                    }
-                }
-            }
-        }
-        
-        if (!is_null($bestFixIndex)) {
-            return $possibleFixedTypes[$bestFixIndex]['internet-media-type'];
-        }
-        
-        return null;
+        return $this->getLongestString(array(
+            $this->commaSeparatedTypeFix(),
+            $this->spaceSeparatingTypeAndAttributeFix()
+        ));
     }
     
     
@@ -106,32 +72,72 @@ class TypeFixer {
      */
     private function commaSeparatedTypeFix() {
         if ($this->position === 0) {
-            return array();
+            return null;
         }
         
         $separatorComparator = substr($this->inputString, $this->position - 1, 2);
         if ($separatorComparator !== self::COMMA_SEPARATED_TYPE_SEPARATOR) {
-            return array();
+            return null;
         }
         
-        $possibleTypes = array(
-            array(
-                'input' => substr($this->inputString, 0, $this->position - 1),
-                'internet-media-type' => null
-            ),
-            array(
-                'input' => substr($this->inputString, $this->position + 1),
-                'internet-media-type' => null
-            )
+        $possibleTypeSubtypes = array(
+            substr($this->inputString, 0, $this->position - 1),
+            substr($this->inputString, $this->position + 1)
         );
         
-        foreach ($possibleTypes as $possibleTypeIndex => $possibleType) {
-            $possibleType['internet-media-type'] = $this->parser->parse($possibleType['input']);       
-            $possibleTypes[$possibleTypeIndex] = $possibleType;
-            
+        $typeSubtypes = array();
+        
+        foreach ($possibleTypeSubtypes as $possibleTypeSubtype) {
+            $typeSubtype = $this->getTypeSubtypeFromPossibleTypeSubtype($possibleTypeSubtype);
+
+            if (!in_array($typeSubtype, $typeSubtypes) && !is_null($typeSubtype)) {
+                $typeSubtypes[] = $typeSubtype;
+            }            
         }
         
-        return $possibleTypes;
+        return $this->getLongestString($typeSubtypes);
+    }
+    
+    
+    
+    /**
+     * 
+     * @param string[] $strings
+     * @return string
+     */
+    private function getLongestString($strings) {
+        $longestIndex = 0;
+        $longestLength = 0;
+        
+        foreach ($strings as $index => $string) {
+            if (strlen($string) > $longestLength) {
+                $longestIndex = $index;
+                $longestLength = strlen($string);
+            }
+        }
+        
+        return $strings[$longestIndex];
+    }
+    
+    
+    
+    /**
+     * 
+     * @param string $possibleTypeSubtype
+     * @return string|null
+     */
+    private function getTypeSubtypeFromPossibleTypeSubtype($possibleTypeSubtype) {
+        try {
+            $typeParser = new TypeParser();
+            $type = $typeParser->parse($possibleTypeSubtype);
+
+            $subtypeParser = new SubtypeParser();
+            $subtype = $subtypeParser->parse($possibleTypeSubtype);
+
+            return $type . self::TYPE_SUBTYPE_SEPARATOR . $subtype;
+        } catch (\Exception $ex) {
+            return null;
+        }      
     }
     
     
@@ -144,28 +150,14 @@ class TypeFixer {
      */    
     private function spaceSeparatingTypeAndAttributeFix() {
         if ($this->position === 0) {
-            return array();
+            return null;
         }
         
         if ($this->inputString[$this->position] !== ' ') {
-            return array();
+            return null;
         }
         
-        $possibleTypes = array(
-            array(
-                'input' => substr($this->inputString, 0, $this->position) . ';' . substr($this->inputString, $this->position + 1),
-                'internet-media-type' => null
-            ),
-
-        );
-        
-        foreach ($possibleTypes as $possibleTypeIndex => $possibleType) {
-            $possibleType['internet-media-type'] = $this->parser->parse($possibleType['input']);       
-            $possibleTypes[$possibleTypeIndex] = $possibleType;
-            
-        }
-        
-        return $possibleTypes;
+        return $this->getTypeSubtypeFromPossibleTypeSubtype(trim(substr($this->inputString, 0, $this->position), "\t\n\r\0\x0B,") . ';' . substr($this->inputString, $this->position + 1));
     }
 
 }

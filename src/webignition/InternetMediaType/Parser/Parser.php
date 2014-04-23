@@ -6,9 +6,6 @@ use webignition\InternetMediaType\InternetMediaType;
 use webignition\InternetMediaType\Parser\TypeParser;
 use webignition\InternetMediaType\Parser\SubtypeParser;
 use webignition\InternetMediaType\Parameter\Parser\Parser as ParameterParser;
-use webignition\InternetMediaType\Parameter\Parameter;
-use webignition\InternetMediaType\Parser\SubtypeParserException;
-
 
 
 /**
@@ -59,23 +56,11 @@ class Parser {
         
         $internetMediaType = new InternetMediaType();
         $internetMediaType->setType($this->getTypeParser()->parse($inputString));
-        
-        try {
-            $internetMediaType->setSubtype($this->getSubypeParser()->parse($inputString));
-        } catch (SubtypeParserException $subtypeParserException) {            
-            if ($subtypeParserException->isInvalidInternalCharacterException() && $this->getConfiguration()->attemptToRecoverFromInvalidInternalCharacter()) {
-                $fixer = new TypeFixer();
-                $fixer->setParser($this);
-                $fixer->setInputString($inputString);
-                $fixer->setPosition($subtypeParserException->getPosition());
-                $fixResult = $fixer->fix();
-
-                return $fixResult;
-            }
-        }
+        $internetMediaType->setSubtype($this->getSubypeParser()->parse($inputString));
         
         $parameterString = $this->getParameterString($inputString, $internetMediaType->getType(), $internetMediaType->getSubtype());        
         $parameterStrings = $this->getParameterStrings($parameterString);               
+        
         $parameters = $this->getParameters($parameterStrings);
 
         foreach ($parameters as $parameter) {
@@ -92,7 +77,7 @@ class Parser {
      */
     private function getTypeParser() {
         if (is_null($this->typeParser)) {
-            $this->typeParser = new TypeParser();
+            $this->typeParser = new TypeParser();            
         }
         
         return $this->typeParser;
@@ -106,6 +91,7 @@ class Parser {
     private function getSubypeParser() {
         if (is_null($this->subtypeParser)) {
             $this->subtypeParser = new SubtypeParser();
+            $this->subtypeParser->setConfiguration($this->getConfiguration());
         }
         
         return $this->subtypeParser;
@@ -133,15 +119,14 @@ class Parser {
      * @param string $subtype
      * @return string 
      */
-    private function getParameterString($inputString, $type, $subtype) {
-        $parameterString = substr($inputString, strlen($type) + strlen(self::TYPE_SUBTYPE_SEPARATOR));
-        $parameterString = substr($parameterString, strlen($subtype));
+    private function getParameterString($inputString, $type, $subtype) {        
+        $parts = explode(self::TYPE_PARAMETER_SEPARATOR, $inputString, 2);
         
-        if ($parameterString === false) {
-            return '';
+        if (count($parts) === 1) {
+            return trim(str_replace($type . self::TYPE_SUBTYPE_SEPARATOR . $subtype, '', $inputString));
         }
         
-        return $parameterString;
+        return trim($parts[1]);
     }
     
     
