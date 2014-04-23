@@ -69,24 +69,22 @@ class Parser {
         
         try {
             $internetMediaType->setSubtype($this->getSubypeParser()->parse($inputString));
-        } catch (SubtypeParserException $subtypeParserException) {
-            if ($subtypeParserException->isInvalidInternalCharacterException()) {
-                if ($this->attemptToRecoverFromInvalidInternalCharacter === true) {
-                    $fixer = new TypeFixer();
-                    $fixer->setParser($this);
-                    $fixer->setInputString($inputString);
-                    $fixer->setPosition($subtypeParserException->getPosition());
-                    $fixResult = $fixer->fix();
-                    
-                    return $fixResult;
-                }
+        } catch (SubtypeParserException $subtypeParserException) {            
+            if ($subtypeParserException->isInvalidInternalCharacterException() && $this->attemptToRecoverFromInvalidInternalCharacter === true) {
+                $fixer = new TypeFixer();
+                $fixer->setParser($this);
+                $fixer->setInputString($inputString);
+                $fixer->setPosition($subtypeParserException->getPosition());
+                $fixResult = $fixer->fix();
+
+                return $fixResult;
             }
         }
         
         $parameterString = $this->getParameterString($inputString, $internetMediaType->getType(), $internetMediaType->getSubtype());        
-        $parameterStrings = $this->getParameterStrings($parameterString);       
+        $parameterStrings = $this->getParameterStrings($parameterString);               
         $parameters = $this->getParameters($parameterStrings);
-        
+
         foreach ($parameters as $parameter) {
             $internetMediaType->addParameter($parameter);
         }
@@ -131,6 +129,10 @@ class Parser {
             if ($this->ignoreInvalidAttributes === true) {
                 $this->parameterParser->setIgnoreInvalidAttributes(true);
             }
+            
+            if ($this->attemptToRecoverFromInvalidInternalCharacter === true) {
+                $this->parameterParser->setAttemptToRecoverFromInvalidInternalCharacter(true);
+            }            
         }
         
         return $this->parameterParser;

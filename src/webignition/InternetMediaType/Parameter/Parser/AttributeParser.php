@@ -30,7 +30,22 @@ class AttributeParser extends StringParser {
      *
      * @var boolean
      */
-    private $ignoreInvalidAttributes = false;     
+    private $ignoreInvalidAttributes = false;   
+    
+    
+    
+    /**
+     *
+     * @var boolean
+     */
+    private $attemptToRecoverFromInvalidInternalCharacter = false;
+    
+    
+    /**
+     *
+     * @var boolean
+     */
+    private $hasAttemptedToFixAttributeInvalidInternalCharacter = false;
     
     /**
      *
@@ -48,8 +63,8 @@ class AttributeParser extends StringParser {
                 break;
             
             case self::STATE_IN_ATTRIBUTE_NAME:
-                if ($this->isCurrentCharacterInvalid()) {
-                    if ($this->ignoreInvalidAttributes === true) {
+                if ($this->isCurrentCharacterInvalid()) {                    
+                    if ($this->shouldIgnoreInvalidCharacter()) {
                         $this->incrementCurrentCharacterPointer();
                         $this->setCurrentState(self::STATE_LEFT_ATTRIBUTE_NAME);
                         $this->clearOutputString();                        
@@ -69,10 +84,53 @@ class AttributeParser extends StringParser {
                 $this->stop();
                 break;
             
-            case self::STATE_INVALID_INTERNAL_CHARACTER:                
-                throw new AttributeParserException('Invalid internal character after at position '.$this->getCurrentCharacterPointer(), 1);
-                break;
+            case self::STATE_INVALID_INTERNAL_CHARACTER:                                
+                if ($this->shouldAttemptToFixInvalidInternalCharacter()) {
+                    $this->hasAttemptedToFixAttributeInvalidInternalCharacter = true;
+                    
+                    $attributeFixer = new AttributeFixer();
+                    $attributeFixer->setInputString($this->getInputString());
+                    $attributeFixer->setPosition($this->getCurrentCharacterPointer());
+                    $fixedInputString = $attributeFixer->fix();
+                    
+                    return $this->parse($fixedInputString);                  
+                }
+                
+                throw new AttributeParserException(
+                    'Invalid internal character after at position '.$this->getCurrentCharacterPointer(),
+                    1,
+                    $this->getCurrentCharacterPointer()
+                );
         }
+    }
+    
+    /**
+     * 
+     * @return boolean
+     */
+    private function shouldIgnoreInvalidCharacter() {
+        if (!$this->ignoreInvalidAttributes) {
+            return false;
+        }
+        
+        if (!$this->attemptToRecoverFromInvalidInternalCharacter) {
+            return true;
+        }
+        
+        if ($this->hasAttemptedToFixAttributeInvalidInternalCharacter) {
+            return true;
+        }
+        
+        return false;
+    }
+    
+    
+    /**
+     * 
+     * @return boolean
+     */
+    private function shouldAttemptToFixInvalidInternalCharacter() {
+        return $this->attemptToRecoverFromInvalidInternalCharacter && !$this->hasAttemptedToFixAttributeInvalidInternalCharacter;
     }
     
     
@@ -100,6 +158,15 @@ class AttributeParser extends StringParser {
      */
     public function setIgnoreInvalidAttributes($ignoreInvalidAttributes) {
         $this->ignoreInvalidAttributes = filter_var($ignoreInvalidAttributes, FILTER_VALIDATE_BOOLEAN);
-    }    
+    }  
+    
+    
+    /**
+     * 
+     * @param boolean $attemptToRecoverFromInvalidInternalCharacter
+     */
+    public function setAttemptToRecoverFromInvalidInternalCharacter($attemptToRecoverFromInvalidInternalCharacter) {
+        $this->attemptToRecoverFromInvalidInternalCharacter = true;
+    }
 
 }

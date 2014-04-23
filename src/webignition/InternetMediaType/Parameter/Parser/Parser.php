@@ -32,6 +32,13 @@ class Parser {
      */
     private $ignoreInvalidAttributes = false;    
     
+    
+    /**
+     *
+     * @var boolean
+     */
+    private $attemptToRecoverFromInvalidInternalCharacter = false;    
+    
     /**
      *
      * @param string $parameterString
@@ -65,6 +72,10 @@ class Parser {
             $attributeParser->setIgnoreInvalidAttributes(true);
         }
         
+        if ($this->attemptToRecoverFromInvalidInternalCharacter === true) {
+            $attributeParser->setAttemptToRecoverFromInvalidInternalCharacter(true);
+        }         
+        
         return $attributeParser;
     }
     
@@ -87,5 +98,14 @@ class Parser {
      */
     public function setIgnoreInvalidAttributes($ignoreInvalidAttributes) {
         $this->ignoreInvalidAttributes = filter_var($ignoreInvalidAttributes, FILTER_VALIDATE_BOOLEAN);
+    } 
+    
+    
+    /**
+     * 
+     * @param boolean $attemptToRecoverFromInvalidInternalCharacter
+     */
+    public function setAttemptToRecoverFromInvalidInternalCharacter($attemptToRecoverFromInvalidInternalCharacter) {
+        $this->attemptToRecoverFromInvalidInternalCharacter = true;
     }    
 }

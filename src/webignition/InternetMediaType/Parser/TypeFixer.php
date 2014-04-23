@@ -6,7 +6,7 @@ use webignition\InternetMediaType\InternetMediaType;
 
 /**
  * Attempts to fix unparseable internet media types based purely on
- * observed invalid media type strings that, open visual observation, can
+ * observed invalid media type strings that, upon visual observation, can
  * be translated into something sensible
  *  
  */

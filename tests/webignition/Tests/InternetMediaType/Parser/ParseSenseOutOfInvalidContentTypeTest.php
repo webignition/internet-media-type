@@ -19,5 +19,12 @@ class ParseSenseOutOfInvalidContentTypeTest extends ParserTest {
         $this->assertEquals('text', $internetMediaType->getType());
         $this->assertEquals('html', $internetMediaType->getSubtype());        
         $this->assertEquals('UTF-8', $internetMediaType->getParameter('charset')->getValue());
-    }    
+    }
+    
+    public function testParseAttributeColonValue() {
+        $this->parser->setIgnoreInvalidAttributes(true);
+        $this->parser->setAttemptToRecoverFromInvalidInternalCharacter(true);
+        
+        $this->assertEquals('text/css; charset=UTF-8', $this->parser->parse('text/css; charset: UTF-8'));
+    }
 }
