@@ -23,9 +23,7 @@
         "webignition/string-parser":">=0.2.2,<1.0"
     },
     "require-dev": {
-        "symfony/class-loader": "*",
-        "phpunit/phpunit": "3.7.*",
-        "guzzle/guzzle":">=3.8.1,<4"
+        "phpunit/phpunit": "~4.0"
     },     
     "minimum-stability":"dev",
     "prefer-stable":true    
