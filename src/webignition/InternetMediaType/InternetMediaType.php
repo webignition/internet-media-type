@@ -60,9 +60,9 @@ class InternetMediaType {
     
     
     /**
-     * Collection of \webignition\InternetMediaType\Parameter objects
+     * Collection of Parameter objects
      * 
-     * @var array
+     * @var Parameter[]
      */
     private $parameters = array();
     
@@ -70,7 +70,7 @@ class InternetMediaType {
     /**
      *
      * @param string $type
-     * @return \webignition\InternetMediaType\InternetMediaType 
+     * @return InternetMediaType
      */
     public function setType($type) {
         $this->type = strtolower($type);
@@ -89,8 +89,8 @@ class InternetMediaType {
     
     /**
      *
-     * @param stirng $subtype
-     * @return \webignition\InternetMediaType\InternetMediaType 
+     * @param string $subtype
+     * @return InternetMediaType
      */
     public function setSubtype($subtype) {
         $this->subtype = strtolower($subtype);
@@ -110,7 +110,7 @@ class InternetMediaType {
     /**
      *
      * @param Parameter $parameter
-     * @return \webignition\InternetMediaType\InternetMediaType 
+     * @return InternetMediaType
      */
     public function addParameter(Parameter $parameter) {
         $this->parameters[$parameter->getAttribute()] = $parameter;
@@ -131,7 +131,7 @@ class InternetMediaType {
     /**
      *
      * @param Parameter $parameter
-     * @return \webignition\InternetMediaType\InternetMediaType 
+     * @return InternetMediaType
      */
     public function removeParameter(Parameter $parameter) {
         if ($this->hasParameter($parameter->getAttribute())) {
@@ -145,7 +145,7 @@ class InternetMediaType {
     /**
      *
      * @param string $attribute
-     * @return \webignition\InternetMediaType\InternetMediaType\Parameter\Parameter|null
+     * @return Parameter|null
      */
     public function getParameter($attribute) {
         $attribute = trim(strtolower($attribute));
@@ -156,7 +156,7 @@ class InternetMediaType {
     /**
      * Get collection of Parameter objects
      * 
-     * @return array
+     * @return Parameter[]
      */
     public function getParameters() {
         return $this->parameters;
