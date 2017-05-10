@@ -2,103 +2,100 @@
 
 namespace webignition\InternetMediaType\Parameter\Parser;
 
+use webignition\InternetMediaType\Parameter\Parameter;
 use webignition\InternetMediaType\Parameter\Parser\AttributeParser;
 use webignition\InternetMediaType\Parameter\Parser\ValueParser;
-use webignition\InternetMediaType\Parameter\Parameter;
-
+use webignition\InternetMediaType\Parser\Configuration;
 
 /**
- * Parsers a parameter string value into a Parameter object
- * 
+ * Parses a parameter string value into a Parameter object
+ *
  * Defined as:
- * 
+ *
  * parameter               = attribute "=" value
  * attribute               = token
  * value                   = token | quoted-string
- * 
+ *
  * http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html#sec3.6
- * 
+ *
  * Linear white space (LWS) MUST NOT be used between the type and subtype, nor between an attribute and its value.
- * 
+ *
  * http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html#sec3.7
- *  
+ *
  */
-class Parser {
-    
-    
+class Parser
+{
     /**
-     *
-     * @var \webignition\InternetMediaType\Parser\Configuration  
+     * @var Configuration
      */
     private $configuration;
-    
-    
+
     /**
-     * 
-     * @param \webignition\InternetMediaType\Parser\Configuration $configuration
-     * @return \webignition\InternetMediaType\Parser\Parser
+     * @param Configuration $configuration
+     * @return self
      */
-    public function setConfiguration(\webignition\InternetMediaType\Parser\Configuration  $configuration) {
+    public function setConfiguration(Configuration  $configuration)
+    {
         $this->configuration = $configuration;
+
         return $this;
     }
-    
-    
+
     /**
-     * 
-     * @return \webignition\InternetMediaType\Parser\Configuration
+     * @return Configuration
      */
-    public function getConfiguration() {
+    public function getConfiguration()
+    {
         if (is_null($this->configuration)) {
-            $this->configuration = new \webignition\InternetMediaType\Parser\Configuration();
+            $this->configuration = new Configuration();
         }
-        
+
         return $this->configuration;
-    }    
-    
+    }
+
     /**
      *
      * @param string $parameterString
-     * @return \webignition\InternetMediaType\Parameter 
+     *
+     * @return Parameter
      */
-    public function parse($parameterString) {
+    public function parse($parameterString)
+    {
         $inputString = trim($parameterString);
-        $attribute = $this->getAttributeParser()->parse($inputString);
-        
+        $attribute = $this->createAttributeParser()->parse($inputString);
+
         if ($attribute == '') {
             return new Parameter();
         }
-        
-        $value = $this->getValueParser($attribute)->parse($parameterString);
+
+        $value = $this->createValueParser($attribute)->parse($parameterString);
 
         $parameter = new Parameter();
         $parameter->setAttribute($attribute);
         $parameter->setValue($value);
-        
+
         return $parameter;
     }
-    
-    
+
     /**
-     *
-     * @return \webignition\InternetMediaType\Parameter\Parser\AttributeParser 
+     * @return AttributeParser
      */
-    private function getAttributeParser() {
+    private function createAttributeParser()
+    {
         $attributeParser = new AttributeParser();
         $attributeParser->setConfiguration($this->getConfiguration());
-        
+
         return $attributeParser;
     }
-    
-    
+
     /**
-     *
      * @param string $attribute
-     * @return \webignition\InternetMediaType\Parameter\Parser\ValueParser
+     * @return ValueParser
      */
-    private function getValueParser($attribute) {
+    private function createValueParser($attribute)
+    {
         $valueParser = new ValueParser();
         $valueParser->setAttribute($attribute);
         return $valueParser;
-    }  
+    }
 }
