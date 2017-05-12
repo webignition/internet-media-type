@@ -2,8 +2,6 @@
 
 namespace webignition\InternetMediaType\Parameter;
 
-use webignition\QuotedString\QuotedString;
-
 /**
  * A parameter value present in an Internet media type
  *
@@ -23,8 +21,6 @@ use webignition\QuotedString\QuotedString;
 class Parameter
 {
     const ATTRIBUTE_VALUE_SEPARATOR = '=';
-    const EMPTY_ATTRIBUTE = '';
-    const EMPTY_VALUE = '';
 
     /**
      * The parameter attribute.
@@ -40,20 +36,18 @@ class Parameter
      *
      * For a parameter of 'charset=UTF8', this would be 'UTF8'
      *
-     * @var string|QuotedString
+     * @var string
      */
     private $value;
 
     /**
-     *
-     * @param string $attribute
-     *
-     * @return self
+     * @param string$attribute
+     * @param string|null $value
      */
-    public function setAttribute($attribute)
+    public function __construct($attribute, $value = null)
     {
         $this->attribute = trim(strtolower($attribute));
-        return $this;
+        $this->value = $value;
     }
 
     /**
@@ -61,27 +55,11 @@ class Parameter
      */
     public function getAttribute()
     {
-        return ($this->hasAttribute()) ? $this->attribute : '';
+        return $this->attribute;
     }
 
     /**
-     * @param string|QuotedString $value
-     *
-     * @return self
-     */
-    public function setValue($value)
-    {
-        if (is_string($value)) {
-            $this->value = trim($value);
-        } else {
-            $this->value = $value;
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return string|QuotedString
+     * @return string
      */
     public function getValue()
     {
@@ -89,52 +67,15 @@ class Parameter
     }
 
     /**
-     *
-     * @return boolean
-     */
-    private function hasAttribute()
-    {
-        if (is_null($this->attribute)) {
-            return false;
-        }
-
-        if ($this->attribute == self::EMPTY_ATTRIBUTE) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * @return boolean
-     */
-    private function hasValue()
-    {
-        if (is_null($this->value)) {
-            return false;
-        }
-
-        if ($this->value == self::EMPTY_VALUE) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
      * @return string
      */
     public function __toString()
     {
-        if (!$this->hasAttribute() && !$this->hasValue()) {
+        if (empty($this->attribute)) {
             return '';
         }
 
-        if (!$this->hasAttribute()) {
-            return '';
-        }
-
-        if (!$this->hasValue()) {
+        if (empty($this->value)) {
             return $this->getAttribute();
         }
 

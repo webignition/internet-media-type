@@ -105,7 +105,6 @@ class AttributeParser extends StringParser
 
                     $attributeFixer = new AttributeFixer();
                     $attributeFixer->setInputString($this->getInputString());
-                    $attributeFixer->setPosition($this->getCurrentCharacterPointer());
                     $fixedInputString = $attributeFixer->fix();
 
                     return $this->parse($fixedInputString);

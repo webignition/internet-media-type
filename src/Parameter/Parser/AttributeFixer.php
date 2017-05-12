@@ -2,8 +2,6 @@
 
 namespace webignition\InternetMediaType\Parameter\Parser;
 
-use webignition\InternetMediaType\InternetMediaType;
-
 /**
  * Attempts to fix unparseable internet media types based purely on
  * observed invalid media type strings that, upon visual observation, can
@@ -19,25 +17,11 @@ class AttributeFixer
     private $inputString;
 
     /**
-     *
-     * @var int
-     */
-    private $position;
-
-    /**
      * @param string $inputString
      */
     public function setInputString($inputString)
     {
         $this->inputString = $inputString;
-    }
-
-    /**
-     * @param int $position
-     */
-    public function setPosition($position)
-    {
-        $this->position = $position;
     }
 
     /**

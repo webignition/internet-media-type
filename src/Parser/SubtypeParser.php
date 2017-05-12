@@ -2,7 +2,6 @@
 
 namespace webignition\InternetMediaType\Parser;
 
-use webignition\InternetMediaType\Parser\Configuration;
 use webignition\StringParser\StringParser;
 
 /**

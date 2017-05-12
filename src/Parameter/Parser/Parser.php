@@ -3,8 +3,6 @@
 namespace webignition\InternetMediaType\Parameter\Parser;
 
 use webignition\InternetMediaType\Parameter\Parameter;
-use webignition\InternetMediaType\Parameter\Parser\AttributeParser;
-use webignition\InternetMediaType\Parameter\Parser\ValueParser;
 use webignition\InternetMediaType\Parser\Configuration;
 
 /**
@@ -54,7 +52,6 @@ class Parser
     }
 
     /**
-     *
      * @param string $parameterString
      *
      * @return Parameter
@@ -64,15 +61,13 @@ class Parser
         $inputString = trim($parameterString);
         $attribute = $this->createAttributeParser()->parse($inputString);
 
-        if ($attribute == '') {
-            return new Parameter();
+        if (empty($attribute)) {
+            return new Parameter('', '');
         }
 
         $value = $this->createValueParser($attribute)->parse($parameterString);
 
-        $parameter = new Parameter();
-        $parameter->setAttribute($attribute);
-        $parameter->setValue($value);
+        $parameter = new Parameter($attribute, $value);
 
         return $parameter;
     }
@@ -90,6 +85,7 @@ class Parser
 
     /**
      * @param string $attribute
+     *
      * @return ValueParser
      */
     private function createValueParser($attribute)

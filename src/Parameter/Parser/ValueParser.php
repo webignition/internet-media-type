@@ -4,7 +4,6 @@ namespace webignition\InternetMediaType\Parameter\Parser;
 
 use webignition\StringParser\StringParser;
 use webignition\QuotedString\Parser as QuotedStringParser;
-use webignition\QuotedString\QuotedString;
 
 /**
  * Parses out the value from an internet media type parameter string
@@ -38,7 +37,7 @@ class ValueParser extends StringParser
     /**
      * @param string $inputString
      *
-     * @return string|QuotedString
+     * @return string
      */
     public function parse($inputString)
     {
@@ -53,7 +52,9 @@ class ValueParser extends StringParser
         }
 
         $quotedStringParser = new QuotedStringParser();
-        return $quotedStringParser->parse($output);
+        $quotedString = $quotedStringParser->parse($output);
+
+        return $quotedString->getValue();
     }
 
     /**
@@ -61,7 +62,10 @@ class ValueParser extends StringParser
      */
     private function getNonAttributePart($inputString)
     {
-        return substr($inputString, strlen($this->attribute) + strlen(self::ATTRIBUTE_VALUE_SEPARATOR));
+        return trim(substr(
+            $inputString,
+            strlen($this->attribute) + strlen(self::ATTRIBUTE_VALUE_SEPARATOR)
+        ));
     }
 
     protected function parseCurrentCharacter()

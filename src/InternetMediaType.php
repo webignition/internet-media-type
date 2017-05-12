@@ -256,4 +256,3 @@ class InternetMediaType
         return $this->getType() . self::TYPE_SUBTYPE_SEPARATOR . $this->getSubtype();
     }
 }
-
