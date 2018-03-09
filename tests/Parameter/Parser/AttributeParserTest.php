@@ -66,11 +66,12 @@ class AttributeParserTest extends BaseTest
      */
     public function testParseInvalidInternalCharacter($attribute, $expectedInvalidInternalCharacterPosition)
     {
-        $this->setExpectedException(
-            AttributeParserException::class,
-            'Invalid internal character after at position ' . $expectedInvalidInternalCharacterPosition,
-            1
+        $this->expectException(AttributeParserException::class);
+        $this->expectExceptionMessage(
+            'Invalid internal character after at position ' . $expectedInvalidInternalCharacterPosition
         );
+        $this->expectExceptionCode(1);
+
         $this->parser->parse($attribute);
     }
 
