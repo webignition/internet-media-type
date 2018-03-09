@@ -1,12 +1,9 @@
 machine:
   php:
-    version: 5.5.36
+    version: 5.6.22
 
 test:
   override:
-# PHP 5.5.36
-    - php -v
-    - composer ci
 # PHP 5.6.22
     - phpenv global 5.6.22
     - php -v
@@ -15,6 +12,12 @@ test:
     - composer ci
 # PHP 7.0.17
     - phpenv global 7.0.17
+    - php -v
+    - rm -rf vendor
+    - composer install
+    - composer ci
+# PHP 7.1.9
+    - phpenv global 7.1.9
     - php -v
     - rm -rf vendor
     - composer install
