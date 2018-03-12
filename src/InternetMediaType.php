@@ -110,13 +110,14 @@ class InternetMediaType
     public function addParameter(Parameter $parameter)
     {
         $this->parameters[$parameter->getAttribute()] = $parameter;
+
         return $this;
     }
 
     /**
      * @param string $attribute
      *
-     * @return boolean
+     * @return bool
      */
     public function hasParameter($attribute)
     {
@@ -145,6 +146,7 @@ class InternetMediaType
     public function getParameter($attribute)
     {
         $attribute = trim(strtolower($attribute));
+
         return isset($this->parameters[$attribute]) ? $this->parameters[$attribute] : null;
     }
 
@@ -159,15 +161,11 @@ class InternetMediaType
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function hasType()
     {
-        if (is_null($this->type)) {
-            return false;
-        }
-
-        if ($this->getType() == '') {
+        if (empty($this->type)) {
             return false;
         }
 
@@ -175,15 +173,11 @@ class InternetMediaType
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function hasSubtype()
     {
-        if (is_null($this->subtype)) {
-            return false;
-        }
-
-        if ($this->getSubtype() == '') {
+        if (empty($this->subtype)) {
             return false;
         }
 
@@ -201,7 +195,7 @@ class InternetMediaType
             return $string;
         }
 
-        $parameterStringParts = array();
+        $parameterStringParts = [];
 
         foreach ($this->getParameters() as $parameter) {
             $parameterStringParts[] = (string)$parameter;
@@ -223,10 +217,6 @@ class InternetMediaType
      */
     private function isEmptyParameterStringCollection($parameterStringCollection)
     {
-        if (count($parameterStringCollection) === 0) {
-            return true;
-        }
-
         foreach ($parameterStringCollection as $value) {
             if ($value != '') {
                 return false;
