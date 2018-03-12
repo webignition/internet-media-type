@@ -16,7 +16,7 @@ class AttributeParserException extends BaseException
     /**
      * @param string $message
      * @param int $code
-     * @param \Throwable $position
+     * @param int $position
      * @param \Exception|null $previous
      */
     public function __construct($message, $code, $position, $previous = null)

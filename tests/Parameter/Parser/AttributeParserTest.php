@@ -82,8 +82,33 @@ class AttributeParserTest extends BaseTest
     {
         return [
             'ch arset=ISO-8859-4' => [
-                'attribute' => 'ch arset=ISO-8859-4',
+                'attribute' => 'ch ar set=ISO-8859-4',
                 'expectedInvalidInternalCharacterPosition' => 2
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider parseInvalidInternalCharacterDataProviderFoo
+     *
+     * @param string $attribute
+     */
+    public function testParseInvalidInternalCharacterAttemptRecoveryIgnoreInvalidAttributes($attribute)
+    {
+        $this->parser->getConfiguration()->enableAttemptToRecoverFromInvalidInternalCharacter();
+        $this->parser->getConfiguration()->enableIgnoreInvalidAttributes();
+
+        $this->assertEmpty($this->parser->parse($attribute));
+    }
+
+    /**
+     * @return array
+     */
+    public function parseInvalidInternalCharacterDataProviderFoo()
+    {
+        return [
+            'ch ar set=ISO-8859-4' => [
+                'attribute' => 'ch ar set=ISO-8859-4',
             ],
         ];
     }
@@ -92,11 +117,12 @@ class AttributeParserTest extends BaseTest
      * @dataProvider parseAndFixInvalidInternalCharacterDataProvider
      *
      * @param string $attribute
+     * @param string $expectedName
      */
-    public function testParseAndFixInvalidInternalCharacter($attribute)
+    public function testParseAndFixInvalidInternalCharacter($attribute, $expectedName)
     {
         $this->parser->getConfiguration()->enableAttemptToRecoverFromInvalidInternalCharacter();
-        $this->parser->parse($attribute);
+        $this->assertEquals($expectedName, $this->parser->parse($attribute));
     }
 
     /**
@@ -106,7 +132,31 @@ class AttributeParserTest extends BaseTest
     {
         return [
             'charset: utf8' => [
-                'attribute' => 'charset',
+                'attribute' => 'charset: utf8',
+                'expectedName' => 'charset',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider parseAndIgnoreInvalidCharacterDataProvider
+     *
+     * @param string $attribute
+     */
+    public function testParseAndIgnoreInvalidCharacter($attribute)
+    {
+        $this->parser->getConfiguration()->enableIgnoreInvalidAttributes();
+        $this->assertEmpty($this->parser->parse($attribute));
+    }
+
+    /**
+     * @return array
+     */
+    public function parseAndIgnoreInvalidCharacterDataProvider()
+    {
+        return [
+            'charset"foo": utf8' => [
+                'attribute' => 'charset"foo": utf8',
             ],
         ];
     }
