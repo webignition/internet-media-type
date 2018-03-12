@@ -27,7 +27,7 @@ class AttributeParser extends StringParser
     );
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $hasAttemptedToFixAttributeInvalidInternalCharacter = false;
 
@@ -44,6 +44,7 @@ class AttributeParser extends StringParser
     public function setConfiguration(Configuration $configuration)
     {
         $this->configuration = $configuration;
+
         return $this;
     }
 
@@ -70,6 +71,11 @@ class AttributeParser extends StringParser
         return parent::parse(trim($inputString));
     }
 
+    /**
+     * @return string
+     *
+     * @throws AttributeParserException
+     */
     protected function parseCurrentCharacter()
     {
         switch ($this->getCurrentState()) {
@@ -116,18 +122,20 @@ class AttributeParser extends StringParser
                     $this->getCurrentCharacterPointer()
                 );
         }
+
+        return null;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     private function shouldIgnoreInvalidCharacter()
     {
-        if (!$this->getConfiguration()->ignoreInvalidAttributes()) {
+        if (false === $this->getConfiguration()->ignoreInvalidAttributes()) {
             return false;
         }
 
-        if (!$this->getConfiguration()->attemptToRecoverFromInvalidInternalCharacter()) {
+        if (false === $this->getConfiguration()->attemptToRecoverFromInvalidInternalCharacter()) {
             return true;
         }
 
@@ -139,7 +147,7 @@ class AttributeParser extends StringParser
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     private function shouldAttemptToFixInvalidInternalCharacter()
     {
@@ -148,7 +156,7 @@ class AttributeParser extends StringParser
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     private function isCurrentCharacterInvalid()
     {
@@ -157,7 +165,7 @@ class AttributeParser extends StringParser
 
     /**
      *
-     * @return boolean
+     * @return bool
      */
     private function isCurrentCharacterAttributeValueSeparator()
     {

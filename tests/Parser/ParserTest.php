@@ -2,6 +2,7 @@
 
 namespace webignition\Tests\InternetMediaType\Parser;
 
+use webignition\InternetMediaType\Parser\Configuration;
 use webignition\InternetMediaType\Parser\Parser;
 use webignition\Tests\InternetMediaType\BaseTest;
 
@@ -175,6 +176,71 @@ class ParserTest extends BaseTest
                 'expectedParameters' => [
                     'charset' => 'UTF-8',
                 ],
+            ],
+        ];
+    }
+
+    public function testSetConfiguration()
+    {
+        $configuration = new Configuration();
+
+        $this->assertNotEquals(spl_object_hash($configuration), spl_object_hash($this->parser->getConfiguration()));
+
+        $this->parser->setConfiguration($configuration);
+        $this->assertEquals(spl_object_hash($configuration), spl_object_hash($this->parser->getConfiguration()));
+    }
+
+    /**
+     * @dataProvider setIgnoreInvalidAttributesDataProvider
+     *
+     * @param bool$ignoreInvalidAttributes
+     */
+    public function testSetIgnoreInvalidAttributes($ignoreInvalidAttributes)
+    {
+        $this->parser->setIgnoreInvalidAttributes($ignoreInvalidAttributes);
+        $this->assertEquals($ignoreInvalidAttributes, $this->parser->getConfiguration()->ignoreInvalidAttributes());
+    }
+
+    /**
+     * @return array
+     */
+    public function setIgnoreInvalidAttributesDataProvider()
+    {
+        return [
+            'true' => [
+                'ignoreInvalidAttributes' => true,
+            ],
+            'false' => [
+                'ignoreInvalidAttributes' => false,
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider setAttemptToRecoverFromInvalidInternalCharacterDataProvider
+     *
+     * @param bool$attemptToRecoverFromInvalidInternalCharacter
+     */
+    public function testSetAttemptToRecoverFromInvalidInternalCharacter($attemptToRecoverFromInvalidInternalCharacter)
+    {
+        $this->parser->setAttemptToRecoverFromInvalidInternalCharacter($attemptToRecoverFromInvalidInternalCharacter);
+        $this->assertEquals(
+            $attemptToRecoverFromInvalidInternalCharacter,
+            $this->parser->getConfiguration()->attemptToRecoverFromInvalidInternalCharacter()
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function setAttemptToRecoverFromInvalidInternalCharacterDataProvider()
+    {
+        return [
+            'true' => [
+                'attemptToRecoverFromInvalidInternalCharacter' => true,
+            ],
+            'false' => [
+                'attemptToRecoverFromInvalidInternalCharacter' => false,
             ],
         ];
     }

@@ -3,6 +3,7 @@
 namespace webignition\Tests\InternetMediaType\Parameter\Parser;
 
 use webignition\InternetMediaType\Parameter\Parser\Parser;
+use webignition\InternetMediaType\Parser\Configuration;
 use webignition\Tests\InternetMediaType\BaseTest;
 
 class ParserTest extends BaseTest
@@ -42,6 +43,11 @@ class ParserTest extends BaseTest
     public function parseDataProvider()
     {
         return [
+            'empty' => [
+                'parameterString' => '',
+                'expectedAttribute' => '',
+                'expectedValue' => '',
+            ],
             'charset=ISO-8859-4' => [
                 'parameterString' => 'charset=ISO-8859-4',
                 'expectedAttribute' => 'charset',
@@ -68,5 +74,15 @@ class ParserTest extends BaseTest
                 'expectedValue' => null,
             ],
         ];
+    }
+
+    public function testSetGetConfiguration()
+    {
+        $configuration = new Configuration();
+
+        $this->assertNotEquals(spl_object_hash($configuration), spl_object_hash($this->parser->getConfiguration()));
+
+        $this->parser->setConfiguration($configuration);
+        $this->assertEquals(spl_object_hash($configuration), spl_object_hash($this->parser->getConfiguration()));
     }
 }

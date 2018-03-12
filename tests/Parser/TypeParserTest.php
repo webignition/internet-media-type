@@ -56,11 +56,10 @@ class TypeParserTest extends BaseTest
 
     public function testParseMalformedType()
     {
-        $this->setExpectedException(
-            TypeParserException::class,
-            'Invalid internal character after at position 1',
-            1
-        );
+        $this->expectException(TypeParserException::class);
+        $this->expectExceptionMessage('Invalid internal character after at position 1');
+        $this->expectExceptionCode(1);
+
         $this->parser->parse('t e x t/html; charset=ISO-8859-4');
     }
 }

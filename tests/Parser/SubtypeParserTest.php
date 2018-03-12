@@ -53,11 +53,9 @@ class SubtypeParserTest extends BaseTest
 
     public function testParseInvalidSubtype()
     {
-        $this->setExpectedException(
-            SubtypeParserException::class,
-            'Invalid internal character after at position 6',
-            1
-        );
+        $this->expectException(SubtypeParserException::class);
+        $this->expectExceptionMessage('Invalid internal character after at position 6');
+        $this->expectExceptionCode(1);
 
         $this->parser->parse('text/h t m l; charset=ISO-8859-4');
     }

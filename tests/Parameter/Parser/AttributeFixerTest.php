@@ -39,6 +39,10 @@ class AttributeFixerTest extends BaseTest
                 'attribute' => 'foo: bar',
                 'expectedFixedAttribute' => 'foo=bar',
             ],
+            'invalid, unfixable' => [
+                'attribute' => 'foo"bar"',
+                'expectedFixedAttribute' => 'foo"bar"',
+            ],
         ];
     }
 }
