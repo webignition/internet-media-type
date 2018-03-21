@@ -12,9 +12,13 @@ class InternetMediaTypeTest extends BaseTest
      */
     private $internetMediaType;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         parent::setUp();
+
         $this->internetMediaType = new InternetMediaType();
     }
 
@@ -356,17 +360,10 @@ class InternetMediaTypeTest extends BaseTest
      * @dataProvider hasTypeHasSubtypeGetSubtypeStringDataProvider
      *
      * @param InternetMediaType $internetMediaType
-     * @param bool $expectedHasType
-     * @param bool $expectedHasSubtype
+     * @param string $expectedTypeSubtypeString
      */
-    public function testHasTypeHasSubtypeGetTypeSubtypeString(
-        InternetMediaType $internetMediaType,
-        $expectedHasType,
-        $expectedHasSubtype,
-        $expectedTypeSubtypeString
-    ) {
-        $this->assertEquals($expectedHasType, $internetMediaType->hasType());
-        $this->assertEquals($expectedHasSubtype, $internetMediaType->hasSubtype());
+    public function testGetTypeSubtypeString(InternetMediaType $internetMediaType, $expectedTypeSubtypeString)
+    {
         $this->assertEquals($expectedTypeSubtypeString, $internetMediaType->getTypeSubtypeString());
     }
 
@@ -378,24 +375,18 @@ class InternetMediaTypeTest extends BaseTest
         return [
             'no type, no subtype' => [
                 'internetMediaType' => new InternetMediaType(),
-                'expectedHasType' => false,
-                'expectedHasSubtype' => false,
                 'expectedTypeSubtypeString' => '',
             ],
             'has type, no subtype' => [
                 'internetMediaType' => $this->createInternetMediaType([
                     'type' => 'foo',
                 ]),
-                'expectedHasType' => true,
-                'expectedHasSubtype' => false,
                 'expectedTypeSubtypeString' => '',
             ],
             'no type, has subtype' => [
                 'internetMediaType' => $this->createInternetMediaType([
                     'subType' => 'bar',
                 ]),
-                'expectedHasType' => false,
-                'expectedHasSubtype' => true,
                 'expectedTypeSubtypeString' => '',
             ],
             'has type, has subtype' => [
@@ -403,8 +394,6 @@ class InternetMediaTypeTest extends BaseTest
                     'type' => 'foo',
                     'subType' => 'bar',
                 ]),
-                'expectedHasType' => true,
-                'expectedHasSubtype' => true,
                 'expectedTypeSubtypeString' => 'foo/bar',
             ],
         ];

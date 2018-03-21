@@ -2,26 +2,10 @@
 
 namespace webignition\InternetMediaType\Parameter;
 
-/**
- * A parameter value present in an Internet media type
- *
- * If media type == 'text/html; charset=UTF8', parameter == 'charset=UTF8'
- *
- * Defined as:
- *
- * parameter               = attribute "=" value
- * attribute               = token
- * value                   = token | quoted-string
- *
- * The type, subtype, and parameter attribute names are case-insensitive
- *
- * http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html#sec3.6
- *
- */
-class Parameter
-{
-    const ATTRIBUTE_VALUE_SEPARATOR = '=';
+use webignition\InternetMediaTypeInterface\ParameterInterface;
 
+class Parameter implements ParameterInterface
+{
     /**
      * The parameter attribute.
      *
@@ -46,12 +30,20 @@ class Parameter
      */
     public function __construct($attribute, $value = null)
     {
-        $this->attribute = trim(strtolower($attribute));
-        $this->value = $value;
+        $this->setAttribute($attribute);
+        $this->setValue($value);
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
+     */
+    public function setAttribute($attribute)
+    {
+        $this->attribute = trim(strtolower($attribute));
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getAttribute()
     {
@@ -59,7 +51,15 @@ class Parameter
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
+     */
+    public function setValue($value)
+    {
+        $this->value = $value;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getValue()
     {
@@ -67,7 +67,7 @@ class Parameter
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function __toString()
     {
@@ -76,9 +76,9 @@ class Parameter
         }
 
         if (empty($this->value)) {
-            return $this->getAttribute();
+            return $this->attribute;
         }
 
-        return $this->getAttribute() . self::ATTRIBUTE_VALUE_SEPARATOR . $this->getValue();
+        return $this->attribute . self::ATTRIBUTE_VALUE_SEPARATOR . $this->value;
     }
 }
