@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "62b2ebb1ad3f2d04cebd86b1dce545c0",
+    "content-hash": "97acf864063ef64545d8dea388c3eb9d",
     "packages": [
         {
             "name": "webignition/disallowed-character-terminated-string",
@@ -46,6 +46,50 @@
                 "terminated"
             ],
             "time": "2012-07-16T21:29:50+00:00"
+        },
+        {
+            "name": "webignition/internet-media-type-interface",
+            "version": "0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/webignition/internet-media-type-interface.git",
+                "reference": "db57dba3b4dacb78c24cb2a4a88768be47794726"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/webignition/internet-media-type-interface/zipball/db57dba3b4dacb78c24cb2a4a88768be47794726",
+                "reference": "db57dba3b4dacb78c24cb2a4a88768be47794726",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "webignition\\InternetMediaTypeInterface\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jon Cram",
+                    "email": "jon@webignition.net"
+                }
+            ],
+            "description": "PHP interfaces for a model of an http://en.wikipedia.org/wiki/Internet_media_type",
+            "homepage": "https://github.com/webignition/internet-media-type-interface",
+            "keywords": [
+                "content type",
+                "content-type",
+                "internet media type",
+                "media type",
+                "media-type"
+            ],
+            "time": "2018-03-21T10:55:33+00:00"
         },
         {
             "name": "webignition/quoted-string",
@@ -1515,7 +1559,7 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,

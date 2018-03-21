@@ -3,42 +3,11 @@
 namespace webignition\InternetMediaType;
 
 use webignition\InternetMediaType\Parameter\Parameter;
+use webignition\InternetMediaTypeInterface\InternetMediaTypeInterface;
+use webignition\InternetMediaTypeInterface\ParameterInterface;
 
-/**
- * Models an Internet Media Type as defined as:
- *
- * HTTP uses Internet Media Types [17] in the Content-Type (section 14.17) and
- * Accept (section 14.1) header fields in order to provide open and extensible data
- * typing and type negotiation.
- *
- * media-type     = type "/" subtype *( ";" parameter )
- * type           = token
- * subtype        = token
- *
- * Parameters MAY follow the type/subtype in the form of attribute/value pairs
- *
- * parameter               = attribute "=" value
- * attribute               = token
- * value                   = token | quoted-string
- *
- * The type, subtype, and parameter attribute names are case-insensitive
- *
- * http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html#sec3.7
- *
- * Note: may have multiple parameters as per Content-Type example
- * in http://www.w3.org/Protocols/rfc1341/rfc1341.html section 7.3.2:
- *
- *       Content-Type: Message/Partial;
- *           number=2; total=3;
- *           id="oc=jpbe0M2Yt4s@thumper.bellcore.com";
- *
- */
-class InternetMediaType
+class InternetMediaType implements InternetMediaTypeInterface
 {
-    const TYPE_SUBTYPE_SEPARATOR = '/';
-    const PARAMETER_ATTRIBUTE_VALUE_SEPARATOR = '=';
-    const ATTRIBUTE_PARAMETER_SEPARATOR = ';';
-
     /**
      * Main media type.
      *
@@ -62,21 +31,18 @@ class InternetMediaType
      *
      * @var Parameter[]
      */
-    private $parameters = array();
+    private $parameters = [];
 
     /**
-     * @param string $type
-     *
-     * @return self
+     * {@inheritdoc}
      */
     public function setType($type)
     {
         $this->type = strtolower($type);
-        return $this;
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getType()
     {
@@ -84,18 +50,15 @@ class InternetMediaType
     }
 
     /**
-     * @param string $subtype
-     *
-     * @return self
+     * {@inheritdoc}
      */
     public function setSubtype($subtype)
     {
         $this->subtype = strtolower($subtype);
-        return $this;
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getSubtype()
     {
@@ -103,11 +66,9 @@ class InternetMediaType
     }
 
     /**
-     * @param Parameter $parameter
-     *
-     * @return self
+     * {@inheritdoc}
      */
-    public function addParameter(Parameter $parameter)
+    public function addParameter(ParameterInterface $parameter)
     {
         $this->parameters[$parameter->getAttribute()] = $parameter;
 
@@ -115,9 +76,7 @@ class InternetMediaType
     }
 
     /**
-     * @param string $attribute
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function hasParameter($attribute)
     {
@@ -125,11 +84,9 @@ class InternetMediaType
     }
 
     /**
-     * @param Parameter $parameter
-     *
-     * @return self
+     * {@inheritdoc}
      */
-    public function removeParameter(Parameter $parameter)
+    public function removeParameter(ParameterInterface $parameter)
     {
         if ($this->hasParameter($parameter->getAttribute())) {
             unset($this->parameters[$parameter->getAttribute()]);
@@ -139,9 +96,7 @@ class InternetMediaType
     }
 
     /**
-     * @param string $attribute
-     *
-     * @return Parameter|null
+     * {@inheritdoc}
      */
     public function getParameter($attribute)
     {
@@ -151,9 +106,7 @@ class InternetMediaType
     }
 
     /**
-     * Get collection of Parameter objects
-     *
-     * @return Parameter[]
+     * {@inheritdoc}
      */
     public function getParameters()
     {
@@ -161,27 +114,21 @@ class InternetMediaType
     }
 
     /**
-     * @return bool
+     * @return string
      */
-    public function hasType()
+    public function getTypeSubtypeString()
     {
+        $string = '';
+
         if (empty($this->type)) {
-            return false;
+            return $string;
         }
 
-        return true;
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasSubtype()
-    {
         if (empty($this->subtype)) {
-            return false;
+            return $string;
         }
 
-        return true;
+        return $this->type . self::TYPE_SUBTYPE_SEPARATOR . $this->subtype;
     }
 
     /**
@@ -224,25 +171,5 @@ class InternetMediaType
         }
 
         return true;
-    }
-
-    /**
-     * Get a string of the form {type}/{subtype}
-     *
-     * @return string
-     */
-    public function getTypeSubtypeString()
-    {
-        $string = '';
-
-        if (!$this->hasType()) {
-            return $string;
-        }
-
-        if (!$this->hasSubtype()) {
-            return $string;
-        }
-
-        return $this->getType() . self::TYPE_SUBTYPE_SEPARATOR . $this->getSubtype();
     }
 }
