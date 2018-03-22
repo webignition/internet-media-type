@@ -58,6 +58,7 @@ class ValueParser extends StringParser
     }
 
     /**
+     * @param string $inputString
      * @return string
      */
     private function getNonAttributePart($inputString)

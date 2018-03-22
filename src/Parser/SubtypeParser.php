@@ -66,12 +66,19 @@ class SubtypeParser extends StringParser
      * @param string $inputString
      *
      * @return string
+     *
+     * @throws SubtypeParserException
      */
     public function parse($inputString)
     {
         return parent::parse(trim($inputString));
     }
 
+    /**
+     * @return string
+     *
+     * @throws SubtypeParserException
+     */
     protected function parseCurrentCharacter()
     {
         switch ($this->getCurrentState()) {
@@ -122,6 +129,8 @@ class SubtypeParser extends StringParser
                     $this->getCurrentCharacterPointer()
                 );
         }
+
+        return null;
     }
 
     /**

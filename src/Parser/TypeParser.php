@@ -29,12 +29,17 @@ class TypeParser extends StringParser
      * @param string $inputString
      *
      * @return string
+     *
+     * @throws TypeParserException
      */
     public function parse($inputString)
     {
         return parent::parse(trim($inputString));
     }
 
+    /**
+     * @throws TypeParserException
+     */
     protected function parseCurrentCharacter()
     {
         switch ($this->getCurrentState()) {

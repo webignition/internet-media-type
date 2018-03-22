@@ -65,6 +65,8 @@ class AttributeParser extends StringParser
      * @param string $inputString
      *
      * @return string
+     *
+     * @throws AttributeParserException
      */
     public function parse($inputString)
     {

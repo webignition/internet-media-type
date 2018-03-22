@@ -3,6 +3,7 @@
 namespace webignition\InternetMediaType\Parser;
 
 use webignition\InternetMediaType\InternetMediaType;
+use webignition\InternetMediaType\Parameter\Parser\AttributeParserException;
 use webignition\InternetMediaType\Parameter\Parser\Parser as ParameterParser;
 
 /**
@@ -38,6 +39,10 @@ class Parser
      * @param string $internetMediaTypeString
      *
      * @return InternetMediaType
+     *
+     * @throws SubtypeParserException
+     * @throws TypeParserException
+     * @throws AttributeParserException
      */
     public function parse($internetMediaTypeString)
     {
@@ -147,6 +152,8 @@ class Parser
      * @param array $parameterStrings
      *
      * @return array
+     *
+     * @throws AttributeParserException
      */
     private function getParameters($parameterStrings)
     {

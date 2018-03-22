@@ -55,6 +55,8 @@ class Parser
      * @param string $parameterString
      *
      * @return Parameter
+     *
+     * @throws AttributeParserException
      */
     public function parse($parameterString)
     {
