@@ -25,6 +25,8 @@ class SubtypeParserTest extends BaseTest
      *
      * @param string $internetMediaTypeString
      * @param string $expectedSubtype
+     *
+     * @throws SubtypeParserException
      */
     public function testParse($internetMediaTypeString, $expectedSubtype)
     {

@@ -2,11 +2,9 @@
 
 namespace webignition\Tests\InternetMediaType\Parser;
 
-use webignition\InternetMediaType\Parameter\Parser\AttributeParserException;
 use webignition\InternetMediaType\Parser\Configuration;
+use webignition\InternetMediaType\Parser\ParseException;
 use webignition\InternetMediaType\Parser\Parser;
-use webignition\InternetMediaType\Parser\SubtypeParserException;
-use webignition\InternetMediaType\Parser\TypeParserException;
 use webignition\Tests\InternetMediaType\BaseTest;
 
 class ParserTest extends BaseTest
@@ -33,9 +31,7 @@ class ParserTest extends BaseTest
      * @param string $expectedSubtype
      * @param array $expectedParameters
      *
-     * @throws AttributeParserException
-     * @throws SubtypeParserException
-     * @throws TypeParserException
+     * @throws ParseException
      */
     public function testParseValidMediaType(
         $internetMediaTypeString,
@@ -104,9 +100,7 @@ class ParserTest extends BaseTest
     }
 
     /**
-     * @throws AttributeParserException
-     * @throws SubtypeParserException
-     * @throws TypeParserException
+     * @throws ParseException
      */
     public function testIgnoreInvalidAttributes()
     {
@@ -125,9 +119,7 @@ class ParserTest extends BaseTest
      * @param string $expectedSubtype
      * @param array $expectedParameters
      *
-     * @throws AttributeParserException
-     * @throws SubtypeParserException
-     * @throws TypeParserException
+     * @throws ParseException
      */
     public function testParseAndFixInvalidMediaType(
         $internetMediaTypeString,
