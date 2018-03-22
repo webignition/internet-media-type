@@ -2,6 +2,7 @@
 
 namespace webignition\Tests\InternetMediaType\Parameter\Parser;
 
+use webignition\InternetMediaType\Parameter\Parser\AttributeParserException;
 use webignition\InternetMediaType\Parameter\Parser\Parser;
 use webignition\InternetMediaType\Parser\Configuration;
 use webignition\Tests\InternetMediaType\BaseTest;
@@ -28,6 +29,8 @@ class ParserTest extends BaseTest
      * @param $parameterString
      * @param $expectedAttribute
      * @param $expectedValue
+     *
+     * @throws AttributeParserException
      */
     public function testParse($parameterString, $expectedAttribute, $expectedValue)
     {

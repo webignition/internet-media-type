@@ -27,6 +27,8 @@ class AttributeParserTest extends BaseTest
      *
      * @param string $attribute
      * @param string $expectedName
+     *
+     * @throws AttributeParserException
      */
     public function testParse($attribute, $expectedName)
     {
@@ -63,6 +65,8 @@ class AttributeParserTest extends BaseTest
      *
      * @param string $attribute
      * @param int $expectedInvalidInternalCharacterPosition
+     *
+     * @throws AttributeParserException
      */
     public function testParseInvalidInternalCharacter($attribute, $expectedInvalidInternalCharacterPosition)
     {
@@ -92,6 +96,8 @@ class AttributeParserTest extends BaseTest
      * @dataProvider parseInvalidInternalCharacterDataProviderFoo
      *
      * @param string $attribute
+     *
+     * @throws AttributeParserException
      */
     public function testParseInvalidInternalCharacterAttemptRecoveryIgnoreInvalidAttributes($attribute)
     {
@@ -118,6 +124,8 @@ class AttributeParserTest extends BaseTest
      *
      * @param string $attribute
      * @param string $expectedName
+     *
+     * @throws AttributeParserException
      */
     public function testParseAndFixInvalidInternalCharacter($attribute, $expectedName)
     {
@@ -142,6 +150,8 @@ class AttributeParserTest extends BaseTest
      * @dataProvider parseAndIgnoreInvalidCharacterDataProvider
      *
      * @param string $attribute
+     *
+     * @throws AttributeParserException
      */
     public function testParseAndIgnoreInvalidCharacter($attribute)
     {

@@ -28,6 +28,8 @@ class TypeParserTest extends BaseTest
      *
      * @param string $internetMediaTypeString
      * @param string $expectedType
+     *
+     * @throws TypeParserException
      */
     public function testParseValidType($internetMediaTypeString, $expectedType)
     {
@@ -54,6 +56,9 @@ class TypeParserTest extends BaseTest
         ];
     }
 
+    /**
+     * @throws TypeParserException
+     */
     public function testParseMalformedType()
     {
         $this->expectException(TypeParserException::class);

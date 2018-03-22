@@ -51,6 +51,9 @@ class SubtypeParserTest extends BaseTest
         ];
     }
 
+    /**
+     * @throws SubtypeParserException
+     */
     public function testParseInvalidSubtype()
     {
         $this->expectException(SubtypeParserException::class);
@@ -65,6 +68,8 @@ class SubtypeParserTest extends BaseTest
      *
      * @param $internetMediaTypeString
      * @param $expectedSubtype
+     *
+     * @throws SubtypeParserException
      */
     public function testParseAndFixInvalidSubtype($internetMediaTypeString, $expectedSubtype)
     {
