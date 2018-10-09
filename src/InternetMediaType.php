@@ -33,6 +33,23 @@ class InternetMediaType implements InternetMediaTypeInterface
      */
     private $parameters = [];
 
+    public function __construct(?string $type = null, ?string $subtype = null, array $parameters = [])
+    {
+        if (!empty($type)) {
+            $this->setType($type);
+        }
+
+        if (!empty($subtype)) {
+            $this->setSubtype($subtype);
+        }
+
+        foreach ($parameters as $parameter) {
+            if ($parameter instanceof ParameterInterface) {
+                $this->addParameter($parameter);
+            }
+        }
+    }
+
     public function setType(string $type)
     {
         $this->type = strtolower($type);

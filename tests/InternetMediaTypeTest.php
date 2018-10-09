@@ -4,24 +4,10 @@ namespace webignition\Tests\InternetMediaType;
 
 use webignition\InternetMediaType\InternetMediaType;
 use webignition\InternetMediaType\Parameter\Parameter;
+use webignition\InternetMediaTypeInterface\ParameterInterface;
 
 class InternetMediaTypeTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var InternetMediaType
-     */
-    private $internetMediaType;
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->internetMediaType = new InternetMediaType();
-    }
-
     /**
      * @dataProvider typeAndCastToStringDataProvider
      *
@@ -32,9 +18,9 @@ class InternetMediaTypeTest extends \PHPUnit\Framework\TestCase
      */
     public function testTypeAndCastToString(
         InternetMediaType $internetMediaType,
-        $expectedType,
-        $expectedSubtype,
-        $expectedString
+        string $expectedType,
+        string $expectedSubtype,
+        string $expectedString
     ) {
         $this->assertEquals($expectedString, (string)$internetMediaType);
 
@@ -42,76 +28,51 @@ class InternetMediaTypeTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expectedSubtype, $internetMediaType->getSubtype());
     }
 
-    /**
-     * @return array
-     */
-    public function typeAndCastToStringDataProvider()
+    public function typeAndCastToStringDataProvider(): array
     {
         return [
             'media type only; text/html' => [
-                'internetMediaType' => $this->createInternetMediaType([
-                    'type' => 'text',
-                    'subType' => 'html',
-                ]),
+                'internetMediaType' => new InternetMediaType('text', 'html'),
                 'expectedType' => 'text',
                 'expectedSubtype' => 'html',
                 'expectedString' => 'text/html',
             ],
             'media type only; image/png' => [
-                'internetMediaType' => $this->createInternetMediaType([
-                    'type' => 'image',
-                    'subType' => 'png',
-                ]),
+                'internetMediaType' => new InternetMediaType('image', 'png'),
                 'expectedType' => 'image',
                 'expectedSubtype' => 'png',
                 'expectedString' => 'image/png',
             ],
             'single parameter' => [
-                'internetMediaType' => $this->createInternetMediaType([
-                    'type' => 'text',
-                    'subType' => 'css',
-                    'parameters' => [
-                        'charset' => 'utf-8'
-                    ],
+                'internetMediaType' => new InternetMediaType('text', 'css', [
+                    new Parameter('charset', 'utf-8'),
                 ]),
                 'expectedType' => 'text',
                 'expectedSubtype' => 'css',
                 'expectedString' => 'text/css; charset=utf-8',
             ],
             'multiple parameters' => [
-                'internetMediaType' => $this->createInternetMediaType([
-                    'type' => 'text',
-                    'subType' => 'css',
-                    'parameters' => [
-                        'charset' => 'utf-8',
-                        'foo' => 'bar',
-                        'fizz' => 'buzz',
-                    ],
+                'internetMediaType' => new InternetMediaType('text', 'css', [
+                    new Parameter('charset', 'utf-8'),
+                    new Parameter('foo', 'bar'),
+                    new Parameter('fizz', 'buzz'),
                 ]),
                 'expectedType' => 'text',
                 'expectedSubtype' => 'css',
                 'expectedString' => 'text/css; charset=utf-8; foo=bar; fizz=buzz',
             ],
             'invalid parameters' => [
-                'internetMediaType' => $this->createInternetMediaType([
-                    'type' => 'text',
-                    'subType' => 'javascript',
-                    'parameters' => [
-                        'utf-8' => null,
-                        'charset' => 'UTF-8',
-                    ],
+                'internetMediaType' => new InternetMediaType('text', 'javascript', [
+                    new Parameter('utf-8'),
+                    new Parameter('charset', 'UTF-8'),
                 ]),
                 'expectedType' => 'text',
                 'expectedSubtype' => 'javascript',
                 'expectedString' => 'text/javascript; utf-8; charset=UTF-8',
             ],
             'empty parameters' => [
-                'internetMediaType' => $this->createInternetMediaType([
-                    'type' => 'text',
-                    'subType' => 'javascript',
-                    'parameters' => [
-                        '' => null,
-                    ],
+                'internetMediaType' => new InternetMediaType('text', 'javascript', [
+                    new Parameter(''),
                 ]),
                 'expectedType' => 'text',
                 'expectedSubtype' => 'javascript',
@@ -124,12 +85,12 @@ class InternetMediaTypeTest extends \PHPUnit\Framework\TestCase
      * @dataProvider addParameterDataProvider
      *
      * @param InternetMediaType $internetMediaType
-     * @param Parameter $parameterToAdd
+     * @param ParameterInterface $parameterToAdd
      * @param string[] $expectedParameters
      */
     public function testAddParameter(
         InternetMediaType $internetMediaType,
-        Parameter $parameterToAdd,
+        ParameterInterface $parameterToAdd,
         array $expectedParameters
     ) {
         $internetMediaType->addParameter($parameterToAdd);
@@ -139,29 +100,19 @@ class InternetMediaTypeTest extends \PHPUnit\Framework\TestCase
         }
     }
 
-    /**
-     * @return array
-     */
-    public function addParameterDataProvider()
+    public function addParameterDataProvider(): array
     {
         return [
             'no existing parameters' => [
-                'internetMediaType' => $this->createInternetMediaType([
-                    'type' => 'text',
-                    'subType' => 'html',
-                ]),
+                'internetMediaType' => new InternetMediaType('text', 'html'),
                 'parameterToAdd' => new Parameter('foo', 'bar'),
                 'expectedParameters' => [
                     'foo' => 'foo=bar',
                 ],
             ],
             'add same parameter' => [
-                'internetMediaType' => $this->createInternetMediaType([
-                    'type' => 'text',
-                    'subType' => 'html',
-                    'parameters' => [
-                        'foo' => 'bar',
-                    ],
+                'internetMediaType' => new InternetMediaType('text', 'html', [
+                    new Parameter('foo', 'bar'),
                 ]),
                 'parameterToAdd' => new Parameter('foo', 'bar'),
                 'expectedParameters' => [
@@ -169,12 +120,8 @@ class InternetMediaTypeTest extends \PHPUnit\Framework\TestCase
                 ],
             ],
             'add different parameter' => [
-                'internetMediaType' => $this->createInternetMediaType([
-                    'type' => 'text',
-                    'subType' => 'html',
-                    'parameters' => [
-                        'foo' => 'bar',
-                    ],
+                'internetMediaType' => new InternetMediaType('text', 'html', [
+                    new Parameter('foo', 'bar'),
                 ]),
                 'parameterToAdd' => new Parameter('key', 'value'),
                 'expectedParameters' => [
@@ -194,44 +141,30 @@ class InternetMediaTypeTest extends \PHPUnit\Framework\TestCase
      */
     public function testHasParameter(
         InternetMediaType $internetMediaType,
-        $attribute,
-        $expectedHasParameter
+        string $attribute,
+        bool $expectedHasParameter
     ) {
         $this->assertEquals($expectedHasParameter, $internetMediaType->hasParameter($attribute));
     }
 
-    /**
-     * @return array
-     */
-    public function hasParameterDataProvider()
+    public function hasParameterDataProvider(): array
     {
         return [
             'no parameters' => [
-                'internetMediaType' => $this->createInternetMediaType([
-                    'type' => 'text',
-                    'subType' => 'html',
-                ]),
+                'internetMediaType' => new InternetMediaType('text', 'html'),
                 'attribute' => 'foo',
                 'expectedHasParameter' => false,
             ],
             'not has parameter' => [
-                'internetMediaType' => $this->createInternetMediaType([
-                    'type' => 'text',
-                    'subType' => 'html',
-                    'parameters' => [
-                        'foo' => 'bar',
-                    ],
+                'internetMediaType' => new InternetMediaType('text', 'html', [
+                    new Parameter('foo', 'bar'),
                 ]),
                 'attribute' => 'bar',
                 'expectedHasParameter' => false,
             ],
             'has parameter' => [
-                'internetMediaType' => $this->createInternetMediaType([
-                    'type' => 'text',
-                    'subType' => 'html',
-                    'parameters' => [
-                        'foo' => 'bar',
-                    ],
+                'internetMediaType' => new InternetMediaType('text', 'html', [
+                    new Parameter('foo', 'bar'),
                 ]),
                 'attribute' => 'foo',
                 'expectedHasParameter' => true,
@@ -243,12 +176,12 @@ class InternetMediaTypeTest extends \PHPUnit\Framework\TestCase
      * @dataProvider removeParameterDataProvider
      *
      * @param InternetMediaType $internetMediaType
-     * @param Parameter $parameterToRemove
+     * @param ParameterInterface $parameterToRemove
      * @param string[] $expectedParametersAsStrings
      */
     public function testRemoveParameter(
         InternetMediaType $internetMediaType,
-        Parameter $parameterToRemove,
+        ParameterInterface $parameterToRemove,
         array $expectedParametersAsStrings
     ) {
         $internetMediaType->removeParameter($parameterToRemove);
@@ -261,39 +194,25 @@ class InternetMediaTypeTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expectedParametersAsStrings, $parametersAsStrings);
     }
 
-    /**
-     * @return array
-     */
-    public function removeParameterDataProvider()
+    public function removeParameterDataProvider(): array
     {
         return [
             'no existing parameters' => [
-                'internetMediaType' => $this->createInternetMediaType([
-                    'type' => 'text',
-                    'subType' => 'html',
-                ]),
+                'internetMediaType' => new InternetMediaType('text', 'html'),
                 'parameterToRemove' => new Parameter('foo', 'bar'),
                 'expectedParameters' => [],
             ],
             'remove only parameter' => [
-                'internetMediaType' => $this->createInternetMediaType([
-                    'type' => 'text',
-                    'subType' => 'html',
-                    'parameters' => [
-                        'foo' => 'bar',
-                    ],
+                'internetMediaType' => new InternetMediaType('text', 'html', [
+                    new Parameter('foo', 'bar'),
                 ]),
                 'parameterToRemove' => new Parameter('foo', 'bar'),
                 'expectedParameters' => [],
             ],
             'remove one parameter' => [
-                'internetMediaType' => $this->createInternetMediaType([
-                    'type' => 'text',
-                    'subType' => 'html',
-                    'parameters' => [
-                        'foo' => 'bar',
-                        'key' => 'value',
-                    ],
+                'internetMediaType' => new InternetMediaType('text', 'html', [
+                    new Parameter('foo', 'bar'),
+                    new Parameter('key', 'value'),
                 ]),
                 'parameterToRemove' => new Parameter('foo', 'bar'),
                 'expectedParameters' => [
@@ -308,51 +227,37 @@ class InternetMediaTypeTest extends \PHPUnit\Framework\TestCase
      *
      * @param InternetMediaType $internetMediaType
      * @param string $attribute
-     * @param Parameter|null $expectedParameter
+     * @param ParameterInterface|null $expectedParameter
      */
     public function testGetParameter(
         InternetMediaType $internetMediaType,
-        $attribute,
-        $expectedParameter
+        string $attribute,
+        ?ParameterInterface $expectedParameter
     ) {
         $parameter = $internetMediaType->getParameter($attribute);
 
         $this->assertEquals((string)$expectedParameter, (string)$parameter);
     }
 
-    /**
-     * @return array
-     */
-    public function getParameterDataProvider()
+    public function getParameterDataProvider(): array
     {
         return [
             'no existing parameters' => [
-                'internetMediaType' => $this->createInternetMediaType([
-                    'type' => 'text',
-                    'subType' => 'html',
-                ]),
+                'internetMediaType' => new InternetMediaType('text', 'html'),
                 'attribute' => 'foo',
                 'expectedParameter' => null,
             ],
             'get only parameter' => [
-                'internetMediaType' => $this->createInternetMediaType([
-                    'type' => 'text',
-                    'subType' => 'html',
-                    'parameters' => [
-                        'foo' => 'bar',
-                    ],
+                'internetMediaType' => new InternetMediaType('text', 'html', [
+                    new Parameter('foo', 'bar'),
                 ]),
                 'attribute' => 'foo',
                 'expectedParameter' => new Parameter('foo', 'bar'),
             ],
             'get one parameter' => [
-                'internetMediaType' => $this->createInternetMediaType([
-                    'type' => 'text',
-                    'subType' => 'html',
-                    'parameters' => [
-                        'foo' => 'bar',
-                        'key' => 'value',
-                    ],
+                'internetMediaType' => new InternetMediaType('text', 'html', [
+                    new Parameter('foo', 'bar'),
+                    new Parameter('key', 'value'),
                 ]),
                 'attribute' => 'key',
                 'expectedParameter' => new Parameter('key', 'value'),
@@ -366,15 +271,12 @@ class InternetMediaTypeTest extends \PHPUnit\Framework\TestCase
      * @param InternetMediaType $internetMediaType
      * @param string $expectedTypeSubtypeString
      */
-    public function testGetTypeSubtypeString(InternetMediaType $internetMediaType, $expectedTypeSubtypeString)
+    public function testGetTypeSubtypeString(InternetMediaType $internetMediaType, string $expectedTypeSubtypeString)
     {
         $this->assertEquals($expectedTypeSubtypeString, $internetMediaType->getTypeSubtypeString());
     }
 
-    /**
-     * @return array
-     */
-    public function hasTypeHasSubtypeGetSubtypeStringDataProvider()
+    public function hasTypeHasSubtypeGetSubtypeStringDataProvider(): array
     {
         return [
             'no type, no subtype' => [
@@ -382,50 +284,17 @@ class InternetMediaTypeTest extends \PHPUnit\Framework\TestCase
                 'expectedTypeSubtypeString' => '',
             ],
             'has type, no subtype' => [
-                'internetMediaType' => $this->createInternetMediaType([
-                    'type' => 'foo',
-                ]),
+                'internetMediaType' => new InternetMediaType('foo'),
                 'expectedTypeSubtypeString' => '',
             ],
             'no type, has subtype' => [
-                'internetMediaType' => $this->createInternetMediaType([
-                    'subType' => 'bar',
-                ]),
+                'internetMediaType' => new InternetMediaType(null, 'bar'),
                 'expectedTypeSubtypeString' => '',
             ],
             'has type, has subtype' => [
-                'internetMediaType' => $this->createInternetMediaType([
-                    'type' => 'foo',
-                    'subType' => 'bar',
-                ]),
+                'internetMediaType' => new InternetMediaType('foo', 'bar'),
                 'expectedTypeSubtypeString' => 'foo/bar',
             ],
         ];
-    }
-
-    /**
-     * @param array $properties
-     *
-     * @return InternetMediaType
-     */
-    private function createInternetMediaType($properties)
-    {
-        $internetMediaType = new InternetMediaType();
-
-        if (isset($properties['type'])) {
-            $internetMediaType->setType($properties['type']);
-        }
-
-        if (isset($properties['subType'])) {
-            $internetMediaType->setSubType($properties['subType']);
-        }
-
-        if (isset($properties['parameters'])) {
-            foreach ($properties['parameters'] as $attribute => $value) {
-                $internetMediaType->addParameter(new Parameter($attribute, $value));
-            }
-        }
-
-        return $internetMediaType;
     }
 }
