@@ -5,7 +5,7 @@ namespace webignition\Tests\InternetMediaType;
 use webignition\InternetMediaType\InternetMediaType;
 use webignition\InternetMediaType\Parameter\Parameter;
 
-class InternetMediaTypeTest extends BaseTest
+class InternetMediaTypeTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var InternetMediaType
@@ -244,18 +244,21 @@ class InternetMediaTypeTest extends BaseTest
      *
      * @param InternetMediaType $internetMediaType
      * @param Parameter $parameterToRemove
-     * @param string[] $expectedParameters
+     * @param string[] $expectedParametersAsStrings
      */
     public function testRemoveParameter(
         InternetMediaType $internetMediaType,
         Parameter $parameterToRemove,
-        array $expectedParameters
+        array $expectedParametersAsStrings
     ) {
         $internetMediaType->removeParameter($parameterToRemove);
 
-        foreach ($internetMediaType->getParameters() as $index => $parameter) {
-            $this->assertEquals($expectedParameters[$index], (string)$parameter);
+        $parametersAsStrings = [];
+        foreach ($internetMediaType->getParameters() as $parameter) {
+            $parametersAsStrings[] = (string)$parameter;
         }
+
+        $this->assertEquals($expectedParametersAsStrings, $parametersAsStrings);
     }
 
     /**
@@ -289,11 +292,12 @@ class InternetMediaTypeTest extends BaseTest
                     'subType' => 'html',
                     'parameters' => [
                         'foo' => 'bar',
+                        'key' => 'value',
                     ],
                 ]),
                 'parameterToRemove' => new Parameter('foo', 'bar'),
                 'expectedParameters' => [
-                    'key' => 'key=value',
+                    'key=value',
                 ],
             ],
         ];

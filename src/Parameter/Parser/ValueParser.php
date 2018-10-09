@@ -23,15 +23,9 @@ class ValueParser extends StringParser
      */
     private $attribute = '';
 
-    /**
-     * @param string $attribute
-     *
-     * @return self
-     */
-    public function setAttribute($attribute)
+    public function setAttribute(string $attribute)
     {
         $this->attribute = $attribute;
-        return $this;
     }
 
     /**
@@ -39,7 +33,7 @@ class ValueParser extends StringParser
      *
      * @return string
      */
-    public function parse($inputString)
+    public function parse($inputString): ?string
     {
         $output = parent::parse($this->getNonAttributePart($inputString));
 
@@ -57,11 +51,7 @@ class ValueParser extends StringParser
         return $quotedString->getValue();
     }
 
-    /**
-     * @param string $inputString
-     * @return string
-     */
-    private function getNonAttributePart($inputString)
+    private function getNonAttributePart(string $inputString): string
     {
         return trim(substr(
             $inputString,
@@ -93,10 +83,7 @@ class ValueParser extends StringParser
         }
     }
 
-    /**
-     * @return boolean
-     */
-    private function isCurrentCharacterQuotedStringDelimiter()
+    private function isCurrentCharacterQuotedStringDelimiter(): bool
     {
         return $this->getCurrentCharacter() == self::QUOTED_STRING_DELIMITER;
     }

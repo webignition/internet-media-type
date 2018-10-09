@@ -36,28 +36,18 @@ class AttributeParser extends StringParser
      */
     private $configuration;
 
-    /**
-     * @param Configuration $configuration
-     *
-     * @return self
-     */
+    public function __construct()
+    {
+        $this->configuration = new Configuration();
+    }
+
     public function setConfiguration(Configuration $configuration)
     {
         $this->configuration = $configuration;
-
-        return $this;
     }
 
-    /**
-     *
-     * @return Configuration
-     */
-    public function getConfiguration()
+    public function getConfiguration(): Configuration
     {
-        if (is_null($this->configuration)) {
-            $this->configuration = new Configuration();
-        }
-
         return $this->configuration;
     }
 
@@ -68,7 +58,7 @@ class AttributeParser extends StringParser
      *
      * @throws AttributeParserException
      */
-    public function parse($inputString)
+    public function parse($inputString): string
     {
         return parent::parse(trim($inputString));
     }
@@ -78,7 +68,7 @@ class AttributeParser extends StringParser
      *
      * @throws AttributeParserException
      */
-    protected function parseCurrentCharacter()
+    protected function parseCurrentCharacter(): ?string
     {
         switch ($this->getCurrentState()) {
             case self::STATE_UNKNOWN:
@@ -128,10 +118,7 @@ class AttributeParser extends StringParser
         return null;
     }
 
-    /**
-     * @return bool
-     */
-    private function shouldIgnoreInvalidCharacter()
+    private function shouldIgnoreInvalidCharacter(): bool
     {
         if (false === $this->getConfiguration()->ignoreInvalidAttributes()) {
             return false;
@@ -148,28 +135,18 @@ class AttributeParser extends StringParser
         return false;
     }
 
-    /**
-     * @return bool
-     */
-    private function shouldAttemptToFixInvalidInternalCharacter()
+    private function shouldAttemptToFixInvalidInternalCharacter(): bool
     {
         return $this->getConfiguration()->attemptToRecoverFromInvalidInternalCharacter()
             && !$this->hasAttemptedToFixAttributeInvalidInternalCharacter;
     }
 
-    /**
-     * @return bool
-     */
-    private function isCurrentCharacterInvalid()
+    private function isCurrentCharacterInvalid(): bool
     {
         return in_array($this->getCurrentCharacter(), $this->invalidCharacters);
     }
 
-    /**
-     *
-     * @return bool
-     */
-    private function isCurrentCharacterAttributeValueSeparator()
+    private function isCurrentCharacterAttributeValueSeparator(): bool
     {
         return $this->getCurrentCharacter() == self::ATTRIBUTE_VALUE_SEPARATOR;
     }

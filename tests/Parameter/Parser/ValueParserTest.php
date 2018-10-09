@@ -3,9 +3,8 @@
 namespace webignition\Tests\InternetMediaType\Parameter\Parser;
 
 use webignition\InternetMediaType\Parameter\Parser\ValueParser;
-use webignition\Tests\InternetMediaType\BaseTest;
 
-class ValueParserTest extends BaseTest
+class ValueParserTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ValueParser

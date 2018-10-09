@@ -3,9 +3,8 @@
 namespace webignition\Tests\InternetMediaType\Parameter;
 
 use webignition\InternetMediaType\Parameter\Parameter;
-use webignition\Tests\InternetMediaType\BaseTest;
 
-class ParameterTest extends BaseTest
+class ParameterTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider castToStringDataProvider

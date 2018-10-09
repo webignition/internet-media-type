@@ -4,9 +4,8 @@ namespace webignition\Tests\InternetMediaType\Parameter\Parser;
 
 use webignition\InternetMediaType\Parameter\Parser\AttributeParser;
 use webignition\InternetMediaType\Parameter\Parser\AttributeParserException;
-use webignition\Tests\InternetMediaType\BaseTest;
 
-class AttributeParserTest extends BaseTest
+class AttributeParserTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var AttributeParser

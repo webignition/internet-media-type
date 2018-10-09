@@ -5,10 +5,12 @@ namespace webignition\InternetMediaType\Parser;
 use webignition\InternetMediaType\InternetMediaType;
 use webignition\InternetMediaType\Parameter\Parser\AttributeParserException;
 use webignition\InternetMediaType\Parameter\Parser\Parser as ParameterParser;
+use webignition\InternetMediaTypeInterface\InternetMediaTypeInterface;
+use webignition\InternetMediaTypeInterface\ParameterInterface;
 
 /**
  * Parses a string representation of an Internet media type into an
- * InternetMediaType object
+ * InternetMediaTypeInterface object
  */
 class Parser
 {
@@ -35,24 +37,36 @@ class Parser
      */
     private $configuration;
 
+    public function __construct()
+    {
+        $this->configuration = new Configuration();
+        $this->typeParser = new TypeParser();
+
+        $this->subtypeParser = new SubtypeParser();
+        $this->subtypeParser->setConfiguration($this->configuration);
+
+        $this->parameterParser = new ParameterParser();
+        $this->parameterParser->setConfiguration($this->configuration);
+    }
+
     /**
      * @param string $internetMediaTypeString
      *
-     * @return InternetMediaType
+     * @return InternetMediaTypeInterface
      *
      * @throws SubtypeParserException
      * @throws TypeParserException
      * @throws AttributeParserException
      */
-    public function parse($internetMediaTypeString)
+    public function parse(string $internetMediaTypeString): ?InternetMediaTypeInterface
     {
         $inputString = trim($internetMediaTypeString);
 
         $internetMediaType = new InternetMediaType();
-        $internetMediaType->setType($this->getTypeParser()->parse($inputString));
-        $internetMediaType->setSubtype($this->getSubypeParser()->parse($inputString));
+        $internetMediaType->setType($this->typeParser->parse($inputString));
+        $internetMediaType->setSubtype($this->subtypeParser->parse($inputString));
 
-        $parameterString = $this->getParameterString(
+        $parameterString = $this->createParameterString(
             $inputString,
             $internetMediaType->getType(),
             $internetMediaType->getSubtype()
@@ -69,51 +83,13 @@ class Parser
     }
 
     /**
-     * @return TypeParser
-     */
-    private function getTypeParser()
-    {
-        if (is_null($this->typeParser)) {
-            $this->typeParser = new TypeParser();
-        }
-
-        return $this->typeParser;
-    }
-
-    /**
-     * @return SubtypeParser
-     */
-    private function getSubypeParser()
-    {
-        if (is_null($this->subtypeParser)) {
-            $this->subtypeParser = new SubtypeParser();
-            $this->subtypeParser->setConfiguration($this->getConfiguration());
-        }
-
-        return $this->subtypeParser;
-    }
-
-    /**
-     * @return ParameterParser
-     */
-    private function getParameterParser()
-    {
-        if (is_null($this->parameterParser)) {
-            $this->parameterParser = new ParameterParser();
-            $this->parameterParser->setConfiguration($this->getConfiguration());
-        }
-
-        return $this->parameterParser;
-    }
-
-    /**
      * @param string $inputString
      * @param string $type
      * @param string $subtype
      *
      * @return string
      */
-    private function getParameterString($inputString, $type, $subtype)
+    private function createParameterString(string $inputString, string $type, string $subtype): string
     {
         $parts = explode(self::TYPE_PARAMETER_SEPARATOR, $inputString, 2);
 
@@ -129,9 +105,9 @@ class Parser
      *
      * @param string $parameterString
      *
-     * @return array
+     * @return string[]
      */
-    private function getParameterStrings($parameterString)
+    private function getParameterStrings(string $parameterString): array
     {
         $rawParameterStrings = explode(self::TYPE_PARAMETER_SEPARATOR, $parameterString);
         $parameterStrings = array();
@@ -151,48 +127,33 @@ class Parser
      *
      * @param array $parameterStrings
      *
-     * @return array
+     * @return ParameterInterface[]
      *
      * @throws AttributeParserException
      */
-    private function getParameters($parameterStrings)
+    private function getParameters($parameterStrings): array
     {
         $parameters = array();
         foreach ($parameterStrings as $parameterString) {
-            $parameters[] = $this->getParameterParser()->parse($parameterString);
+            $parameters[] = $this->parameterParser->parse($parameterString);
         }
 
         return $parameters;
     }
 
-    /**
-     * @param Configuration $configuration
-     *
-     * @return self
-     */
     public function setConfiguration(Configuration  $configuration)
     {
         $this->configuration = $configuration;
-
-        return $this;
+        $this->subtypeParser->setConfiguration($configuration);
+        $this->parameterParser->setConfiguration($configuration);
     }
 
-    /**
-     * @return Configuration
-     */
-    public function getConfiguration()
+    public function getConfiguration(): Configuration
     {
-        if (is_null($this->configuration)) {
-            $this->configuration = new Configuration();
-        }
-
         return $this->configuration;
     }
 
-    /**
-     * @param boolean $ignoreInvalidAttributes
-     */
-    public function setIgnoreInvalidAttributes($ignoreInvalidAttributes)
+    public function setIgnoreInvalidAttributes(bool $ignoreInvalidAttributes)
     {
         if (filter_var($ignoreInvalidAttributes, FILTER_VALIDATE_BOOLEAN)) {
             $this->getConfiguration()->enableIgnoreInvalidAttributes();
@@ -201,10 +162,7 @@ class Parser
         }
     }
 
-    /**
-     * @param boolean $attemptToRecoverFromInvalidInternalCharacter
-     */
-    public function setAttemptToRecoverFromInvalidInternalCharacter($attemptToRecoverFromInvalidInternalCharacter)
+    public function setAttemptToRecoverFromInvalidInternalCharacter(bool $attemptToRecoverFromInvalidInternalCharacter)
     {
         if (filter_var($attemptToRecoverFromInvalidInternalCharacter, FILTER_VALIDATE_BOOLEAN)) {
             $this->getConfiguration()->enableAttemptToRecoverFromInvalidInternalCharacter();

@@ -30,7 +30,7 @@ class SubtypeParser extends StringParser
     );
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $hasAttemptedToFixAttributeInvalidInternalCharacter = false;
 
@@ -39,26 +39,18 @@ class SubtypeParser extends StringParser
      */
     private $configuration;
 
-    /**
-     * @param Configuration $configuration
-     *
-     * @return self
-     */
+    public function __construct()
+    {
+        $this->configuration = new Configuration();
+    }
+
     public function setConfiguration(Configuration $configuration)
     {
         $this->configuration = $configuration;
-        return $this;
     }
 
-    /**
-     * @return Configuration
-     */
-    public function getConfiguration()
+    public function getConfiguration(): Configuration
     {
-        if (is_null($this->configuration)) {
-            $this->configuration = new Configuration();
-        }
-
         return $this->configuration;
     }
 
@@ -69,7 +61,7 @@ class SubtypeParser extends StringParser
      *
      * @throws SubtypeParserException
      */
-    public function parse($inputString)
+    public function parse($inputString): string
     {
         return parent::parse(trim($inputString));
     }
@@ -79,7 +71,7 @@ class SubtypeParser extends StringParser
      *
      * @throws SubtypeParserException
      */
-    protected function parseCurrentCharacter()
+    protected function parseCurrentCharacter(): ?string
     {
         switch ($this->getCurrentState()) {
             case self::STATE_UNKNOWN:
@@ -133,35 +125,23 @@ class SubtypeParser extends StringParser
         return null;
     }
 
-    /**
-     * @return boolean
-     */
-    private function shouldAttemptToFixInvalidInternalCharacter()
+    private function shouldAttemptToFixInvalidInternalCharacter(): bool
     {
         return $this->getConfiguration()->attemptToRecoverFromInvalidInternalCharacter()
             && !$this->hasAttemptedToFixAttributeInvalidInternalCharacter;
     }
 
-    /**
-     * @return boolean
-     */
-    private function isCurrentCharacterInvalid()
+    private function isCurrentCharacterInvalid(): bool
     {
         return in_array($this->getCurrentCharacter(), $this->invalidCharacters);
     }
 
-    /**
-     * @return boolean
-     */
-    private function isCurrentCharacterTypeSubtypeSeparator()
+    private function isCurrentCharacterTypeSubtypeSeparator(): bool
     {
         return $this->getCurrentCharacter() == self::TYPE_SUBTYPE_SEPARATOR;
     }
 
-    /**
-     * @return boolean
-     */
-    private function isCurrentCharacterTypeParameterSeparator()
+    private function isCurrentCharacterTypeParameterSeparator(): bool
     {
         return $this->getCurrentCharacter() == self::TYPE_PARAMETER_SEPARATOR;
     }

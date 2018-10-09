@@ -22,26 +22,17 @@ class TypeFixer
      */
     private $position;
 
-    /**
-     * @param string $inputString
-     */
-    public function setInputString($inputString)
+    public function setInputString(string $inputString)
     {
         $this->inputString = $inputString;
     }
 
-    /**
-     * @param int $position
-     */
-    public function setPosition($position)
+    public function setPosition(int $position)
     {
         $this->position = $position;
     }
 
-    /**
-     * @return string|null
-     */
-    public function fix()
+    public function fix(): ?string
     {
         return $this->getLongestString(array(
             $this->commaSeparatedTypeFix(),
@@ -58,7 +49,7 @@ class TypeFixer
      *
      * If of this type, go for the longest valid option
      */
-    private function commaSeparatedTypeFix()
+    private function commaSeparatedTypeFix(): ?string
     {
         if ($this->position === 0) {
             return null;
@@ -92,18 +83,14 @@ class TypeFixer
      *
      * @return string
      */
-    private function getLongestString($strings)
+    private function getLongestString(array $strings): ?string
     {
         return array_reduce($strings, function ($a, $b) {
             return strlen($a) > strlen($b) ? $a : $b;
         });
     }
 
-    /**
-     * @param string $possibleTypeSubtype
-     * @return string|null
-     */
-    private function getTypeSubtypeFromPossibleTypeSubtype($possibleTypeSubtype)
+    private function getTypeSubtypeFromPossibleTypeSubtype(string $possibleTypeSubtype): ?string
     {
         try {
             $typeParser = new TypeParser();
@@ -125,7 +112,7 @@ class TypeFixer
      *
      * i.e. a media type and parameters separated by a space not a semicolon
      */
-    private function spaceSeparatingTypeAndAttributeFix()
+    private function spaceSeparatingTypeAndAttributeFix(): ?string
     {
         if ($this->position === 0) {
             return null;

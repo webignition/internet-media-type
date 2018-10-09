@@ -24,52 +24,33 @@ class Parameter implements ParameterInterface
      */
     private $value;
 
-    /**
-     * @param string$attribute
-     * @param string|null $value
-     */
-    public function __construct($attribute, $value = null)
+    public function __construct(string $attribute, ?string $value = null)
     {
         $this->setAttribute($attribute);
         $this->setValue($value);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setAttribute($attribute)
+    public function setAttribute(string $attribute)
     {
         $this->attribute = trim(strtolower($attribute));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getAttribute()
+    public function getAttribute(): string
     {
         return $this->attribute;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setValue($value)
+    public function setValue(?string $value)
     {
         $this->value = $value;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getValue()
+    public function getValue(): ?string
     {
         return $this->value;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function __toString()
+    public function __toString(): string
     {
         if (empty($this->attribute)) {
             return '';

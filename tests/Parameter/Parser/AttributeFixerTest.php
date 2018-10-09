@@ -3,9 +3,8 @@
 namespace webignition\Tests\InternetMediaType\Parameter\Parser;
 
 use webignition\InternetMediaType\Parameter\Parser\AttributeFixer;
-use webignition\Tests\InternetMediaType\BaseTest;
 
-class AttributeFixerTest extends BaseTest
+class AttributeFixerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider fixValidAttributeDataProvider

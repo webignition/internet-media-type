@@ -3,9 +3,8 @@
 namespace webignition\Tests\InternetMediaType\Parameter\Parser;
 
 use webignition\InternetMediaType\Parameter\Parser\AttributeParserException;
-use webignition\Tests\InternetMediaType\BaseTest;
 
-class AttributeParserExceptionTest extends BaseTest
+class AttributeParserExceptionTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider createDataProvider
