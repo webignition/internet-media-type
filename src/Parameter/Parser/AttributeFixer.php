@@ -16,18 +16,12 @@ class AttributeFixer
      */
     private $inputString;
 
-    /**
-     * @param string $inputString
-     */
-    public function setInputString($inputString)
+    public function setInputString(string $inputString)
     {
         $this->inputString = $inputString;
     }
 
-    /**
-     * @return string|null
-     */
-    public function fix()
+    public function fix(): ?string
     {
         $fixedString = $this->inputString;
 
@@ -38,12 +32,7 @@ class AttributeFixer
         return $fixedString;
     }
 
-    /**
-     * @param string $parameterString
-     *
-     * @return bool
-     */
-    private function isInvalid($parameterString)
+    private function isInvalid(string $parameterString): bool
     {
         try {
             $parser = new AttributeParser();
@@ -68,7 +57,7 @@ class AttributeFixer
      *
      * @return string
      */
-    private function colonSeparatedAttributeValueFix($parameterString)
+    private function colonSeparatedAttributeValueFix(string $parameterString): string
     {
         if (!preg_match('/.+\:\s+.+/', $parameterString)) {
             return $parameterString;

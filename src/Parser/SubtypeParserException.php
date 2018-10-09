@@ -11,32 +11,23 @@ class SubtypeParserException extends ParseException
      */
     private $position;
 
-    public function __construct($message, $code, $position, $previous = null)
+    public function __construct(string $message, int $code, int $position)
     {
-        parent::__construct($message, $code, $previous);
+        parent::__construct($message, $code);
         $this->position = $position;
     }
 
-    /**
-     * @param int $position
-     */
-    public function setPosition($position)
+    public function setPosition(int $position)
     {
         $this->position = $position;
     }
 
-    /**
-     * @return int|null
-     */
-    public function getPosition()
+    public function getPosition(): int
     {
         return $this->position;
     }
 
-    /**
-     * @return boolean
-     */
-    public function isInvalidInternalCharacterException()
+    public function isInvalidInternalCharacterException(): bool
     {
         return $this->getCode() === self::INTERNAL_INVALID_CHARACTER_CODE;
     }

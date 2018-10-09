@@ -4,6 +4,7 @@ namespace webignition\InternetMediaType\Parameter\Parser;
 
 use webignition\InternetMediaType\Parameter\Parameter;
 use webignition\InternetMediaType\Parser\Configuration;
+use webignition\InternetMediaTypeInterface\ParameterInterface;
 
 /**
  * Parses a parameter string value into a Parameter object
@@ -28,37 +29,29 @@ class Parser
      */
     private $configuration;
 
-    /**
-     * @param Configuration $configuration
-     * @return self
-     */
+    public function __construct()
+    {
+        $this->configuration = new Configuration();
+    }
+
     public function setConfiguration(Configuration  $configuration)
     {
         $this->configuration = $configuration;
-
-        return $this;
     }
 
-    /**
-     * @return Configuration
-     */
-    public function getConfiguration()
+    public function getConfiguration(): Configuration
     {
-        if (is_null($this->configuration)) {
-            $this->configuration = new Configuration();
-        }
-
         return $this->configuration;
     }
 
     /**
      * @param string $parameterString
      *
-     * @return Parameter
+     * @return ParameterInterface
      *
      * @throws AttributeParserException
      */
-    public function parse($parameterString)
+    public function parse(string $parameterString): ParameterInterface
     {
         $inputString = trim($parameterString);
         $attribute = $this->createAttributeParser()->parse($inputString);
@@ -74,10 +67,7 @@ class Parser
         return $parameter;
     }
 
-    /**
-     * @return AttributeParser
-     */
-    private function createAttributeParser()
+    private function createAttributeParser(): AttributeParser
     {
         $attributeParser = new AttributeParser();
         $attributeParser->setConfiguration($this->getConfiguration());
@@ -85,12 +75,7 @@ class Parser
         return $attributeParser;
     }
 
-    /**
-     * @param string $attribute
-     *
-     * @return ValueParser
-     */
-    private function createValueParser($attribute)
+    private function createValueParser(string $attribute): ValueParser
     {
         $valueParser = new ValueParser();
         $valueParser->setAttribute($attribute);

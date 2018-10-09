@@ -32,7 +32,7 @@ class TypeParser extends StringParser
      *
      * @throws TypeParserException
      */
-    public function parse($inputString)
+    public function parse($inputString): string
     {
         return parent::parse(trim($inputString));
     }
@@ -40,7 +40,7 @@ class TypeParser extends StringParser
     /**
      * @throws TypeParserException
      */
-    protected function parseCurrentCharacter()
+    protected function parseCurrentCharacter(): ?string
     {
         switch ($this->getCurrentState()) {
             case self::STATE_UNKNOWN:
@@ -68,22 +68,17 @@ class TypeParser extends StringParser
                     'Invalid internal character after at position '.$this->getCurrentCharacterPointer(),
                     1
                 );
-                break;
         }
+
+        return null;
     }
 
-    /**
-     * @return boolean
-     */
-    private function isCurrentCharacterInvalid()
+    private function isCurrentCharacterInvalid(): bool
     {
         return in_array($this->getCurrentCharacter(), $this->invalidCharacters);
     }
 
-    /**
-     * @return boolean
-     */
-    private function isCurrentCharacterTypeSubtypeSeparator()
+    private function isCurrentCharacterTypeSubtypeSeparator(): bool
     {
         return $this->getCurrentCharacter() == self::TYPE_SUBTYPE_SEPARATOR;
     }

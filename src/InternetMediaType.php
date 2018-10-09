@@ -33,90 +33,56 @@ class InternetMediaType implements InternetMediaTypeInterface
      */
     private $parameters = [];
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setType($type)
+    public function setType(string $type)
     {
         $this->type = strtolower($type);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getType()
+    public function getType(): ?string
     {
         return $this->type;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setSubtype($subtype)
+    public function setSubtype(string $subtype)
     {
         $this->subtype = strtolower($subtype);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getSubtype()
+    public function getSubtype(): ?string
     {
         return $this->subtype;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addParameter(ParameterInterface $parameter)
     {
         $this->parameters[$parameter->getAttribute()] = $parameter;
-
-        return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function hasParameter($attribute)
+    public function hasParameter(string $attribute): bool
     {
         return !is_null($this->getParameter($attribute));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeParameter(ParameterInterface $parameter)
     {
         if ($this->hasParameter($parameter->getAttribute())) {
             unset($this->parameters[$parameter->getAttribute()]);
         }
-
-        return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getParameter($attribute)
+    public function getParameter(string $attribute): ?ParameterInterface
     {
         $attribute = trim(strtolower($attribute));
 
         return isset($this->parameters[$attribute]) ? $this->parameters[$attribute] : null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParameters()
     {
         return $this->parameters;
     }
 
-    /**
-     * @return string
-     */
-    public function getTypeSubtypeString()
+    public function getTypeSubtypeString(): string
     {
         $string = '';
 
@@ -131,10 +97,7 @@ class InternetMediaType implements InternetMediaTypeInterface
         return $this->type . self::TYPE_SUBTYPE_SEPARATOR . $this->subtype;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         $string = $this->getTypeSubtypeString();
 
@@ -162,7 +125,7 @@ class InternetMediaType implements InternetMediaTypeInterface
      *
      * @return bool
      */
-    private function isEmptyParameterStringCollection($parameterStringCollection)
+    private function isEmptyParameterStringCollection(array $parameterStringCollection): bool
     {
         foreach ($parameterStringCollection as $value) {
             if ($value != '') {

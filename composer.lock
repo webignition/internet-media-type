@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1f547dc890c5e2f1e68c6e4587169a22",
+    "content-hash": "0912d9854dcd73f3a76cac2dca610845",
     "packages": [
         {
             "name": "webignition/disallowed-character-terminated-string",
@@ -49,20 +49,20 @@
         },
         {
             "name": "webignition/internet-media-type-interface",
-            "version": "0.1",
+            "version": "0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/internet-media-type-interface.git",
-                "reference": "db57dba3b4dacb78c24cb2a4a88768be47794726"
+                "reference": "dde668e8fa9e0c49b9925a4eeadfa0bc65b26747"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/internet-media-type-interface/zipball/db57dba3b4dacb78c24cb2a4a88768be47794726",
-                "reference": "db57dba3b4dacb78c24cb2a4a88768be47794726",
+                "url": "https://api.github.com/repos/webignition/internet-media-type-interface/zipball/dde668e8fa9e0c49b9925a4eeadfa0bc65b26747",
+                "reference": "dde668e8fa9e0c49b9925a4eeadfa0bc65b26747",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.6.0"
+                "php": ">=7.2.0"
             },
             "type": "library",
             "autoload": {
@@ -89,7 +89,7 @@
                 "media type",
                 "media-type"
             ],
-            "time": "2018-03-21T10:55:33+00:00"
+            "time": "2018-10-09T09:16:21+00:00"
         },
         {
             "name": "webignition/quoted-string",
