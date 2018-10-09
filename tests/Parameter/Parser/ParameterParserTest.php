@@ -1,11 +1,11 @@
 <?php
 
-namespace webignition\Tests\InternetMediaType;
+namespace webignition\Tests\InternetMediaType\Parameter\Parser;
 
 use webignition\InternetMediaType\Parameter\Parser\AttributeParserException;
 use webignition\InternetMediaType\Parameter\Parser\Parser;
 
-class ParameterParserTest extends BaseTest
+class ParameterParserTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Parser

@@ -4,9 +4,8 @@ namespace webignition\Tests\InternetMediaType\Parser;
 
 use webignition\InternetMediaType\Parser\TypeParser;
 use webignition\InternetMediaType\Parser\TypeParserException;
-use webignition\Tests\InternetMediaType\BaseTest;
 
-class TypeParserTest extends BaseTest
+class TypeParserTest extends \PHPUnit\Framework\TestCase
 {
     /**
      *

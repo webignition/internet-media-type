@@ -3,9 +3,8 @@
 namespace webignition\Tests\InternetMediaType\Parser;
 
 use webignition\InternetMediaType\Parser\Configuration;
-use webignition\Tests\InternetMediaType\BaseTest;
 
-class ConfigurationTest extends BaseTest
+class ConfigurationTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Configuration

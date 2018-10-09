@@ -3,9 +3,8 @@
 namespace webignition\Tests\InternetMediaType\Parameter;
 
 use webignition\InternetMediaType\Parser\SubtypeParserException;
-use webignition\Tests\InternetMediaType\BaseTest;
 
-class SubtypeParserExceptionTest extends BaseTest
+class SubtypeParserExceptionTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider createDataProvider

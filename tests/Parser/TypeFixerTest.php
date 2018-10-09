@@ -3,9 +3,8 @@
 namespace webignition\Tests\InternetMediaType\Parser;
 
 use webignition\InternetMediaType\Parser\TypeFixer;
-use webignition\Tests\InternetMediaType\BaseTest;
 
-class TypeFixerTest extends BaseTest
+class TypeFixerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider fixSuccessDataProvider
