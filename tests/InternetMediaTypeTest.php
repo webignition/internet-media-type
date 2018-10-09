@@ -9,6 +9,99 @@ use webignition\InternetMediaTypeInterface\ParameterInterface;
 class InternetMediaTypeTest extends \PHPUnit\Framework\TestCase
 {
     /**
+     * @dataProvider createDataProvider
+     *
+     * @param null|string $type
+     * @param null|string $subtype
+     * @param array $parameters
+     * @param null|string $expectedType
+     * @param null|string $expectedSubtype
+     * @param array $expectedParameterStrings
+     */
+    public function testCreate(
+        ?string $type,
+        ?string $subtype,
+        array $parameters,
+        ?string $expectedType,
+        ?string $expectedSubtype,
+        array $expectedParameterStrings
+    ) {
+        $internetMediaType = new InternetMediaType($type, $subtype, $parameters);
+
+        $this->assertEquals($expectedType, $internetMediaType->getType());
+        $this->assertEquals($expectedSubtype, $internetMediaType->getSubtype());
+
+        $parameterStrings = [];
+
+        foreach ($internetMediaType->getParameters() as $parameter) {
+            $parameterStrings[] = (string)$parameter;
+        }
+
+        $this->assertEquals($expectedParameterStrings, $parameterStrings);
+    }
+
+    public function createDataProvider(): array
+    {
+        return [
+            'null arguments' => [
+                'type' => null,
+                'subtype' => null,
+                'parameters' => [],
+                'expectedType' => null,
+                'expectedSubtype' => null,
+                'expectedParameterStrings' => [],
+            ],
+            'empty arguments' => [
+                'type' => '',
+                'subtype' => '',
+                'parameters' => [],
+                'expectedType' => null,
+                'expectedSubtype' => null,
+                'expectedParameterStrings' => [],
+            ],
+            'type only' => [
+                'type' => 'text',
+                'subtype' => null,
+                'parameters' => [],
+                'expectedType' => 'text',
+                'expectedSubtype' => null,
+                'expectedParameterStrings' => [],
+            ],
+            'subtype only' => [
+                'type' => null,
+                'subtype' => 'html',
+                'parameters' => [],
+                'expectedType' => null,
+                'expectedSubtype' => 'html',
+                'expectedParameterStrings' => [],
+            ],
+            'parameters only' => [
+                'type' => null,
+                'subtype' => null,
+                'parameters' => [
+                    new Parameter('foo', 'bar')
+                ],
+                'expectedType' => null,
+                'expectedSubtype' => null,
+                'expectedParameterStrings' => [
+                    'foo=bar',
+                ],
+            ],
+            'non-parameter parameters only' => [
+                'type' => null,
+                'subtype' => null,
+                'parameters' => [
+                    'foo',
+                    'bar',
+                ],
+                'expectedType' => null,
+                'expectedSubtype' => null,
+                'expectedParameterStrings' => [],
+            ],
+        ];
+    }
+
+    /**
      * @dataProvider typeAndCastToStringDataProvider
      *
      * @param InternetMediaType $internetMediaType
