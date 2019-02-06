@@ -52,34 +52,56 @@ class Parser
     /**
      * @param string $internetMediaTypeString
      *
-     * @return InternetMediaTypeInterface
+     * @return InternetMediaTypeInterface|null
      *
-     * @throws SubtypeParserException
-     * @throws TypeParserException
-     * @throws AttributeParserException
+     * @throws ParseException
      */
     public function parse(string $internetMediaTypeString): ?InternetMediaTypeInterface
     {
         $inputString = trim($internetMediaTypeString);
 
         $internetMediaType = new InternetMediaType();
-        $internetMediaType->setType($this->typeParser->parse($inputString));
-        $internetMediaType->setSubtype($this->subtypeParser->parse($inputString));
 
-        $parameterString = $this->createParameterString(
-            $inputString,
-            $internetMediaType->getType(),
-            $internetMediaType->getSubtype()
-        );
-        $parameterStrings = $this->getParameterStrings($parameterString);
+        try {
+            $internetMediaType->setType($this->typeParser->parse($inputString));
+            $internetMediaType->setSubtype($this->subtypeParser->parse($inputString));
 
-        $parameters = $this->getParameters($parameterStrings);
+            $parameterString = $this->createParameterString(
+                $inputString,
+                $internetMediaType->getType(),
+                $internetMediaType->getSubtype()
+            );
+            $parameterStrings = $this->getParameterStrings($parameterString);
 
-        foreach ($parameters as $parameter) {
-            $internetMediaType->addParameter($parameter);
+            $parameters = $this->getParameters($parameterStrings);
+
+            foreach ($parameters as $parameter) {
+                $internetMediaType->addParameter($parameter);
+            }
+
+            return $internetMediaType;
+        } catch (TypeParserException $typeParserException) {
+            throw new ParseException(
+                $typeParserException->getMessage(),
+                $typeParserException->getCode(),
+                $inputString,
+                $typeParserException
+            );
+        } catch (SubtypeParserException $subtypeParserException) {
+            throw new ParseException(
+                $subtypeParserException->getMessage(),
+                $subtypeParserException->getCode(),
+                $inputString,
+                $subtypeParserException
+            );
+        } catch (AttributeParserException $attributeParserException) {
+            throw new ParseException(
+                $attributeParserException->getMessage(),
+                $attributeParserException->getCode(),
+                $inputString,
+                $attributeParserException
+            );
         }
-
-        return $internetMediaType;
     }
 
     /**

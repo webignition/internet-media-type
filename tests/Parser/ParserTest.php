@@ -1,10 +1,15 @@
 <?php
+/** @noinspection PhpDocSignatureInspection */
+/** @noinspection PhpUnhandledExceptionInspection */
 
 namespace webignition\Tests\InternetMediaType\Parser;
 
+use webignition\InternetMediaType\Parameter\Parser\AttributeParserException;
 use webignition\InternetMediaType\Parser\Configuration;
 use webignition\InternetMediaType\Parser\ParseException;
 use webignition\InternetMediaType\Parser\Parser;
+use webignition\InternetMediaType\Parser\SubtypeParserException;
+use webignition\InternetMediaType\Parser\TypeParserException;
 
 class ParserTest extends \PHPUnit\Framework\TestCase
 {
@@ -248,6 +253,50 @@ class ParserTest extends \PHPUnit\Framework\TestCase
             ],
             'false' => [
                 'attemptToRecoverFromInvalidInternalCharacter' => false,
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider parseThrowsExceptionDataProvider
+     */
+    public function testParseThrowsException(
+        string $contentTypeString,
+        string $expectedMessage,
+        string $expectedCode,
+        string $expectedPreviousExceptionClass
+    ) {
+        try {
+            $this->parser->parse($contentTypeString);
+            $this->fail(ParseException::class . ' not thrown');
+        } catch (ParseException $parseException) {
+            $this->assertEquals($expectedMessage, $parseException->getMessage());
+            $this->assertEquals($expectedCode, $parseException->getCode());
+            $this->assertInstanceOf($expectedPreviousExceptionClass, $parseException->getPrevious());
+            $this->assertEquals($contentTypeString, $parseException->getContentTypeString());
+        }
+    }
+
+    public function parseThrowsExceptionDataProvider(): array
+    {
+        return [
+            'type parser exception' => [
+                'contentTypeString' => 'f o o',
+                'expectedMessage' => 'Invalid internal character after at position 1',
+                'expectedCode' => 1,
+                'expectedPreviousExceptionClass' => TypeParserException::class,
+            ],
+            'subtype parser exception' => [
+                'contentTypeString' => 'text/h t m l',
+                'expectedMessage' => 'Invalid internal character after at position 6',
+                'expectedCode' => 1,
+                'expectedPreviousExceptionClass' => SubtypeParserException::class,
+            ],
+            'attribute parser exception' => [
+                'contentTypeString' => 'text/html; c h a r s e t',
+                'expectedMessage' => 'Invalid internal character after at position 1',
+                'expectedCode' => 1,
+                'expectedPreviousExceptionClass' => AttributeParserException::class,
             ],
         ];
     }
