@@ -1,4 +1,6 @@
 <?php
+/** @noinspection PhpDocSignatureInspection */
+/** @noinspection PhpUnhandledExceptionInspection */
 
 namespace webignition\Tests\InternetMediaType\Parser;
 
@@ -21,13 +23,8 @@ class SubtypeParserTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider parseDataProvider
-     *
-     * @param string $internetMediaTypeString
-     * @param string $expectedSubtype
-     *
-     * @throws SubtypeParserException
      */
-    public function testParse($internetMediaTypeString, $expectedSubtype)
+    public function testParse(string $internetMediaTypeString, string $expectedSubtype)
     {
         $this->assertEquals(
             $expectedSubtype,
@@ -35,10 +32,7 @@ class SubtypeParserTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * @return array
-     */
-    public function parseDataProvider()
+    public function parseDataProvider(): array
     {
         return [
             'without parameters' => [
@@ -66,23 +60,15 @@ class SubtypeParserTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider parseAndFixInvalidSubtypeDataProvider
-     *
-     * @param $internetMediaTypeString
-     * @param $expectedSubtype
-     *
-     * @throws SubtypeParserException
      */
-    public function testParseAndFixInvalidSubtype($internetMediaTypeString, $expectedSubtype)
+    public function testParseAndFixInvalidSubtype(string $internetMediaTypeString, string $expectedSubtype)
     {
         $this->parser->getConfiguration()->enableAttemptToRecoverFromInvalidInternalCharacter();
 
         $this->assertEquals($expectedSubtype, $this->parser->parse($internetMediaTypeString));
     }
 
-    /**
-     * @return array
-     */
-    public function parseAndFixInvalidSubtypeDataProvider()
+    public function parseAndFixInvalidSubtypeDataProvider(): array
     {
         return [
             'type/subtype doubled and comma-separated' => [

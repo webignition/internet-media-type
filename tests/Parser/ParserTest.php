@@ -1,10 +1,15 @@
 <?php
+/** @noinspection PhpDocSignatureInspection */
+/** @noinspection PhpUnhandledExceptionInspection */
 
 namespace webignition\Tests\InternetMediaType\Parser;
 
+use webignition\InternetMediaType\Parameter\Parser\AttributeParserException;
 use webignition\InternetMediaType\Parser\Configuration;
 use webignition\InternetMediaType\Parser\ParseException;
 use webignition\InternetMediaType\Parser\Parser;
+use webignition\InternetMediaType\Parser\SubtypeParserException;
+use webignition\InternetMediaType\Parser\TypeParserException;
 
 class ParserTest extends \PHPUnit\Framework\TestCase
 {
@@ -13,9 +18,6 @@ class ParserTest extends \PHPUnit\Framework\TestCase
      */
     protected $parser;
 
-    /**
-     * @inheritdoc
-     */
     protected function setUp()
     {
         parent::setUp();
@@ -24,19 +26,12 @@ class ParserTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider parseValidMediaTypeDataProvider
-     *
-     * @param string $internetMediaTypeString
-     * @param string $expectedType
-     * @param string $expectedSubtype
-     * @param array $expectedParameters
-     *
-     * @throws ParseException
      */
     public function testParseValidMediaType(
-        $internetMediaTypeString,
-        $expectedType,
-        $expectedSubtype,
-        $expectedParameters
+        string  $internetMediaTypeString,
+        string $expectedType,
+        string $expectedSubtype,
+        array $expectedParameters
     ) {
         $internetMediaType = $this->parser->parse($internetMediaTypeString);
 
@@ -51,10 +46,7 @@ class ParserTest extends \PHPUnit\Framework\TestCase
         }
     }
 
-    /**
-     * @return array
-     */
-    public function parseValidMediaTypeDataProvider()
+    public function parseValidMediaTypeDataProvider(): array
     {
         return [
             'image/png' => [
@@ -98,9 +90,6 @@ class ParserTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    /**
-     * @throws ParseException
-     */
     public function testIgnoreInvalidAttributes()
     {
         $this->parser->setIgnoreInvalidAttributes(true);
@@ -111,21 +100,13 @@ class ParserTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider parseAndFixInvalidMediaTypeDataProvider
-     *
-     * @param string $internetMediaTypeString
-     * @param string $expectedParsedMediaTypeString
-     * @param string $expectedType
-     * @param string $expectedSubtype
-     * @param array $expectedParameters
-     *
-     * @throws ParseException
      */
     public function testParseAndFixInvalidMediaType(
-        $internetMediaTypeString,
-        $expectedParsedMediaTypeString,
-        $expectedType,
-        $expectedSubtype,
-        $expectedParameters
+        string $internetMediaTypeString,
+        string $expectedParsedMediaTypeString,
+        string $expectedType,
+        string $expectedSubtype,
+        array $expectedParameters
     ) {
         $this->parser->getConfiguration()->enableAttemptToRecoverFromInvalidInternalCharacter();
         $internetMediaType = $this->parser->parse($internetMediaTypeString);
@@ -142,10 +123,7 @@ class ParserTest extends \PHPUnit\Framework\TestCase
         }
     }
 
-    /**
-     * @return array
-     */
-    public function parseAndFixInvalidMediaTypeDataProvider()
+    public function parseAndFixInvalidMediaTypeDataProvider(): array
     {
         return [
             'application/x-javascript, application/x-javascript; charset=utf-8' => [
@@ -199,19 +177,14 @@ class ParserTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider setIgnoreInvalidAttributesDataProvider
-     *
-     * @param bool$ignoreInvalidAttributes
      */
-    public function testSetIgnoreInvalidAttributes($ignoreInvalidAttributes)
+    public function testSetIgnoreInvalidAttributes(bool $ignoreInvalidAttributes)
     {
         $this->parser->setIgnoreInvalidAttributes($ignoreInvalidAttributes);
         $this->assertEquals($ignoreInvalidAttributes, $this->parser->getConfiguration()->ignoreInvalidAttributes());
     }
 
-    /**
-     * @return array
-     */
-    public function setIgnoreInvalidAttributesDataProvider()
+    public function setIgnoreInvalidAttributesDataProvider(): array
     {
         return [
             'true' => [
@@ -225,11 +198,10 @@ class ParserTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider setAttemptToRecoverFromInvalidInternalCharacterDataProvider
-     *
-     * @param bool$attemptToRecoverFromInvalidInternalCharacter
      */
-    public function testSetAttemptToRecoverFromInvalidInternalCharacter($attemptToRecoverFromInvalidInternalCharacter)
-    {
+    public function testSetAttemptToRecoverFromInvalidInternalCharacter(
+        bool $attemptToRecoverFromInvalidInternalCharacter
+    ) {
         $this->parser->setAttemptToRecoverFromInvalidInternalCharacter($attemptToRecoverFromInvalidInternalCharacter);
         $this->assertEquals(
             $attemptToRecoverFromInvalidInternalCharacter,
@@ -237,10 +209,7 @@ class ParserTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * @return array
-     */
-    public function setAttemptToRecoverFromInvalidInternalCharacterDataProvider()
+    public function setAttemptToRecoverFromInvalidInternalCharacterDataProvider(): array
     {
         return [
             'true' => [
@@ -248,6 +217,50 @@ class ParserTest extends \PHPUnit\Framework\TestCase
             ],
             'false' => [
                 'attemptToRecoverFromInvalidInternalCharacter' => false,
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider parseThrowsExceptionDataProvider
+     */
+    public function testParseThrowsException(
+        string $contentTypeString,
+        string $expectedMessage,
+        string $expectedCode,
+        string $expectedPreviousExceptionClass
+    ) {
+        try {
+            $this->parser->parse($contentTypeString);
+            $this->fail(ParseException::class . ' not thrown');
+        } catch (ParseException $parseException) {
+            $this->assertEquals($expectedMessage, $parseException->getMessage());
+            $this->assertEquals($expectedCode, $parseException->getCode());
+            $this->assertInstanceOf($expectedPreviousExceptionClass, $parseException->getPrevious());
+            $this->assertEquals($contentTypeString, $parseException->getContentTypeString());
+        }
+    }
+
+    public function parseThrowsExceptionDataProvider(): array
+    {
+        return [
+            'type parser exception' => [
+                'contentTypeString' => 'f o o',
+                'expectedMessage' => 'Invalid internal character after at position 1',
+                'expectedCode' => 1,
+                'expectedPreviousExceptionClass' => TypeParserException::class,
+            ],
+            'subtype parser exception' => [
+                'contentTypeString' => 'text/h t m l',
+                'expectedMessage' => 'Invalid internal character after at position 6',
+                'expectedCode' => 1,
+                'expectedPreviousExceptionClass' => SubtypeParserException::class,
+            ],
+            'attribute parser exception' => [
+                'contentTypeString' => 'text/html; c h a r s e t',
+                'expectedMessage' => 'Invalid internal character after at position 1',
+                'expectedCode' => 1,
+                'expectedPreviousExceptionClass' => AttributeParserException::class,
             ],
         ];
     }

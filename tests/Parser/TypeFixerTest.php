@@ -1,4 +1,5 @@
 <?php
+/** @noinspection PhpDocSignatureInspection */
 
 namespace webignition\Tests\InternetMediaType\Parser;
 
@@ -8,13 +9,12 @@ class TypeFixerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider fixSuccessDataProvider
-     *
-     * @param string $internetMediaTypeString
-     * @param int $invalidCharacterPosition
-     * @param string $expectedType
      */
-    public function testFixSuccess($internetMediaTypeString, $invalidCharacterPosition, $expectedType)
-    {
+    public function testFixSuccess(
+        string $internetMediaTypeString,
+        int $invalidCharacterPosition,
+        ?string $expectedType
+    ) {
         $typeFixer = new TypeFixer();
         $typeFixer->setPosition($invalidCharacterPosition);
         $typeFixer->setInputString($internetMediaTypeString);
@@ -22,10 +22,7 @@ class TypeFixerTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expectedType, $typeFixer->fix());
     }
 
-    /**
-     * @return array
-     */
-    public function fixSuccessDataProvider()
+    public function fixSuccessDataProvider(): array
     {
         return [
             'type/subtype doubled and comma-separated' => [
@@ -53,11 +50,8 @@ class TypeFixerTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider fixExceptionWhenParsingDataProvider
-     *
-     * @param string $internetMediaTypeString
-     * @param int $invalidCharacterPosition
      */
-    public function testFixExceptionWhenParsing($internetMediaTypeString, $invalidCharacterPosition)
+    public function testFixExceptionWhenParsing(string $internetMediaTypeString, int $invalidCharacterPosition)
     {
         $typeFixer = new TypeFixer();
         $typeFixer->setPosition($invalidCharacterPosition);
@@ -66,10 +60,7 @@ class TypeFixerTest extends \PHPUnit\Framework\TestCase
         $this->assertNull($typeFixer->fix());
     }
 
-    /**
-     * @return array
-     */
-    public function fixExceptionWhenParsingDataProvider()
+    public function fixExceptionWhenParsingDataProvider(): array
     {
         return [
             'TypeParserException; invalid internal character' => [

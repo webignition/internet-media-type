@@ -1,4 +1,5 @@
 <?php
+/** @noinspection PhpDocSignatureInspection */
 
 namespace webignition\Tests\InternetMediaType\Parameter\Parser;
 
@@ -8,25 +9,21 @@ class AttributeParserExceptionTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider createDataProvider
-     *
-     * @param string $message
-     * @param int $code
-     * @param int $position
-     * @param bool $expectedIsInternalCharacterException
-     * @param int $expectedPosition
      */
-    public function testCreate($message, $code, $position, $expectedIsInternalCharacterException, $expectedPosition)
-    {
+    public function testCreate(
+        string $message,
+        int $code,
+        int $position,
+        bool $expectedIsInternalCharacterException,
+        int $expectedPosition
+    ) {
         $exception = new AttributeParserException($message, $code, $position);
 
         $this->assertEquals($expectedIsInternalCharacterException, $exception->isInvalidInternalCharacterException());
         $this->assertEquals($expectedPosition, $exception->getPosition());
     }
 
-    /**
-     * @return array
-     */
-    public function createDataProvider()
+    public function createDataProvider(): array
     {
         return [
             'is internal character exception' => [

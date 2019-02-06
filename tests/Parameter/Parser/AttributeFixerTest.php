@@ -1,4 +1,5 @@
 <?php
+/** @noinspection PhpDocSignatureInspection */
 
 namespace webignition\Tests\InternetMediaType\Parameter\Parser;
 
@@ -8,11 +9,8 @@ class AttributeFixerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider fixValidAttributeDataProvider
-     *
-     * @param $attribute
-     * @param $expectedFixedAttribute
      */
-    public function testFixValidAttribute($attribute, $expectedFixedAttribute)
+    public function testFixValidAttribute(string $attribute, string $expectedFixedAttribute)
     {
         $attributeFixer = new AttributeFixer();
         $attributeFixer->setInputString($attribute);
@@ -20,10 +18,7 @@ class AttributeFixerTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expectedFixedAttribute, $attributeFixer->fix());
     }
 
-    /**
-     * @return array
-     */
-    public function fixValidAttributeDataProvider()
+    public function fixValidAttributeDataProvider(): array
     {
         return [
             'valid empty attribute' => [

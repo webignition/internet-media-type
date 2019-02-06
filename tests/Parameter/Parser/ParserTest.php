@@ -1,4 +1,6 @@
 <?php
+/** @noinspection PhpDocSignatureInspection */
+/** @noinspection PhpUnhandledExceptionInspection */
 
 namespace webignition\Tests\InternetMediaType\Parameter\Parser;
 
@@ -13,9 +15,6 @@ class ParserTest extends \PHPUnit\Framework\TestCase
      */
     private $parser;
 
-    /**
-     * @inheritdoc
-     */
     protected function setUp()
     {
         parent::setUp();
@@ -24,14 +23,8 @@ class ParserTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider parseDataProvider
-     *
-     * @param $parameterString
-     * @param $expectedAttribute
-     * @param $expectedValue
-     *
-     * @throws AttributeParserException
      */
-    public function testParse($parameterString, $expectedAttribute, $expectedValue)
+    public function testParse(string $parameterString, string $expectedAttribute, ?string $expectedValue)
     {
         $parameter = $this->parser->parse($parameterString);
 
@@ -39,10 +32,7 @@ class ParserTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expectedValue, $parameter->getValue());
     }
 
-    /**
-     * @return array
-     */
-    public function parseDataProvider()
+    public function parseDataProvider(): array
     {
         return [
             'empty' => [

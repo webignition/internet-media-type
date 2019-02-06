@@ -1,4 +1,5 @@
 <?php
+/** @noinspection PhpDocSignatureInspection */
 
 namespace webignition\Tests\InternetMediaType\Parameter\Parser;
 
@@ -11,9 +12,6 @@ class ValueParserTest extends \PHPUnit\Framework\TestCase
      */
     private $parser;
 
-    /**
-     * @inheritdoc
-     */
     public function setUp()
     {
         parent::setUp();
@@ -22,21 +20,14 @@ class ValueParserTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider parseDataProvider
-     *
-     * @param string $attribute
-     * @param string $parameterString
-     * @param string $expectedValue
      */
-    public function testParse($attribute, $parameterString, $expectedValue)
+    public function testParse(string $attribute, string $parameterString, string $expectedValue)
     {
         $this->parser->setAttribute($attribute);
         $this->assertEquals($expectedValue, $this->parser->parse($parameterString));
     }
 
-    /**
-     * @return array
-     */
-    public function parseDataProvider()
+    public function parseDataProvider(): array
     {
         return [
             [
