@@ -18,9 +18,6 @@ class ParserTest extends \PHPUnit\Framework\TestCase
      */
     protected $parser;
 
-    /**
-     * @inheritdoc
-     */
     protected function setUp()
     {
         parent::setUp();
@@ -29,19 +26,12 @@ class ParserTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider parseValidMediaTypeDataProvider
-     *
-     * @param string $internetMediaTypeString
-     * @param string $expectedType
-     * @param string $expectedSubtype
-     * @param array $expectedParameters
-     *
-     * @throws ParseException
      */
     public function testParseValidMediaType(
-        $internetMediaTypeString,
-        $expectedType,
-        $expectedSubtype,
-        $expectedParameters
+        string  $internetMediaTypeString,
+        string $expectedType,
+        string $expectedSubtype,
+        array $expectedParameters
     ) {
         $internetMediaType = $this->parser->parse($internetMediaTypeString);
 
@@ -56,10 +46,7 @@ class ParserTest extends \PHPUnit\Framework\TestCase
         }
     }
 
-    /**
-     * @return array
-     */
-    public function parseValidMediaTypeDataProvider()
+    public function parseValidMediaTypeDataProvider(): array
     {
         return [
             'image/png' => [
@@ -103,9 +90,6 @@ class ParserTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    /**
-     * @throws ParseException
-     */
     public function testIgnoreInvalidAttributes()
     {
         $this->parser->setIgnoreInvalidAttributes(true);
@@ -116,21 +100,13 @@ class ParserTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider parseAndFixInvalidMediaTypeDataProvider
-     *
-     * @param string $internetMediaTypeString
-     * @param string $expectedParsedMediaTypeString
-     * @param string $expectedType
-     * @param string $expectedSubtype
-     * @param array $expectedParameters
-     *
-     * @throws ParseException
      */
     public function testParseAndFixInvalidMediaType(
-        $internetMediaTypeString,
-        $expectedParsedMediaTypeString,
-        $expectedType,
-        $expectedSubtype,
-        $expectedParameters
+        string $internetMediaTypeString,
+        string $expectedParsedMediaTypeString,
+        string $expectedType,
+        string $expectedSubtype,
+        array $expectedParameters
     ) {
         $this->parser->getConfiguration()->enableAttemptToRecoverFromInvalidInternalCharacter();
         $internetMediaType = $this->parser->parse($internetMediaTypeString);
@@ -147,10 +123,7 @@ class ParserTest extends \PHPUnit\Framework\TestCase
         }
     }
 
-    /**
-     * @return array
-     */
-    public function parseAndFixInvalidMediaTypeDataProvider()
+    public function parseAndFixInvalidMediaTypeDataProvider(): array
     {
         return [
             'application/x-javascript, application/x-javascript; charset=utf-8' => [
@@ -204,19 +177,14 @@ class ParserTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider setIgnoreInvalidAttributesDataProvider
-     *
-     * @param bool$ignoreInvalidAttributes
      */
-    public function testSetIgnoreInvalidAttributes($ignoreInvalidAttributes)
+    public function testSetIgnoreInvalidAttributes(bool $ignoreInvalidAttributes)
     {
         $this->parser->setIgnoreInvalidAttributes($ignoreInvalidAttributes);
         $this->assertEquals($ignoreInvalidAttributes, $this->parser->getConfiguration()->ignoreInvalidAttributes());
     }
 
-    /**
-     * @return array
-     */
-    public function setIgnoreInvalidAttributesDataProvider()
+    public function setIgnoreInvalidAttributesDataProvider(): array
     {
         return [
             'true' => [
@@ -230,11 +198,10 @@ class ParserTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider setAttemptToRecoverFromInvalidInternalCharacterDataProvider
-     *
-     * @param bool$attemptToRecoverFromInvalidInternalCharacter
      */
-    public function testSetAttemptToRecoverFromInvalidInternalCharacter($attemptToRecoverFromInvalidInternalCharacter)
-    {
+    public function testSetAttemptToRecoverFromInvalidInternalCharacter(
+        bool $attemptToRecoverFromInvalidInternalCharacter
+    ) {
         $this->parser->setAttemptToRecoverFromInvalidInternalCharacter($attemptToRecoverFromInvalidInternalCharacter);
         $this->assertEquals(
             $attemptToRecoverFromInvalidInternalCharacter,
@@ -242,10 +209,7 @@ class ParserTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * @return array
-     */
-    public function setAttemptToRecoverFromInvalidInternalCharacterDataProvider()
+    public function setAttemptToRecoverFromInvalidInternalCharacterDataProvider(): array
     {
         return [
             'true' => [

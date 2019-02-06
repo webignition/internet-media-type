@@ -11,9 +11,6 @@ class ConfigurationTest extends \PHPUnit\Framework\TestCase
      */
     private $configuration;
 
-    /**
-     * @inheritdoc
-     */
     protected function setUp()
     {
         parent::setUp();

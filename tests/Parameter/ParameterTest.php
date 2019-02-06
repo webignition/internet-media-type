@@ -1,4 +1,5 @@
 <?php
+/** @noinspection PhpDocSignatureInspection */
 
 namespace webignition\Tests\InternetMediaType\Parameter;
 
@@ -8,22 +9,15 @@ class ParameterTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider castToStringDataProvider
-     *
-     * @param string $attribute
-     * @param string $value
-     * @param string $expectedParameterString
      */
-    public function testCastToString($attribute, $value, $expectedParameterString)
+    public function testCastToString(string $attribute, ?string $value, string $expectedParameterString)
     {
         $parameter = new Parameter($attribute, $value);
 
         $this->assertEquals($expectedParameterString, (string)$parameter);
     }
 
-    /**
-     * @return array
-     */
-    public function castToStringDataProvider()
+    public function castToStringDataProvider(): array
     {
         return [
             'all lowercase' => [

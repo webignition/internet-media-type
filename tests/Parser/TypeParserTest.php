@@ -1,4 +1,6 @@
 <?php
+/** @noinspection PhpDocSignatureInspection */
+/** @noinspection PhpUnhandledExceptionInspection */
 
 namespace webignition\Tests\InternetMediaType\Parser;
 
@@ -8,14 +10,10 @@ use webignition\InternetMediaType\Parser\TypeParserException;
 class TypeParserTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     *
      * @var TypeParser
      */
     private $parser;
 
-    /**
-     * @inheritdoc
-     */
     protected function setUp()
     {
         parent::setUp();
@@ -24,13 +22,8 @@ class TypeParserTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider validTypeDataProvider
-     *
-     * @param string $internetMediaTypeString
-     * @param string $expectedType
-     *
-     * @throws TypeParserException
      */
-    public function testParseValidType($internetMediaTypeString, $expectedType)
+    public function testParseValidType(string $internetMediaTypeString, string $expectedType)
     {
         $this->assertEquals(
             $expectedType,
@@ -38,10 +31,7 @@ class TypeParserTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * @return array
-     */
-    public function validTypeDataProvider()
+    public function validTypeDataProvider(): array
     {
         return [
             'type/subtype only' => [

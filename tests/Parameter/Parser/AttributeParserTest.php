@@ -1,4 +1,6 @@
 <?php
+/** @noinspection PhpDocSignatureInspection */
+/** @noinspection PhpUnhandledExceptionInspection */
 
 namespace webignition\Tests\InternetMediaType\Parameter\Parser;
 
@@ -12,9 +14,6 @@ class AttributeParserTest extends \PHPUnit\Framework\TestCase
      */
     private $parser;
 
-    /**
-     * @inheritdoc
-     */
     public function setUp()
     {
         parent::setUp();
@@ -23,21 +22,13 @@ class AttributeParserTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider parseDataProvider
-     *
-     * @param string $attribute
-     * @param string $expectedName
-     *
-     * @throws AttributeParserException
      */
-    public function testParse($attribute, $expectedName)
+    public function testParse(string $attribute, string $expectedName)
     {
         $this->assertEquals($expectedName, $this->parser->parse($attribute));
     }
 
-    /**
-     * @return array
-     */
-    public function parseDataProvider()
+    public function parseDataProvider(): array
     {
         return [
             'foo=bar' => [
@@ -61,13 +52,8 @@ class AttributeParserTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider parseInvalidInternalCharacterDataProvider
-     *
-     * @param string $attribute
-     * @param int $expectedInvalidInternalCharacterPosition
-     *
-     * @throws AttributeParserException
      */
-    public function testParseInvalidInternalCharacter($attribute, $expectedInvalidInternalCharacterPosition)
+    public function testParseInvalidInternalCharacter(string $attribute, int $expectedInvalidInternalCharacterPosition)
     {
         $this->expectException(AttributeParserException::class);
         $this->expectExceptionMessage(
@@ -78,10 +64,7 @@ class AttributeParserTest extends \PHPUnit\Framework\TestCase
         $this->parser->parse($attribute);
     }
 
-    /**
-     * @return array
-     */
-    public function parseInvalidInternalCharacterDataProvider()
+    public function parseInvalidInternalCharacterDataProvider(): array
     {
         return [
             'ch arset=ISO-8859-4' => [
@@ -93,12 +76,8 @@ class AttributeParserTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider parseInvalidInternalCharacterDataProviderFoo
-     *
-     * @param string $attribute
-     *
-     * @throws AttributeParserException
      */
-    public function testParseInvalidInternalCharacterAttemptRecoveryIgnoreInvalidAttributes($attribute)
+    public function testParseInvalidInternalCharacterAttemptRecoveryIgnoreInvalidAttributes(string $attribute)
     {
         $this->parser->getConfiguration()->enableAttemptToRecoverFromInvalidInternalCharacter();
         $this->parser->getConfiguration()->enableIgnoreInvalidAttributes();
@@ -106,10 +85,7 @@ class AttributeParserTest extends \PHPUnit\Framework\TestCase
         $this->assertEmpty($this->parser->parse($attribute));
     }
 
-    /**
-     * @return array
-     */
-    public function parseInvalidInternalCharacterDataProviderFoo()
+    public function parseInvalidInternalCharacterDataProviderFoo(): array
     {
         return [
             'ch ar set=ISO-8859-4' => [
@@ -120,22 +96,14 @@ class AttributeParserTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider parseAndFixInvalidInternalCharacterDataProvider
-     *
-     * @param string $attribute
-     * @param string $expectedName
-     *
-     * @throws AttributeParserException
      */
-    public function testParseAndFixInvalidInternalCharacter($attribute, $expectedName)
+    public function testParseAndFixInvalidInternalCharacter(string $attribute, string $expectedName)
     {
         $this->parser->getConfiguration()->enableAttemptToRecoverFromInvalidInternalCharacter();
         $this->assertEquals($expectedName, $this->parser->parse($attribute));
     }
 
-    /**
-     * @return array
-     */
-    public function parseAndFixInvalidInternalCharacterDataProvider()
+    public function parseAndFixInvalidInternalCharacterDataProvider(): array
     {
         return [
             'charset: utf8' => [
@@ -147,21 +115,14 @@ class AttributeParserTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider parseAndIgnoreInvalidCharacterDataProvider
-     *
-     * @param string $attribute
-     *
-     * @throws AttributeParserException
      */
-    public function testParseAndIgnoreInvalidCharacter($attribute)
+    public function testParseAndIgnoreInvalidCharacter(string $attribute)
     {
         $this->parser->getConfiguration()->enableIgnoreInvalidAttributes();
         $this->assertEmpty($this->parser->parse($attribute));
     }
 
-    /**
-     * @return array
-     */
-    public function parseAndIgnoreInvalidCharacterDataProvider()
+    public function parseAndIgnoreInvalidCharacterDataProvider(): array
     {
         return [
             'charset"foo": utf8' => [

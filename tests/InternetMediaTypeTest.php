@@ -1,4 +1,5 @@
 <?php
+/** @noinspection PhpDocSignatureInspection */
 
 namespace webignition\Tests\InternetMediaType;
 
@@ -10,13 +11,6 @@ class InternetMediaTypeTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider createDataProvider
-     *
-     * @param null|string $type
-     * @param null|string $subtype
-     * @param array $parameters
-     * @param null|string $expectedType
-     * @param null|string $expectedSubtype
-     * @param array $expectedParameterStrings
      */
     public function testCreate(
         ?string $type,
@@ -103,11 +97,6 @@ class InternetMediaTypeTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider typeAndCastToStringDataProvider
-     *
-     * @param InternetMediaType $internetMediaType
-     * @param string $expectedType
-     * @param string $expectedSubtype
-     * @param string $expectedString
      */
     public function testTypeAndCastToString(
         InternetMediaType $internetMediaType,
@@ -176,10 +165,6 @@ class InternetMediaTypeTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider addParameterDataProvider
-     *
-     * @param InternetMediaType $internetMediaType
-     * @param ParameterInterface $parameterToAdd
-     * @param string[] $expectedParameters
      */
     public function testAddParameter(
         InternetMediaType $internetMediaType,
@@ -227,10 +212,6 @@ class InternetMediaTypeTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider hasParameterDataProvider
-     *
-     * @param InternetMediaType $internetMediaType
-     * @param string $attribute
-     * @param bool $expectedHasParameter
      */
     public function testHasParameter(
         InternetMediaType $internetMediaType,
@@ -267,10 +248,6 @@ class InternetMediaTypeTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider removeParameterDataProvider
-     *
-     * @param InternetMediaType $internetMediaType
-     * @param ParameterInterface $parameterToRemove
-     * @param string[] $expectedParametersAsStrings
      */
     public function testRemoveParameter(
         InternetMediaType $internetMediaType,
@@ -317,10 +294,6 @@ class InternetMediaTypeTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider getParameterDataProvider
-     *
-     * @param InternetMediaType $internetMediaType
-     * @param string $attribute
-     * @param ParameterInterface|null $expectedParameter
      */
     public function testGetParameter(
         InternetMediaType $internetMediaType,
@@ -360,9 +333,6 @@ class InternetMediaTypeTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider hasTypeHasSubtypeGetSubtypeStringDataProvider
-     *
-     * @param InternetMediaType $internetMediaType
-     * @param string $expectedTypeSubtypeString
      */
     public function testGetTypeSubtypeString(InternetMediaType $internetMediaType, string $expectedTypeSubtypeString)
     {
