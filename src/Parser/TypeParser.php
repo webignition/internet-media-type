@@ -65,7 +65,7 @@ class TypeParser extends StringParser
 
             case self::STATE_INVALID_INTERNAL_CHARACTER:
                 throw new TypeParserException(
-                    'Invalid internal character after at position '.$this->getCurrentCharacterPointer(),
+                    'Invalid internal character after at position ' . $this->getCurrentCharacterPointer(),
                     1
                 );
         }

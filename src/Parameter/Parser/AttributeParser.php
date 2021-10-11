@@ -109,7 +109,7 @@ class AttributeParser extends StringParser
                 }
 
                 throw new AttributeParserException(
-                    'Invalid internal character after at position '.$this->getCurrentCharacterPointer(),
+                    'Invalid internal character after at position ' . $this->getCurrentCharacterPointer(),
                     1,
                     $this->getCurrentCharacterPointer()
                 );

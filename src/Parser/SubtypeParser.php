@@ -116,7 +116,7 @@ class SubtypeParser extends StringParser
                 }
 
                 throw new SubtypeParserException(
-                    'Invalid internal character after at position '.$this->getCurrentCharacterPointer(),
+                    'Invalid internal character after at position ' . $this->getCurrentCharacterPointer(),
                     SubtypeParserException::INTERNAL_INVALID_CHARACTER_CODE,
                     $this->getCurrentCharacterPointer()
                 );
