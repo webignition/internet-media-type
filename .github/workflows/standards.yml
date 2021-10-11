@@ -30,4 +30,4 @@ jobs:
           args: --ignore-platform-reqs --quiet
 
       - name: Run
-        run: ./vendor/bin/phpcs src tests --colors --standard=PSR2
+        run: ./vendor/bin/phpcs src tests --colors --standard=PSR12
