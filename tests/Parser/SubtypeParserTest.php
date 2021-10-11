@@ -15,7 +15,7 @@ class SubtypeParserTest extends \PHPUnit\Framework\TestCase
      */
     private $parser;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->parser = new SubtypeParser();

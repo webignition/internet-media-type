@@ -18,7 +18,7 @@ class ParserTest extends \PHPUnit\Framework\TestCase
      */
     protected $parser;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->parser = new Parser();
@@ -227,7 +227,7 @@ class ParserTest extends \PHPUnit\Framework\TestCase
     public function testParseThrowsException(
         string $contentTypeString,
         string $expectedMessage,
-        string $expectedCode,
+        int $expectedCode,
         string $expectedPreviousExceptionClass
     ) {
         try {
