@@ -1,6 +1,4 @@
 <?php
-/** @noinspection PhpDocSignatureInspection */
-/** @noinspection PhpUnhandledExceptionInspection */
 
 namespace webignition\Tests\InternetMediaType\Parameter\Parser;
 

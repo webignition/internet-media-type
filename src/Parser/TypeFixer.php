@@ -9,8 +9,8 @@ namespace webignition\InternetMediaType\Parser;
  */
 class TypeFixer
 {
-    const COMMA_SEPARATED_TYPE_SEPARATOR = ', ';
-    const TYPE_SUBTYPE_SEPARATOR = '/';
+    public const COMMA_SEPARATED_TYPE_SEPARATOR = ', ';
+    public const TYPE_SUBTYPE_SEPARATOR = '/';
 
     /**
      * @var string

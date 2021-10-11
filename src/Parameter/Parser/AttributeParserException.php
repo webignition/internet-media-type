@@ -6,7 +6,7 @@ use webignition\InternetMediaType\Parser\ParseException;
 
 class AttributeParserException extends ParseException
 {
-    const INTERNAL_INVALID_CHARACTER_CODE = 1;
+    public const INTERNAL_INVALID_CHARACTER_CODE = 1;
 
     /**
      * @var int

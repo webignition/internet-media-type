@@ -14,8 +14,8 @@ use webignition\InternetMediaTypeInterface\ParameterInterface;
  */
 class Parser
 {
-    const TYPE_SUBTYPE_SEPARATOR = '/';
-    const TYPE_PARAMETER_SEPARATOR = ';';
+    public const TYPE_SUBTYPE_SEPARATOR = '/';
+    public const TYPE_PARAMETER_SEPARATOR = ';';
 
     /**
      * @var TypeParser
