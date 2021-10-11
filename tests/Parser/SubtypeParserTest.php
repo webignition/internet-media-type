@@ -24,7 +24,7 @@ class SubtypeParserTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider parseDataProvider
      */
-    public function testParse(string $internetMediaTypeString, string $expectedSubtype)
+    public function testPase(string $internetMediaTypeString, string $expectedSubtype): void
     {
         $this->assertEquals(
             $expectedSubtype,
@@ -32,6 +32,9 @@ class SubtypeParserTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function parseDataProvider(): array
     {
         return [
@@ -49,7 +52,7 @@ class SubtypeParserTest extends \PHPUnit\Framework\TestCase
     /**
      * @throws SubtypeParserException
      */
-    public function testParseInvalidSubtype()
+    public function testParseInvalidSubtype(): void
     {
         $this->expectException(SubtypeParserException::class);
         $this->expectExceptionMessage('Invalid internal character after at position 6');
@@ -61,13 +64,16 @@ class SubtypeParserTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider parseAndFixInvalidSubtypeDataProvider
      */
-    public function testParseAndFixInvalidSubtype(string $internetMediaTypeString, string $expectedSubtype)
+    public function testParseAndFixInvalidSubtype(string $internetMediaTypeString, string $expectedSubtype): void
     {
         $this->parser->getConfiguration()->enableAttemptToRecoverFromInvalidInternalCharacter();
 
         $this->assertEquals($expectedSubtype, $this->parser->parse($internetMediaTypeString));
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function parseAndFixInvalidSubtypeDataProvider(): array
     {
         return [

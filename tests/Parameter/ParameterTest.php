@@ -10,13 +10,16 @@ class ParameterTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider castToStringDataProvider
      */
-    public function testCastToString(string $attribute, ?string $value, string $expectedParameterString)
+    public function testCastToString(string $attribute, ?string $value, string $expectedParameterString): void
     {
         $parameter = new Parameter($attribute, $value);
 
         $this->assertEquals($expectedParameterString, (string)$parameter);
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function castToStringDataProvider(): array
     {
         return [

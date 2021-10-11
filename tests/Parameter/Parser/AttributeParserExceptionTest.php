@@ -16,13 +16,16 @@ class AttributeParserExceptionTest extends \PHPUnit\Framework\TestCase
         int $position,
         bool $expectedIsInternalCharacterException,
         int $expectedPosition
-    ) {
+    ): void {
         $exception = new AttributeParserException($message, $code, $position);
 
         $this->assertEquals($expectedIsInternalCharacterException, $exception->isInvalidInternalCharacterException());
         $this->assertEquals($expectedPosition, $exception->getPosition());
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function createDataProvider(): array
     {
         return [
@@ -43,7 +46,7 @@ class AttributeParserExceptionTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    public function testSetPosition()
+    public function testSetPosition(): void
     {
         $initialPosition = 3;
         $newPosition = 4;

@@ -68,8 +68,8 @@ class Parser
 
             $parameterString = $this->createParameterString(
                 $inputString,
-                $internetMediaType->getType(),
-                $internetMediaType->getSubtype()
+                (string) $internetMediaType->getType(),
+                (string) $internetMediaType->getSubtype()
             );
             $parameterStrings = $this->getParameterStrings($parameterString);
 
@@ -147,7 +147,7 @@ class Parser
      * Get a collection of Parameter objects from a collection of string
      * representations of the same
      *
-     * @param array $parameterStrings
+     * @param string[] $parameterStrings
      *
      * @return ParameterInterface[]
      *
@@ -163,7 +163,7 @@ class Parser
         return $parameters;
     }
 
-    public function setConfiguration(Configuration  $configuration)
+    public function setConfiguration(Configuration $configuration): void
     {
         $this->configuration = $configuration;
         $this->subtypeParser->setConfiguration($configuration);
@@ -175,7 +175,7 @@ class Parser
         return $this->configuration;
     }
 
-    public function setIgnoreInvalidAttributes(bool $ignoreInvalidAttributes)
+    public function setIgnoreInvalidAttributes(bool $ignoreInvalidAttributes): void
     {
         if (filter_var($ignoreInvalidAttributes, FILTER_VALIDATE_BOOLEAN)) {
             $this->getConfiguration()->enableIgnoreInvalidAttributes();
@@ -184,8 +184,9 @@ class Parser
         }
     }
 
-    public function setAttemptToRecoverFromInvalidInternalCharacter(bool $attemptToRecoverFromInvalidInternalCharacter)
-    {
+    public function setAttemptToRecoverFromInvalidInternalCharacter(
+        bool $attemptToRecoverFromInvalidInternalCharacter
+    ): void {
         if (filter_var($attemptToRecoverFromInvalidInternalCharacter, FILTER_VALIDATE_BOOLEAN)) {
             $this->getConfiguration()->enableAttemptToRecoverFromInvalidInternalCharacter();
         } else {

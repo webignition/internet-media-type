@@ -17,7 +17,7 @@ class SubtypeParserException extends ParseException
         $this->position = $position;
     }
 
-    public function setPosition(int $position)
+    public function setPosition(int $position): void
     {
         $this->position = $position;
     }

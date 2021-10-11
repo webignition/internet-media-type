@@ -23,7 +23,7 @@ class ParameterParserTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider parseDataProvider
      */
-    public function testParse(string $parameterString, string $expectedAttribute, string $expectedValue)
+    public function testParse(string $parameterString, string $expectedAttribute, string $expectedValue): void
     {
         $parameter = $this->parser->parse($parameterString);
 
@@ -31,6 +31,9 @@ class ParameterParserTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expectedValue, $parameter->getValue());
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function parseDataProvider(): array
     {
         return [

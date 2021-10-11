@@ -20,7 +20,7 @@ class Parameter implements ParameterInterface
      *
      * For a parameter of 'charset=UTF8', this would be 'UTF8'
      *
-     * @var string
+     * @var null|string
      */
     private $value;
 
@@ -30,7 +30,7 @@ class Parameter implements ParameterInterface
         $this->setValue($value);
     }
 
-    public function setAttribute(string $attribute)
+    public function setAttribute(string $attribute): void
     {
         $this->attribute = trim(strtolower($attribute));
     }
@@ -40,7 +40,7 @@ class Parameter implements ParameterInterface
         return $this->attribute;
     }
 
-    public function setValue(?string $value)
+    public function setValue(?string $value): void
     {
         $this->value = $value;
     }

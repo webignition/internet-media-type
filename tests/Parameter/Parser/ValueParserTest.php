@@ -21,12 +21,15 @@ class ValueParserTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider parseDataProvider
      */
-    public function testParse(string $attribute, string $parameterString, string $expectedValue)
+    public function testParse(string $attribute, string $parameterString, string $expectedValue): void
     {
         $this->parser->setAttribute($attribute);
         $this->assertEquals($expectedValue, $this->parser->parse($parameterString));
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function parseDataProvider(): array
     {
         return [

@@ -14,14 +14,14 @@ class AttributeFixer
     /**
      * @var string
      */
-    private $inputString;
+    private string $inputString;
 
-    public function setInputString(string $inputString)
+    public function setInputString(string $inputString): void
     {
         $this->inputString = $inputString;
     }
 
-    public function fix(): ?string
+    public function fix(): string
     {
         $fixedString = $this->inputString;
 
@@ -63,6 +63,6 @@ class AttributeFixer
             return $parameterString;
         }
 
-        return preg_replace('/\:\s+/', '=', $parameterString);
+        return (string) preg_replace('/\:\s+/', '=', $parameterString);
     }
 }
