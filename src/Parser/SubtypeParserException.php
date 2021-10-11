@@ -4,7 +4,7 @@ namespace webignition\InternetMediaType\Parser;
 
 class SubtypeParserException extends ParseException
 {
-    const INTERNAL_INVALID_CHARACTER_CODE = 1;
+    public const INTERNAL_INVALID_CHARACTER_CODE = 1;
 
     /**
      * @var int

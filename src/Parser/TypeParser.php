@@ -9,10 +9,10 @@ use webignition\StringParser\StringParser;
  */
 class TypeParser extends StringParser
 {
-    const TYPE_SUBTYPE_SEPARATOR = '/';
-    const STATE_IN_TYPE = 1;
-    const STATE_INVALID_INTERNAL_CHARACTER = 2;
-    const STATE_LEFT_TYPE = 3;
+    public const TYPE_SUBTYPE_SEPARATOR = '/';
+    public const STATE_IN_TYPE = 1;
+    public const STATE_INVALID_INTERNAL_CHARACTER = 2;
+    public const STATE_LEFT_TYPE = 3;
 
     /**
      * Collection of characters not valid in a type

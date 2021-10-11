@@ -1,6 +1,4 @@
 <?php
-/** @noinspection PhpDocSignatureInspection */
-/** @noinspection PhpUnhandledExceptionInspection */
 
 namespace webignition\Tests\InternetMediaType\Parser;
 
@@ -32,7 +30,7 @@ class ParserTest extends \PHPUnit\Framework\TestCase
      * @param array<string, string> $expectedParameters
      */
     public function testParseValidMediaType(
-        string  $internetMediaTypeString,
+        string $internetMediaTypeString,
         string $expectedType,
         string $expectedSubtype,
         array $expectedParameters

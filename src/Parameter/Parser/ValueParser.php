@@ -10,11 +10,10 @@ use webignition\QuotedString\Parser as QuotedStringParser;
  */
 class ValueParser extends StringParser
 {
-    const ATTRIBUTE_VALUE_SEPARATOR = '=';
-    const QUOTED_STRING_DELIMITER = '"';
-
-    const STATE_IN_NON_QUOTED_VALUE = 1;
-    const STATE_IN_QUOTED_VALUE = 2;
+    public const ATTRIBUTE_VALUE_SEPARATOR = '=';
+    public const QUOTED_STRING_DELIMITER = '"';
+    public const STATE_IN_NON_QUOTED_VALUE = 1;
+    public const STATE_IN_QUOTED_VALUE = 2;
 
     /**
      * Attribute part of the attribute=value parameter string

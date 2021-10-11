@@ -9,7 +9,7 @@ namespace webignition\InternetMediaType\Parameter\Parser;
  */
 class AttributeFixer
 {
-    const COMMA_SEPARATED_TYPE_SEPARATOR = ', ';
+    public const COMMA_SEPARATED_TYPE_SEPARATOR = ', ';
 
     /**
      * @var string

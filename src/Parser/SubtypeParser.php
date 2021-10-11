@@ -10,13 +10,12 @@ use webignition\StringParser\StringParser;
  */
 class SubtypeParser extends StringParser
 {
-    const TYPE_SUBTYPE_SEPARATOR = '/';
-    const TYPE_PARAMETER_SEPARATOR = ';';
-
-    const STATE_IN_TYPE = 1;
-    const STATE_IN_SUBTYPE = 2;
-    const STATE_LEFT_SUBTYPE = 3;
-    const STATE_INVALID_INTERNAL_CHARACTER = 4;
+    public const TYPE_SUBTYPE_SEPARATOR = '/';
+    public const TYPE_PARAMETER_SEPARATOR = ';';
+    public const STATE_IN_TYPE = 1;
+    public const STATE_IN_SUBTYPE = 2;
+    public const STATE_LEFT_SUBTYPE = 3;
+    public const STATE_INVALID_INTERNAL_CHARACTER = 4;
 
     /**
      * Collection of characters not valid in a subtype

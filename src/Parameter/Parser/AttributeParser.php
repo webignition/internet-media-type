@@ -10,10 +10,10 @@ use webignition\StringParser\StringParser;
  */
 class AttributeParser extends StringParser
 {
-    const ATTRIBUTE_VALUE_SEPARATOR = '=';
-    const STATE_IN_ATTRIBUTE_NAME = 1;
-    const STATE_INVALID_INTERNAL_CHARACTER = 2;
-    const STATE_LEFT_ATTRIBUTE_NAME = 3;
+    public const ATTRIBUTE_VALUE_SEPARATOR = '=';
+    public const STATE_IN_ATTRIBUTE_NAME = 1;
+    public const STATE_INVALID_INTERNAL_CHARACTER = 2;
+    public const STATE_LEFT_ATTRIBUTE_NAME = 3;
 
     /**
      * Collection of characters not valid in an attribute name

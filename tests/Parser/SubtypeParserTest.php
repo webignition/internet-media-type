@@ -1,6 +1,4 @@
 <?php
-/** @noinspection PhpDocSignatureInspection */
-/** @noinspection PhpUnhandledExceptionInspection */
 
 namespace webignition\Tests\InternetMediaType\Parser;
 
@@ -24,7 +22,7 @@ class SubtypeParserTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider parseDataProvider
      */
-    public function testPase(string $internetMediaTypeString, string $expectedSubtype): void
+    public function testParse(string $internetMediaTypeString, string $expectedSubtype): void
     {
         $this->assertEquals(
             $expectedSubtype,
