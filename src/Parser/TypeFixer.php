@@ -22,22 +22,28 @@ class TypeFixer
      */
     private $position;
 
-    public function setInputString(string $inputString)
+    public function setInputString(string $inputString): void
     {
         $this->inputString = $inputString;
     }
 
-    public function setPosition(int $position)
+    public function setPosition(int $position): void
     {
         $this->position = $position;
     }
 
     public function fix(): ?string
     {
-        return $this->getLongestString(array(
-            $this->commaSeparatedTypeFix(),
-            $this->spaceSeparatingTypeAndAttributeFix()
-        ));
+        $commaSeparatedTypeFix = $this->commaSeparatedTypeFix();
+        $spaceSeparatingTypeAndAttributeFix = $this->spaceSeparatingTypeAndAttributeFix();
+
+        if (null === $commaSeparatedTypeFix && null === $spaceSeparatingTypeAndAttributeFix) {
+            return null;
+        }
+
+        return strlen((string) $commaSeparatedTypeFix) >= strlen((string) $spaceSeparatingTypeAndAttributeFix)
+            ? $commaSeparatedTypeFix
+            : $spaceSeparatingTypeAndAttributeFix;
     }
 
     /**

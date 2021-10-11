@@ -23,7 +23,7 @@ class ValueParser extends StringParser
      */
     private $attribute = '';
 
-    public function setAttribute(string $attribute)
+    public function setAttribute(string $attribute): void
     {
         $this->attribute = $attribute;
     }
@@ -59,7 +59,7 @@ class ValueParser extends StringParser
         ));
     }
 
-    protected function parseCurrentCharacter()
+    protected function parseCurrentCharacter(): void
     {
         switch ($this->getCurrentState()) {
             case self::STATE_UNKNOWN:
@@ -74,7 +74,7 @@ class ValueParser extends StringParser
         }
     }
 
-    private function deriveState()
+    private function deriveState(): void
     {
         if ($this->isCurrentCharacterQuotedStringDelimiter()) {
             $this->setCurrentState(self::STATE_IN_QUOTED_VALUE);

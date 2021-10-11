@@ -14,7 +14,7 @@ class TypeFixerTest extends \PHPUnit\Framework\TestCase
         string $internetMediaTypeString,
         int $invalidCharacterPosition,
         ?string $expectedType
-    ) {
+    ): void {
         $typeFixer = new TypeFixer();
         $typeFixer->setPosition($invalidCharacterPosition);
         $typeFixer->setInputString($internetMediaTypeString);
@@ -22,6 +22,9 @@ class TypeFixerTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expectedType, $typeFixer->fix());
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function fixSuccessDataProvider(): array
     {
         return [
@@ -51,7 +54,7 @@ class TypeFixerTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider fixExceptionWhenParsingDataProvider
      */
-    public function testFixExceptionWhenParsing(string $internetMediaTypeString, int $invalidCharacterPosition)
+    public function testFixExceptionWhenParsing(string $internetMediaTypeString, int $invalidCharacterPosition): void
     {
         $typeFixer = new TypeFixer();
         $typeFixer->setPosition($invalidCharacterPosition);
@@ -60,6 +63,9 @@ class TypeFixerTest extends \PHPUnit\Framework\TestCase
         $this->assertNull($typeFixer->fix());
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function fixExceptionWhenParsingDataProvider(): array
     {
         return [

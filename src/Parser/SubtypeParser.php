@@ -44,7 +44,7 @@ class SubtypeParser extends StringParser
         $this->configuration = new Configuration();
     }
 
-    public function setConfiguration(Configuration $configuration)
+    public function setConfiguration(Configuration $configuration): void
     {
         $this->configuration = $configuration;
     }
@@ -112,7 +112,7 @@ class SubtypeParser extends StringParser
                     $fixer->setPosition($this->getCurrentCharacterPointer());
                     $fixedType = $fixer->fix();
 
-                    return $this->parse($fixedType);
+                    return $this->parse((string) $fixedType);
                 }
 
                 throw new SubtypeParserException(

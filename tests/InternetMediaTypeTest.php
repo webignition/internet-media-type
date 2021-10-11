@@ -11,6 +11,9 @@ class InternetMediaTypeTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider createDataProvider
+     *
+     * @param array<mixed> $parameters
+     * @param string[] $expectedParameterStrings
      */
     public function testCreate(
         ?string $type,
@@ -19,7 +22,7 @@ class InternetMediaTypeTest extends \PHPUnit\Framework\TestCase
         ?string $expectedType,
         ?string $expectedSubtype,
         array $expectedParameterStrings
-    ) {
+    ): void {
         $internetMediaType = new InternetMediaType($type, $subtype, $parameters);
 
         $this->assertEquals($expectedType, $internetMediaType->getType());
@@ -34,6 +37,9 @@ class InternetMediaTypeTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expectedParameterStrings, $parameterStrings);
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function createDataProvider(): array
     {
         return [
@@ -103,13 +109,16 @@ class InternetMediaTypeTest extends \PHPUnit\Framework\TestCase
         string $expectedType,
         string $expectedSubtype,
         string $expectedString
-    ) {
+    ): void {
         $this->assertEquals($expectedString, (string)$internetMediaType);
 
         $this->assertEquals($expectedType, $internetMediaType->getType());
         $this->assertEquals($expectedSubtype, $internetMediaType->getSubtype());
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function typeAndCastToStringDataProvider(): array
     {
         return [
@@ -165,12 +174,14 @@ class InternetMediaTypeTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider addParameterDataProvider
+     *
+     * @param array<string, string> $expectedParameters
      */
     public function testAddParameter(
         InternetMediaType $internetMediaType,
         ParameterInterface $parameterToAdd,
         array $expectedParameters
-    ) {
+    ): void {
         $internetMediaType->addParameter($parameterToAdd);
 
         foreach ($internetMediaType->getParameters() as $index => $parameter) {
@@ -178,6 +189,9 @@ class InternetMediaTypeTest extends \PHPUnit\Framework\TestCase
         }
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function addParameterDataProvider(): array
     {
         return [
@@ -217,10 +231,13 @@ class InternetMediaTypeTest extends \PHPUnit\Framework\TestCase
         InternetMediaType $internetMediaType,
         string $attribute,
         bool $expectedHasParameter
-    ) {
+    ): void {
         $this->assertEquals($expectedHasParameter, $internetMediaType->hasParameter($attribute));
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function hasParameterDataProvider(): array
     {
         return [
@@ -248,12 +265,14 @@ class InternetMediaTypeTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider removeParameterDataProvider
+     *
+     * @param string[] $expectedParametersAsStrings
      */
     public function testRemoveParameter(
         InternetMediaType $internetMediaType,
         ParameterInterface $parameterToRemove,
         array $expectedParametersAsStrings
-    ) {
+    ): void {
         $internetMediaType->removeParameter($parameterToRemove);
 
         $parametersAsStrings = [];
@@ -264,6 +283,9 @@ class InternetMediaTypeTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expectedParametersAsStrings, $parametersAsStrings);
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function removeParameterDataProvider(): array
     {
         return [
@@ -299,12 +321,15 @@ class InternetMediaTypeTest extends \PHPUnit\Framework\TestCase
         InternetMediaType $internetMediaType,
         string $attribute,
         ?ParameterInterface $expectedParameter
-    ) {
+    ): void {
         $parameter = $internetMediaType->getParameter($attribute);
 
         $this->assertEquals((string)$expectedParameter, (string)$parameter);
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function getParameterDataProvider(): array
     {
         return [
@@ -334,11 +359,16 @@ class InternetMediaTypeTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider hasTypeHasSubtypeGetSubtypeStringDataProvider
      */
-    public function testGetTypeSubtypeString(InternetMediaType $internetMediaType, string $expectedTypeSubtypeString)
-    {
+    public function testGetTypeSubtypeString(
+        InternetMediaType $internetMediaType,
+        string $expectedTypeSubtypeString
+    ): void {
         $this->assertEquals($expectedTypeSubtypeString, $internetMediaType->getTypeSubtypeString());
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function hasTypeHasSubtypeGetSubtypeStringDataProvider(): array
     {
         return [

@@ -10,7 +10,7 @@ class AttributeFixerTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider fixValidAttributeDataProvider
      */
-    public function testFixValidAttribute(string $attribute, string $expectedFixedAttribute)
+    public function testFixValidAttribute(string $attribute, string $expectedFixedAttribute): void
     {
         $attributeFixer = new AttributeFixer();
         $attributeFixer->setInputString($attribute);
@@ -18,6 +18,9 @@ class AttributeFixerTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expectedFixedAttribute, $attributeFixer->fix());
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function fixValidAttributeDataProvider(): array
     {
         return [

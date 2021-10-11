@@ -14,7 +14,7 @@ class TypeParserTest extends \PHPUnit\Framework\TestCase
      */
     private $parser;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->parser = new TypeParser();
@@ -23,7 +23,7 @@ class TypeParserTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider validTypeDataProvider
      */
-    public function testParseValidType(string $internetMediaTypeString, string $expectedType)
+    public function testParseValidType(string $internetMediaTypeString, string $expectedType): void
     {
         $this->assertEquals(
             $expectedType,
@@ -31,6 +31,9 @@ class TypeParserTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function validTypeDataProvider(): array
     {
         return [
@@ -48,7 +51,7 @@ class TypeParserTest extends \PHPUnit\Framework\TestCase
     /**
      * @throws TypeParserException
      */
-    public function testParseMalformedType()
+    public function testParseMalformedType(): void
     {
         $this->expectException(TypeParserException::class);
         $this->expectExceptionMessage('Invalid internal character after at position 1');

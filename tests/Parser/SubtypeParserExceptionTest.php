@@ -1,7 +1,7 @@
 <?php
 /** @noinspection PhpDocSignatureInspection */
 
-namespace webignition\Tests\InternetMediaType\Parameter;
+namespace webignition\Tests\InternetMediaType\Parser;
 
 use webignition\InternetMediaType\Parser\SubtypeParserException;
 
@@ -16,13 +16,16 @@ class SubtypeParserExceptionTest extends \PHPUnit\Framework\TestCase
         int $position,
         bool $expectedIsInternalCharacterException,
         int $expectedPosition
-    ) {
+    ): void {
         $exception = new SubtypeParserException($message, $code, $position);
 
         $this->assertEquals($expectedIsInternalCharacterException, $exception->isInvalidInternalCharacterException());
         $this->assertEquals($expectedPosition, $exception->getPosition());
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function createDataProvider(): array
     {
         return [
@@ -43,7 +46,7 @@ class SubtypeParserExceptionTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    public function testSetPosition()
+    public function testSetPosition(): void
     {
         $initialPosition = 3;
         $newPosition = 4;

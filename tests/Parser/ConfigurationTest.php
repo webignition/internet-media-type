@@ -11,19 +11,19 @@ class ConfigurationTest extends \PHPUnit\Framework\TestCase
      */
     private $configuration;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->configuration = new Configuration();
     }
 
-    public function testDefaults()
+    public function testDefaults(): void
     {
         $this->assertFalse($this->configuration->ignoreInvalidAttributes());
         $this->assertFalse($this->configuration->attemptToRecoverFromInvalidInternalCharacter());
     }
 
-    public function testToggleIgnoreInvalidAttributes()
+    public function testToggleIgnoreInvalidAttributes(): void
     {
         $this->assertFalse($this->configuration->ignoreInvalidAttributes());
 
@@ -34,7 +34,7 @@ class ConfigurationTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($this->configuration->ignoreInvalidAttributes());
     }
 
-    public function testToggleAttemptToRecoverFromInvalidInternalCharacter()
+    public function testToggleAttemptToRecoverFromInvalidInternalCharacter(): void
     {
         $this->assertFalse($this->configuration->attemptToRecoverFromInvalidInternalCharacter());
 

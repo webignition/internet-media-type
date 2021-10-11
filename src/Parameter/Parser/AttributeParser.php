@@ -18,7 +18,7 @@ class AttributeParser extends StringParser
     /**
      * Collection of characters not valid in an attribute name
      *
-     * @var array
+     * @var string[]
      */
     private $invalidCharacters = array(
         ' ',
@@ -41,7 +41,7 @@ class AttributeParser extends StringParser
         $this->configuration = new Configuration();
     }
 
-    public function setConfiguration(Configuration $configuration)
+    public function setConfiguration(Configuration $configuration): void
     {
         $this->configuration = $configuration;
     }

@@ -25,7 +25,7 @@ class AttributeParserException extends ParseException
         return $this->getCode() === self::INTERNAL_INVALID_CHARACTER_CODE;
     }
 
-    public function setPosition(int $position)
+    public function setPosition(int $position): void
     {
         $this->position = $position;
     }

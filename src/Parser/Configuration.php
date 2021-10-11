@@ -14,12 +14,12 @@ class Configuration
      */
     private $attemptToRecoverFromInvalidInternalCharacter = false;
 
-    public function enableIgnoreInvalidAttributes()
+    public function enableIgnoreInvalidAttributes(): void
     {
         $this->ignoreInvalidAttributes = true;
     }
 
-    public function disableIgnoreInvalidAttributes()
+    public function disableIgnoreInvalidAttributes(): void
     {
         $this->ignoreInvalidAttributes = false;
     }
@@ -29,12 +29,12 @@ class Configuration
         return $this->ignoreInvalidAttributes;
     }
 
-    public function enableAttemptToRecoverFromInvalidInternalCharacter()
+    public function enableAttemptToRecoverFromInvalidInternalCharacter(): void
     {
         $this->attemptToRecoverFromInvalidInternalCharacter = true;
     }
 
-    public function disableAttemptToRecoverFromInvalidInternalCharacter()
+    public function disableAttemptToRecoverFromInvalidInternalCharacter(): void
     {
         $this->attemptToRecoverFromInvalidInternalCharacter = false;
     }

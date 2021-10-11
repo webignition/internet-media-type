@@ -29,10 +29,13 @@ class InternetMediaType implements InternetMediaTypeInterface
     /**
      * Collection of Parameter objects
      *
-     * @var Parameter[]
+     * @var ParameterInterface[]
      */
     private $parameters = [];
 
+    /**
+     * @param array<mixed> $parameters
+     */
     public function __construct(?string $type = null, ?string $subtype = null, array $parameters = [])
     {
         if (!empty($type)) {
@@ -50,7 +53,7 @@ class InternetMediaType implements InternetMediaTypeInterface
         }
     }
 
-    public function setType(string $type)
+    public function setType(string $type): void
     {
         $this->type = strtolower($type);
     }
@@ -60,7 +63,7 @@ class InternetMediaType implements InternetMediaTypeInterface
         return $this->type;
     }
 
-    public function setSubtype(string $subtype)
+    public function setSubtype(string $subtype): void
     {
         $this->subtype = strtolower($subtype);
     }
@@ -70,7 +73,7 @@ class InternetMediaType implements InternetMediaTypeInterface
         return $this->subtype;
     }
 
-    public function addParameter(ParameterInterface $parameter)
+    public function addParameter(ParameterInterface $parameter): void
     {
         $this->parameters[$parameter->getAttribute()] = $parameter;
     }
@@ -80,7 +83,7 @@ class InternetMediaType implements InternetMediaTypeInterface
         return !is_null($this->getParameter($attribute));
     }
 
-    public function removeParameter(ParameterInterface $parameter)
+    public function removeParameter(ParameterInterface $parameter): void
     {
         if ($this->hasParameter($parameter->getAttribute())) {
             unset($this->parameters[$parameter->getAttribute()]);

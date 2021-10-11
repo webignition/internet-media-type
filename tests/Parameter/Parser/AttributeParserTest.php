@@ -14,7 +14,7 @@ class AttributeParserTest extends \PHPUnit\Framework\TestCase
      */
     private $parser;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->parser = new AttributeParser();
@@ -23,11 +23,14 @@ class AttributeParserTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider parseDataProvider
      */
-    public function testParse(string $attribute, string $expectedName)
+    public function testParse(string $attribute, string $expectedName): void
     {
         $this->assertEquals($expectedName, $this->parser->parse($attribute));
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function parseDataProvider(): array
     {
         return [
@@ -53,8 +56,10 @@ class AttributeParserTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider parseInvalidInternalCharacterDataProvider
      */
-    public function testParseInvalidInternalCharacter(string $attribute, int $expectedInvalidInternalCharacterPosition)
-    {
+    public function testParseInvalidInternalCharacter(
+        string $attribute,
+        int $expectedInvalidInternalCharacterPosition
+    ): void {
         $this->expectException(AttributeParserException::class);
         $this->expectExceptionMessage(
             'Invalid internal character after at position ' . $expectedInvalidInternalCharacterPosition
@@ -64,6 +69,9 @@ class AttributeParserTest extends \PHPUnit\Framework\TestCase
         $this->parser->parse($attribute);
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function parseInvalidInternalCharacterDataProvider(): array
     {
         return [
@@ -77,7 +85,7 @@ class AttributeParserTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider parseInvalidInternalCharacterDataProviderFoo
      */
-    public function testParseInvalidInternalCharacterAttemptRecoveryIgnoreInvalidAttributes(string $attribute)
+    public function testParseInvalidInternalCharacterAttemptRecoveryIgnoreInvalidAttributes(string $attribute): void
     {
         $this->parser->getConfiguration()->enableAttemptToRecoverFromInvalidInternalCharacter();
         $this->parser->getConfiguration()->enableIgnoreInvalidAttributes();
@@ -85,6 +93,9 @@ class AttributeParserTest extends \PHPUnit\Framework\TestCase
         $this->assertEmpty($this->parser->parse($attribute));
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function parseInvalidInternalCharacterDataProviderFoo(): array
     {
         return [
@@ -97,12 +108,15 @@ class AttributeParserTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider parseAndFixInvalidInternalCharacterDataProvider
      */
-    public function testParseAndFixInvalidInternalCharacter(string $attribute, string $expectedName)
+    public function testParseAndFixInvalidInternalCharacter(string $attribute, string $expectedName): void
     {
         $this->parser->getConfiguration()->enableAttemptToRecoverFromInvalidInternalCharacter();
         $this->assertEquals($expectedName, $this->parser->parse($attribute));
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function parseAndFixInvalidInternalCharacterDataProvider(): array
     {
         return [
@@ -116,12 +130,15 @@ class AttributeParserTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider parseAndIgnoreInvalidCharacterDataProvider
      */
-    public function testParseAndIgnoreInvalidCharacter(string $attribute)
+    public function testParseAndIgnoreInvalidCharacter(string $attribute): void
     {
         $this->parser->getConfiguration()->enableIgnoreInvalidAttributes();
         $this->assertEmpty($this->parser->parse($attribute));
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function parseAndIgnoreInvalidCharacterDataProvider(): array
     {
         return [
