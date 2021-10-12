@@ -2,14 +2,12 @@
 
 namespace webignition\Tests\InternetMediaType\Parameter\Parser;
 
+use PHPUnit\Framework\TestCase;
 use webignition\InternetMediaType\Parameter\Parser\ValueParser;
 
-class ValueParserTest extends \PHPUnit\Framework\TestCase
+class ValueParserTest extends TestCase
 {
-    /**
-     * @var ValueParser
-     */
-    private $parser;
+    private ValueParser $parser;
 
     protected function setUp(): void
     {

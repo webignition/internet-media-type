@@ -2,15 +2,13 @@
 
 namespace webignition\Tests\InternetMediaType\Parser;
 
+use PHPUnit\Framework\TestCase;
 use webignition\InternetMediaType\Parser\TypeParser;
 use webignition\InternetMediaType\Parser\TypeParserException;
 
-class TypeParserTest extends \PHPUnit\Framework\TestCase
+class TypeParserTest extends TestCase
 {
-    /**
-     * @var TypeParser
-     */
-    private $parser;
+    private TypeParser $parser;
 
     protected function setUp(): void
     {

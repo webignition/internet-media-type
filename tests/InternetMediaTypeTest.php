@@ -2,11 +2,12 @@
 
 namespace webignition\Tests\InternetMediaType;
 
+use PHPUnit\Framework\TestCase;
 use webignition\InternetMediaType\InternetMediaType;
 use webignition\InternetMediaType\Parameter\Parameter;
 use webignition\InternetMediaTypeInterface\ParameterInterface;
 
-class InternetMediaTypeTest extends \PHPUnit\Framework\TestCase
+class InternetMediaTypeTest extends TestCase
 {
     /**
      * @dataProvider createDataProvider

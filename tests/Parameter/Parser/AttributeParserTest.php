@@ -2,15 +2,13 @@
 
 namespace webignition\Tests\InternetMediaType\Parameter\Parser;
 
+use PHPUnit\Framework\TestCase;
 use webignition\InternetMediaType\Parameter\Parser\AttributeParser;
 use webignition\InternetMediaType\Parameter\Parser\AttributeParserException;
 
-class AttributeParserTest extends \PHPUnit\Framework\TestCase
+class AttributeParserTest extends TestCase
 {
-    /**
-     * @var AttributeParser
-     */
-    private $parser;
+    private AttributeParser $parser;
 
     protected function setUp(): void
     {

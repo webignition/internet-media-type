@@ -2,9 +2,10 @@
 
 namespace webignition\Tests\InternetMediaType\Parser;
 
+use PHPUnit\Framework\TestCase;
 use webignition\InternetMediaType\Parser\SubtypeParserException;
 
-class SubtypeParserExceptionTest extends \PHPUnit\Framework\TestCase
+class SubtypeParserExceptionTest extends TestCase
 {
     /**
      * @dataProvider createDataProvider
