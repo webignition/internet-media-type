@@ -24,15 +24,20 @@ use webignition\InternetMediaTypeInterface\ParameterInterface;
 class Parser
 {
     private Configuration $configuration;
+    private AttributeParser $attributeParser;
 
     public function __construct()
     {
         $this->configuration = new Configuration();
+        $this->attributeParser = new AttributeParser();
+
+        $this->attributeParser->setConfiguration($this->configuration);
     }
 
     public function setConfiguration(Configuration $configuration): void
     {
         $this->configuration = $configuration;
+        $this->attributeParser->setConfiguration($configuration);
     }
 
     public function getConfiguration(): Configuration
@@ -46,23 +51,15 @@ class Parser
     public function parse(string $parameterString): ParameterInterface
     {
         $inputString = trim($parameterString);
-        $attribute = $this->createAttributeParser()->parse($inputString);
+        $attribute = $this->attributeParser->parse($inputString);
 
-        if (empty($attribute)) {
+        if ('' === $attribute) {
             return new Parameter('', '');
         }
 
         $value = $this->createValueParser($attribute)->parse($parameterString);
 
         return new Parameter($attribute, $value);
-    }
-
-    private function createAttributeParser(): AttributeParser
-    {
-        $attributeParser = new AttributeParser();
-        $attributeParser->setConfiguration($this->getConfiguration());
-
-        return $attributeParser;
     }
 
     private function createValueParser(string $attribute): ValueParser

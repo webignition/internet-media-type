@@ -50,6 +50,8 @@ class AttributeParser extends StringParser
      */
     public function parse(string $inputString): string
     {
+        parent::setCurrentState(self::STATE_UNKNOWN);
+
         return parent::parse(trim($inputString));
     }
 
