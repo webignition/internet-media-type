@@ -20,21 +20,15 @@ class AttributeParser extends StringParser
      *
      * @var string[]
      */
-    private $invalidCharacters = array(
+    private array $invalidCharacters = array(
         ' ',
         '"',
         '\\'
     );
 
-    /**
-     * @var bool
-     */
-    private $hasAttemptedToFixAttributeInvalidInternalCharacter = false;
+    private bool $hasAttemptedToFixAttributeInvalidInternalCharacter = false;
 
-    /**
-     * @var Configuration
-     */
-    private $configuration;
+    private Configuration $configuration;
 
     public function __construct()
     {
@@ -52,23 +46,17 @@ class AttributeParser extends StringParser
     }
 
     /**
-     * @param string $inputString
-     *
-     * @return string
-     *
      * @throws AttributeParserException
      */
-    public function parse($inputString): string
+    public function parse(string $inputString): string
     {
         return parent::parse(trim($inputString));
     }
 
     /**
-     * @return string
-     *
      * @throws AttributeParserException
      */
-    protected function parseCurrentCharacter(): ?string
+    protected function parseCurrentCharacter(): void
     {
         switch ($this->getCurrentState()) {
             case self::STATE_UNKNOWN:
@@ -105,7 +93,9 @@ class AttributeParser extends StringParser
                     $attributeFixer->setInputString($this->getInputString());
                     $fixedInputString = $attributeFixer->fix();
 
-                    return $this->parse($fixedInputString);
+                    $this->parse($fixedInputString);
+
+                    return;
                 }
 
                 throw new AttributeParserException(
@@ -114,8 +104,6 @@ class AttributeParser extends StringParser
                     $this->getCurrentCharacterPointer()
                 );
         }
-
-        return null;
     }
 
     private function shouldIgnoreInvalidCharacter(): bool

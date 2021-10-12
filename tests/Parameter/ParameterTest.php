@@ -2,9 +2,10 @@
 
 namespace webignition\Tests\InternetMediaType\Parameter;
 
+use PHPUnit\Framework\TestCase;
 use webignition\InternetMediaType\Parameter\Parameter;
 
-class ParameterTest extends \PHPUnit\Framework\TestCase
+class ParameterTest extends TestCase
 {
     /**
      * @dataProvider castToStringDataProvider

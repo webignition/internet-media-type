@@ -4,15 +4,9 @@ namespace webignition\InternetMediaType\Parser;
 
 class Configuration
 {
-    /**
-     * @var bool
-     */
-    private $ignoreInvalidAttributes = false;
+    private bool $ignoreInvalidAttributes = false;
 
-    /**
-     * @var bool
-     */
-    private $attemptToRecoverFromInvalidInternalCharacter = false;
+    private bool $attemptToRecoverFromInvalidInternalCharacter = false;
 
     public function enableIgnoreInvalidAttributes(): void
     {

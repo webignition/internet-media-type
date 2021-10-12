@@ -24,10 +24,7 @@ use webignition\InternetMediaTypeInterface\ParameterInterface;
  */
 class Parser
 {
-    /**
-     * @var Configuration
-     */
-    private $configuration;
+    private Configuration $configuration;
 
     public function __construct()
     {
@@ -45,10 +42,6 @@ class Parser
     }
 
     /**
-     * @param string $parameterString
-     *
-     * @return ParameterInterface
-     *
      * @throws AttributeParserException
      */
     public function parse(string $parameterString): ParameterInterface
@@ -62,9 +55,7 @@ class Parser
 
         $value = $this->createValueParser($attribute)->parse($parameterString);
 
-        $parameter = new Parameter($attribute, $value);
-
-        return $parameter;
+        return new Parameter($attribute, $value);
     }
 
     private function createAttributeParser(): AttributeParser

@@ -2,14 +2,12 @@
 
 namespace webignition\Tests\InternetMediaType\Parser;
 
+use PHPUnit\Framework\TestCase;
 use webignition\InternetMediaType\Parser\Configuration;
 
-class ConfigurationTest extends \PHPUnit\Framework\TestCase
+class ConfigurationTest extends TestCase
 {
-    /**
-     * @var Configuration
-     */
-    private $configuration;
+    private Configuration $configuration;
 
     protected function setUp(): void
     {

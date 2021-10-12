@@ -2,9 +2,10 @@
 
 namespace webignition\Tests\InternetMediaType\Parameter\Parser;
 
+use PHPUnit\Framework\TestCase;
 use webignition\InternetMediaType\Parameter\Parser\AttributeFixer;
 
-class AttributeFixerTest extends \PHPUnit\Framework\TestCase
+class AttributeFixerTest extends TestCase
 {
     /**
      * @dataProvider fixValidAttributeDataProvider

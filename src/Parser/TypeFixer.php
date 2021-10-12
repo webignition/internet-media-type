@@ -12,15 +12,8 @@ class TypeFixer
     public const COMMA_SEPARATED_TYPE_SEPARATOR = ', ';
     public const TYPE_SUBTYPE_SEPARATOR = '/';
 
-    /**
-     * @var string
-     */
-    private $inputString;
-
-    /**
-     * @var int
-     */
-    private $position;
+    private string $inputString;
+    private int $position;
 
     public function setInputString(string $inputString): void
     {
@@ -86,8 +79,6 @@ class TypeFixer
 
     /**
      * @param string[] $strings
-     *
-     * @return string
      */
     private function getLongestString(array $strings): ?string
     {
@@ -106,7 +97,7 @@ class TypeFixer
             $subtype = $subtypeParser->parse($possibleTypeSubtype);
 
             return $type . self::TYPE_SUBTYPE_SEPARATOR . $subtype;
-        } catch (\Exception $ex) {
+        } catch (\Exception) {
             return null;
         }
     }

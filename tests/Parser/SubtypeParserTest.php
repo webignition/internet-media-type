@@ -2,16 +2,13 @@
 
 namespace webignition\Tests\InternetMediaType\Parser;
 
+use PHPUnit\Framework\TestCase;
 use webignition\InternetMediaType\Parser\SubtypeParser;
 use webignition\InternetMediaType\Parser\SubtypeParserException;
 
-class SubtypeParserTest extends \PHPUnit\Framework\TestCase
+class SubtypeParserTest extends TestCase
 {
-    /**
-     *
-     * @var SubtypeParser
-     */
-    private $parser;
+    private SubtypeParser $parser;
 
     protected function setUp(): void
     {

@@ -19,20 +19,16 @@ class TypeParser extends StringParser
      *
      * @var string[]
      */
-    private $invalidCharacters = array(
+    private array $invalidCharacters = array(
         ' ',
         '"',
         '\\'
     );
 
     /**
-     * @param string $inputString
-     *
-     * @return string
-     *
      * @throws TypeParserException
      */
-    public function parse($inputString): string
+    public function parse(string $inputString): string
     {
         return parent::parse(trim($inputString));
     }
@@ -40,7 +36,7 @@ class TypeParser extends StringParser
     /**
      * @throws TypeParserException
      */
-    protected function parseCurrentCharacter(): ?string
+    protected function parseCurrentCharacter(): void
     {
         switch ($this->getCurrentState()) {
             case self::STATE_UNKNOWN:
@@ -69,8 +65,6 @@ class TypeParser extends StringParser
                     1
                 );
         }
-
-        return null;
     }
 
     private function isCurrentCharacterInvalid(): bool

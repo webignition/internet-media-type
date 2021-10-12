@@ -11,9 +11,6 @@ class AttributeFixer
 {
     public const COMMA_SEPARATED_TYPE_SEPARATOR = ', ';
 
-    /**
-     * @var string
-     */
     private string $inputString;
 
     public function setInputString(string $inputString): void
@@ -37,7 +34,7 @@ class AttributeFixer
         try {
             $parser = new AttributeParser();
             $parser->parse($parameterString);
-        } catch (\Exception $exception) {
+        } catch (\Exception) {
             return true;
         }
 
@@ -52,17 +49,13 @@ class AttributeFixer
      * Correct form "attribute=value"
      *
      * Attempt to translate invalid form into correct form
-     *
-     * @param string $parameterString
-     *
-     * @return string
      */
     private function colonSeparatedAttributeValueFix(string $parameterString): string
     {
-        if (!preg_match('/.+\:\s+.+/', $parameterString)) {
+        if (!preg_match('/.+:\s+.+/', $parameterString)) {
             return $parameterString;
         }
 
-        return (string) preg_replace('/\:\s+/', '=', $parameterString);
+        return (string) preg_replace('/:\s+/', '=', $parameterString);
     }
 }

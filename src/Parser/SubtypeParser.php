@@ -22,21 +22,15 @@ class SubtypeParser extends StringParser
      *
      * @var string[]
      */
-    private $invalidCharacters = array(
+    private array $invalidCharacters = array(
         ' ',
         '"',
         '\\'
     );
 
-    /**
-     * @var bool
-     */
-    private $hasAttemptedToFixAttributeInvalidInternalCharacter = false;
+    private bool $hasAttemptedToFixAttributeInvalidInternalCharacter = false;
 
-    /**
-     * @var Configuration
-     */
-    private $configuration;
+    private Configuration $configuration;
 
     public function __construct()
     {
@@ -54,23 +48,17 @@ class SubtypeParser extends StringParser
     }
 
     /**
-     * @param string $inputString
-     *
-     * @return string
-     *
      * @throws SubtypeParserException
      */
-    public function parse($inputString): string
+    public function parse(string $inputString): string
     {
         return parent::parse(trim($inputString));
     }
 
     /**
-     * @return string
-     *
      * @throws SubtypeParserException
      */
-    protected function parseCurrentCharacter(): ?string
+    protected function parseCurrentCharacter(): void
     {
         switch ($this->getCurrentState()) {
             case self::STATE_UNKNOWN:
@@ -111,7 +99,9 @@ class SubtypeParser extends StringParser
                     $fixer->setPosition($this->getCurrentCharacterPointer());
                     $fixedType = $fixer->fix();
 
-                    return $this->parse((string) $fixedType);
+                    $this->parse((string) $fixedType);
+
+                    return;
                 }
 
                 throw new SubtypeParserException(
@@ -120,8 +110,6 @@ class SubtypeParser extends StringParser
                     $this->getCurrentCharacterPointer()
                 );
         }
-
-        return null;
     }
 
     private function shouldAttemptToFixInvalidInternalCharacter(): bool

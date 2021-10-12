@@ -2,9 +2,10 @@
 
 namespace webignition\Tests\InternetMediaType\Parameter\Parser;
 
+use PHPUnit\Framework\TestCase;
 use webignition\InternetMediaType\Parameter\Parser\AttributeParserException;
 
-class AttributeParserExceptionTest extends \PHPUnit\Framework\TestCase
+class AttributeParserExceptionTest extends TestCase
 {
     /**
      * @dataProvider createDataProvider

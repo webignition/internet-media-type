@@ -2,9 +2,10 @@
 
 namespace webignition\Tests\InternetMediaType\Parser;
 
+use PHPUnit\Framework\TestCase;
 use webignition\InternetMediaType\Parser\TypeFixer;
 
-class TypeFixerTest extends \PHPUnit\Framework\TestCase
+class TypeFixerTest extends TestCase
 {
     /**
      * @dataProvider fixSuccessDataProvider
