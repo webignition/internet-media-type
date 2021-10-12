@@ -7,7 +7,7 @@ use webignition\InternetMediaType\Parser\Configuration;
 use webignition\InternetMediaTypeInterface\ParameterInterface;
 
 /**
- * Parses a parameter string value into a Parameter object
+ * Parses a parameter string value into a Parameter object.
  *
  * Defined as:
  *
@@ -20,7 +20,6 @@ use webignition\InternetMediaTypeInterface\ParameterInterface;
  * Linear white space (LWS) MUST NOT be used between the type and subtype, nor between an attribute and its value.
  *
  * http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html#sec3.7
- *
  */
 class Parser
 {
@@ -70,6 +69,7 @@ class Parser
     {
         $valueParser = new ValueParser();
         $valueParser->setAttribute($attribute);
+
         return $valueParser;
     }
 }

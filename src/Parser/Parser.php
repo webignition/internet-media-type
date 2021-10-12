@@ -10,7 +10,7 @@ use webignition\InternetMediaTypeInterface\ParameterInterface;
 
 /**
  * Parses a string representation of an Internet media type into an
- * InternetMediaTypeInterface object
+ * InternetMediaTypeInterface object.
  */
 class Parser
 {
@@ -85,57 +85,6 @@ class Parser
         }
     }
 
-    private function createParameterString(string $inputString, string $type, string $subtype): string
-    {
-        $parts = explode(self::TYPE_PARAMETER_SEPARATOR, $inputString, 2);
-
-        if (count($parts) === 1) {
-            return trim(str_replace($type . self::TYPE_SUBTYPE_SEPARATOR . $subtype, '', $inputString));
-        }
-
-        return trim($parts[1]);
-    }
-
-    /**
-     * Get collection of string representations of each parameter
-     *
-     *
-     * @return string[]
-     */
-    private function getParameterStrings(string $parameterString): array
-    {
-        $rawParameterStrings = explode(self::TYPE_PARAMETER_SEPARATOR, $parameterString);
-        $parameterStrings = array();
-
-        foreach ($rawParameterStrings as $rawParameterString) {
-            if ($rawParameterString != '') {
-                $parameterStrings[] = trim($rawParameterString);
-            }
-        }
-
-        return $parameterStrings;
-    }
-
-    /**
-     * Get a collection of Parameter objects from a collection of string
-     * representations of the same
-     *
-     * @param string[] $parameterStrings
-     *
-     * @return ParameterInterface[]
-     *
-     * @throws AttributeParserException
-     */
-    private function getParameters(array $parameterStrings): array
-    {
-        $parameters = array();
-        foreach ($parameterStrings as $parameterString) {
-            $parameters[] = $this->parameterParser->parse($parameterString);
-        }
-
-        return $parameters;
-    }
-
     public function setConfiguration(Configuration $configuration): void
     {
         $this->configuration = $configuration;
@@ -165,5 +114,55 @@ class Parser
         } else {
             $this->getConfiguration()->disableAttemptToRecoverFromInvalidInternalCharacter();
         }
+    }
+
+    private function createParameterString(string $inputString, string $type, string $subtype): string
+    {
+        $parts = explode(self::TYPE_PARAMETER_SEPARATOR, $inputString, 2);
+
+        if (1 === count($parts)) {
+            return trim(str_replace($type . self::TYPE_SUBTYPE_SEPARATOR . $subtype, '', $inputString));
+        }
+
+        return trim($parts[1]);
+    }
+
+    /**
+     * Get collection of string representations of each parameter.
+     *
+     * @return string[]
+     */
+    private function getParameterStrings(string $parameterString): array
+    {
+        $rawParameterStrings = explode(self::TYPE_PARAMETER_SEPARATOR, $parameterString);
+        $parameterStrings = [];
+
+        foreach ($rawParameterStrings as $rawParameterString) {
+            if ('' != $rawParameterString) {
+                $parameterStrings[] = trim($rawParameterString);
+            }
+        }
+
+        return $parameterStrings;
+    }
+
+    /**
+     * Get a collection of Parameter objects from a collection of string
+     * representations of the same.
+     *
+     * @param string[] $parameterStrings
+     *
+     * @throws AttributeParserException
+     *
+     * @return ParameterInterface[]
+     */
+    private function getParameters(array $parameterStrings): array
+    {
+        $parameters = [];
+        foreach ($parameterStrings as $parameterString) {
+            $parameters[] = $this->parameterParser->parse($parameterString);
+        }
+
+        return $parameters;
     }
 }

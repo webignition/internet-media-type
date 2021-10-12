@@ -6,7 +6,7 @@ use webignition\InternetMediaType\Parser\Configuration;
 use webignition\StringParser\StringParser;
 
 /**
- * Parses out the attribute name from an internet media type parameter string
+ * Parses out the attribute name from an internet media type parameter string.
  */
 class AttributeParser extends StringParser
 {
@@ -16,15 +16,15 @@ class AttributeParser extends StringParser
     public const STATE_LEFT_ATTRIBUTE_NAME = 3;
 
     /**
-     * Collection of characters not valid in an attribute name
+     * Collection of characters not valid in an attribute name.
      *
      * @var string[]
      */
-    private array $invalidCharacters = array(
+    private array $invalidCharacters = [
         ' ',
         '"',
         '\\'
-    );
+    ];
 
     private bool $hasAttemptedToFixAttributeInvalidInternalCharacter = false;
 
@@ -61,6 +61,7 @@ class AttributeParser extends StringParser
         switch ($this->getCurrentState()) {
             case self::STATE_UNKNOWN:
                 $this->setCurrentState(self::STATE_IN_ATTRIBUTE_NAME);
+
                 break;
 
             case self::STATE_IN_ATTRIBUTE_NAME:
@@ -83,6 +84,7 @@ class AttributeParser extends StringParser
 
             case self::STATE_LEFT_ATTRIBUTE_NAME:
                 $this->stop();
+
                 break;
 
             case self::STATE_INVALID_INTERNAL_CHARACTER:
@@ -136,6 +138,6 @@ class AttributeParser extends StringParser
 
     private function isCurrentCharacterAttributeValueSeparator(): bool
     {
-        return $this->getCurrentCharacter() == self::ATTRIBUTE_VALUE_SEPARATOR;
+        return self::ATTRIBUTE_VALUE_SEPARATOR == $this->getCurrentCharacter();
     }
 }

@@ -5,7 +5,7 @@ namespace webignition\InternetMediaType\Parameter\Parser;
 /**
  * Attempts to fix unparseable internet media types based purely on
  * observed invalid media type strings that, upon visual observation, can
- * be translated into something sensible
+ * be translated into something sensible.
  */
 class AttributeFixer
 {
@@ -43,7 +43,7 @@ class AttributeFixer
 
     /**
      * Attempt to fix a parameter string that incorrectly uses a colon as
-     * the attribute-value separator instead of the equals sign
+     * the attribute-value separator instead of the equals sign.
      *
      * Invalid form "attribute: value"
      * Correct form "attribute=value"

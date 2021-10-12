@@ -7,6 +7,31 @@ on:
   pull_request:
 
 jobs:
+  php-cs-fixer:
+    name: PHP CS Fixer Dry Run - PHP ${{ matrix.php-versions }} ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: [ubuntu-latest]
+        php-versions: ['8']
+    runs-on: ${{ matrix.operating-system }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup php
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+
+      - name: Download dependencies
+        uses: php-actions/composer@v6
+        with:
+          args: --ignore-platform-reqs --quiet
+
+      - name: Run
+        run: composer cs-fixer-dry-run
+
   phpcs:
     name: PHPCS - PHP ${{ matrix.php-versions }} ${{ matrix.operating-system }}
     strategy:
