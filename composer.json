@@ -33,8 +33,7 @@
     "require": {
         "php": ">=8",
         "webignition/internet-media-type-interface":">=0.4,<1.0",
-        "webignition/quoted-string":">=0.2.1,<1.0",
-        "webignition/string-parser":">=0.2.3,<1.0"
+        "webignition/quoted-string":"^2.0"
 
     },
     "require-dev": {
