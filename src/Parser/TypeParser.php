@@ -5,7 +5,7 @@ namespace webignition\InternetMediaType\Parser;
 use webignition\StringParser\StringParser;
 
 /**
- * Parses out the type from an internet media type string
+ * Parses out the type from an internet media type string.
  */
 class TypeParser extends StringParser
 {
@@ -15,15 +15,15 @@ class TypeParser extends StringParser
     public const STATE_LEFT_TYPE = 3;
 
     /**
-     * Collection of characters not valid in a type
+     * Collection of characters not valid in a type.
      *
      * @var string[]
      */
-    private array $invalidCharacters = array(
+    private array $invalidCharacters = [
         ' ',
         '"',
         '\\'
-    );
+    ];
 
     /**
      * @throws TypeParserException
@@ -41,6 +41,7 @@ class TypeParser extends StringParser
         switch ($this->getCurrentState()) {
             case self::STATE_UNKNOWN:
                 $this->setCurrentState(self::STATE_IN_TYPE);
+
                 break;
 
             case self::STATE_IN_TYPE:
@@ -57,6 +58,7 @@ class TypeParser extends StringParser
 
             case self::STATE_LEFT_TYPE:
                 $this->stop();
+
                 break;
 
             case self::STATE_INVALID_INTERNAL_CHARACTER:
@@ -74,6 +76,6 @@ class TypeParser extends StringParser
 
     private function isCurrentCharacterTypeSubtypeSeparator(): bool
     {
-        return $this->getCurrentCharacter() == self::TYPE_SUBTYPE_SEPARATOR;
+        return self::TYPE_SUBTYPE_SEPARATOR == $this->getCurrentCharacter();
     }
 }

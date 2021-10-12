@@ -5,8 +5,7 @@ namespace webignition\InternetMediaType\Parser;
 use webignition\StringParser\StringParser;
 
 /**
- * Parses out the subtype from an internet media type string
- *
+ * Parses out the subtype from an internet media type string.
  */
 class SubtypeParser extends StringParser
 {
@@ -18,15 +17,15 @@ class SubtypeParser extends StringParser
     public const STATE_INVALID_INTERNAL_CHARACTER = 4;
 
     /**
-     * Collection of characters not valid in a subtype
+     * Collection of characters not valid in a subtype.
      *
      * @var string[]
      */
-    private array $invalidCharacters = array(
+    private array $invalidCharacters = [
         ' ',
         '"',
         '\\'
-    );
+    ];
 
     private bool $hasAttemptedToFixAttributeInvalidInternalCharacter = false;
 
@@ -63,6 +62,7 @@ class SubtypeParser extends StringParser
         switch ($this->getCurrentState()) {
             case self::STATE_UNKNOWN:
                 $this->setCurrentState(self::STATE_IN_TYPE);
+
                 break;
 
             case self::STATE_IN_TYPE:
@@ -88,6 +88,7 @@ class SubtypeParser extends StringParser
 
             case self::STATE_LEFT_SUBTYPE:
                 $this->stop();
+
                 break;
 
             case self::STATE_INVALID_INTERNAL_CHARACTER:
@@ -125,11 +126,11 @@ class SubtypeParser extends StringParser
 
     private function isCurrentCharacterTypeSubtypeSeparator(): bool
     {
-        return $this->getCurrentCharacter() == self::TYPE_SUBTYPE_SEPARATOR;
+        return self::TYPE_SUBTYPE_SEPARATOR == $this->getCurrentCharacter();
     }
 
     private function isCurrentCharacterTypeParameterSeparator(): bool
     {
-        return $this->getCurrentCharacter() == self::TYPE_PARAMETER_SEPARATOR;
+        return self::TYPE_PARAMETER_SEPARATOR == $this->getCurrentCharacter();
     }
 }

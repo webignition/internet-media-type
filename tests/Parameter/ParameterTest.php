@@ -14,7 +14,7 @@ class ParameterTest extends TestCase
     {
         $parameter = new Parameter($attribute, $value);
 
-        $this->assertEquals($expectedParameterString, (string)$parameter);
+        $this->assertEquals($expectedParameterString, (string) $parameter);
     }
 
     /**

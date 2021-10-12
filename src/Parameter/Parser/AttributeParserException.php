@@ -15,7 +15,7 @@ class AttributeParserException extends ParseException
 
     public function isInvalidInternalCharacterException(): bool
     {
-        return $this->getCode() === self::INTERNAL_INVALID_CHARACTER_CODE;
+        return self::INTERNAL_INVALID_CHARACTER_CODE === $this->getCode();
     }
 
     public function setPosition(int $position): void

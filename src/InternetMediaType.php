@@ -2,19 +2,18 @@
 
 namespace webignition\InternetMediaType;
 
-use webignition\InternetMediaType\Parameter\Parameter;
 use webignition\InternetMediaTypeInterface\InternetMediaTypeInterface;
 use webignition\InternetMediaTypeInterface\ParameterInterface;
 
 class InternetMediaType implements InternetMediaTypeInterface, \Stringable
 {
     /**
-     * For a 'text/html' media type, this would be 'text'
+     * For a 'text/html' media type, this would be 'text'.
      */
     private ?string $type = null;
 
     /**
-     * For a 'text/html' media type, this would be 'html'
+     * For a 'text/html' media type, this would be 'html'.
      */
     private ?string $subtype = null;
 
@@ -41,6 +40,29 @@ class InternetMediaType implements InternetMediaTypeInterface, \Stringable
                 $this->addParameter($parameter);
             }
         }
+    }
+
+    public function __toString(): string
+    {
+        $string = $this->getTypeSubtypeString();
+
+        if (0 === count($this->getParameters())) {
+            return $string;
+        }
+
+        $parameterStringParts = [];
+
+        foreach ($this->getParameters() as $parameter) {
+            $parameterStringParts[] = (string) $parameter;
+        }
+
+        if (!$this->isEmptyParameterStringCollection($parameterStringParts)) {
+            $string .= self::ATTRIBUTE_PARAMETER_SEPARATOR
+                . ' '
+                . implode(self::ATTRIBUTE_PARAMETER_SEPARATOR . ' ', $parameterStringParts);
+        }
+
+        return trim($string);
     }
 
     public function setType(string $type): void
@@ -110,36 +132,13 @@ class InternetMediaType implements InternetMediaTypeInterface, \Stringable
         return $this->type . self::TYPE_SUBTYPE_SEPARATOR . $this->subtype;
     }
 
-    public function __toString(): string
-    {
-        $string = $this->getTypeSubtypeString();
-
-        if (count($this->getParameters()) === 0) {
-            return $string;
-        }
-
-        $parameterStringParts = [];
-
-        foreach ($this->getParameters() as $parameter) {
-            $parameterStringParts[] = (string)$parameter;
-        }
-
-        if (!$this->isEmptyParameterStringCollection($parameterStringParts)) {
-            $string .= self::ATTRIBUTE_PARAMETER_SEPARATOR
-                . ' '
-                . implode(self::ATTRIBUTE_PARAMETER_SEPARATOR . ' ', $parameterStringParts);
-        }
-
-        return trim($string);
-    }
-
     /**
      * @param string[] $parameterStringCollection
      */
     private function isEmptyParameterStringCollection(array $parameterStringCollection): bool
     {
         foreach ($parameterStringCollection as $value) {
-            if ($value != '') {
+            if ('' != $value) {
                 return false;
             }
         }

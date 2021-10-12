@@ -98,7 +98,7 @@ class ParserTest extends TestCase
         $this->parser->setIgnoreInvalidAttributes(true);
         $internetMediaType = $this->parser->parse('foo/bar; charset: UTF-8');
 
-        $this->assertEquals('foo/bar', (string)$internetMediaType);
+        $this->assertEquals('foo/bar', (string) $internetMediaType);
     }
 
     /**
@@ -117,7 +117,7 @@ class ParserTest extends TestCase
         $internetMediaType = $this->parser->parse($internetMediaTypeString);
         self::assertInstanceOf(InternetMediaTypeInterface::class, $internetMediaType);
 
-        $this->assertEquals($expectedParsedMediaTypeString, (string)$internetMediaType);
+        $this->assertEquals($expectedParsedMediaTypeString, (string) $internetMediaType);
 
         $this->assertEquals($expectedType, $internetMediaType->getType());
         $this->assertEquals($expectedSubtype, $internetMediaType->getSubtype());

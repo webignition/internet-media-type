@@ -2,11 +2,11 @@
 
 namespace webignition\InternetMediaType\Parameter\Parser;
 
-use webignition\StringParser\StringParser;
 use webignition\QuotedString\Parser as QuotedStringParser;
+use webignition\StringParser\StringParser;
 
 /**
- * Parses out the value from an internet media type parameter string
+ * Parses out the value from an internet media type parameter string.
  */
 class ValueParser extends StringParser
 {
@@ -16,7 +16,7 @@ class ValueParser extends StringParser
     public const STATE_IN_QUOTED_VALUE = 2;
 
     /**
-     * Attribute part of the attribute=value parameter string
+     * Attribute part of the attribute=value parameter string.
      */
     private string $attribute = '';
 
@@ -29,11 +29,11 @@ class ValueParser extends StringParser
     {
         $output = parent::parse($this->getNonAttributePart($inputString));
 
-        if ($this->getCurrentState() == self::STATE_IN_NON_QUOTED_VALUE) {
+        if (self::STATE_IN_NON_QUOTED_VALUE == $this->getCurrentState()) {
             return $output;
         }
 
-        if ($output == '') {
+        if ('' == $output) {
             return '';
         }
 
@@ -43,27 +43,28 @@ class ValueParser extends StringParser
         return $quotedString->getValue();
     }
 
+    protected function parseCurrentCharacter(): void
+    {
+        switch ($this->getCurrentState()) {
+            case self::STATE_UNKNOWN:
+                $this->deriveState();
+
+                break;
+
+            default:
+                $this->appendOutputString();
+                $this->incrementCurrentCharacterPointer();
+
+                break;
+        }
+    }
+
     private function getNonAttributePart(string $inputString): string
     {
         return trim(substr(
             $inputString,
             strlen($this->attribute) + strlen(self::ATTRIBUTE_VALUE_SEPARATOR)
         ));
-    }
-
-    protected function parseCurrentCharacter(): void
-    {
-        switch ($this->getCurrentState()) {
-            case self::STATE_UNKNOWN:
-                $this->deriveState();
-                break;
-
-
-            default:
-                $this->appendOutputString();
-                $this->incrementCurrentCharacterPointer();
-                break;
-        }
     }
 
     private function deriveState(): void
@@ -77,6 +78,6 @@ class ValueParser extends StringParser
 
     private function isCurrentCharacterQuotedStringDelimiter(): bool
     {
-        return $this->getCurrentCharacter() == self::QUOTED_STRING_DELIMITER;
+        return self::QUOTED_STRING_DELIMITER == $this->getCurrentCharacter();
     }
 }

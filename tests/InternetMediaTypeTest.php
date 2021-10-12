@@ -13,7 +13,7 @@ class InternetMediaTypeTest extends TestCase
      * @dataProvider createDataProvider
      *
      * @param array<mixed> $parameters
-     * @param string[] $expectedParameterStrings
+     * @param string[]     $expectedParameterStrings
      */
     public function testCreate(
         ?string $type,
@@ -31,7 +31,7 @@ class InternetMediaTypeTest extends TestCase
         $parameterStrings = [];
 
         foreach ($internetMediaType->getParameters() as $parameter) {
-            $parameterStrings[] = (string)$parameter;
+            $parameterStrings[] = (string) $parameter;
         }
 
         $this->assertEquals($expectedParameterStrings, $parameterStrings);
@@ -110,7 +110,7 @@ class InternetMediaTypeTest extends TestCase
         string $expectedSubtype,
         string $expectedString
     ): void {
-        $this->assertEquals($expectedString, (string)$internetMediaType);
+        $this->assertEquals($expectedString, (string) $internetMediaType);
 
         $this->assertEquals($expectedType, $internetMediaType->getType());
         $this->assertEquals($expectedSubtype, $internetMediaType->getSubtype());
@@ -185,7 +185,7 @@ class InternetMediaTypeTest extends TestCase
         $internetMediaType->addParameter($parameterToAdd);
 
         foreach ($internetMediaType->getParameters() as $index => $parameter) {
-            $this->assertEquals($expectedParameters[$index], (string)$parameter);
+            $this->assertEquals($expectedParameters[$index], (string) $parameter);
         }
     }
 
@@ -277,7 +277,7 @@ class InternetMediaTypeTest extends TestCase
 
         $parametersAsStrings = [];
         foreach ($internetMediaType->getParameters() as $parameter) {
-            $parametersAsStrings[] = (string)$parameter;
+            $parametersAsStrings[] = (string) $parameter;
         }
 
         $this->assertEquals($expectedParametersAsStrings, $parametersAsStrings);
@@ -324,7 +324,7 @@ class InternetMediaTypeTest extends TestCase
     ): void {
         $parameter = $internetMediaType->getParameter($attribute);
 
-        $this->assertEquals((string)$expectedParameter, (string)$parameter);
+        $this->assertEquals((string) $expectedParameter, (string) $parameter);
     }
 
     /**

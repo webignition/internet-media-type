@@ -7,14 +7,12 @@ use webignition\InternetMediaTypeInterface\ParameterInterface;
 class Parameter implements ParameterInterface, \Stringable
 {
     /**
-     * For a parameter of 'charset=UTF8', this woud be 'charset'
-     *
-     * @var string
+     * For a parameter of 'charset=UTF8', this woud be 'charset'.
      */
     private string $attribute;
 
     /**
-     * For a parameter of 'charset=UTF8', this would be 'UTF8'
+     * For a parameter of 'charset=UTF8', this would be 'UTF8'.
      */
     private ?string $value;
 
@@ -22,6 +20,19 @@ class Parameter implements ParameterInterface, \Stringable
     {
         $this->setAttribute($attribute);
         $this->setValue($value);
+    }
+
+    public function __toString(): string
+    {
+        if (empty($this->attribute)) {
+            return '';
+        }
+
+        if (empty($this->value)) {
+            return $this->attribute;
+        }
+
+        return $this->attribute . self::ATTRIBUTE_VALUE_SEPARATOR . $this->value;
     }
 
     public function setAttribute(string $attribute): void
@@ -42,18 +53,5 @@ class Parameter implements ParameterInterface, \Stringable
     public function getValue(): ?string
     {
         return $this->value;
-    }
-
-    public function __toString(): string
-    {
-        if (empty($this->attribute)) {
-            return '';
-        }
-
-        if (empty($this->value)) {
-            return $this->attribute;
-        }
-
-        return $this->attribute . self::ATTRIBUTE_VALUE_SEPARATOR . $this->value;
     }
 }

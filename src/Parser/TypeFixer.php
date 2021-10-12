@@ -5,7 +5,7 @@ namespace webignition\InternetMediaType\Parser;
 /**
  * Attempts to fix unparseable internet media types based purely on
  * observed invalid media type strings that, upon visual observation, can
- * be translated into something sensible
+ * be translated into something sensible.
  */
 class TypeFixer
 {
@@ -40,7 +40,7 @@ class TypeFixer
     }
 
     /**
-     * Attempt to fix media types that are formatted as:
+     * Attempt to fix media types that are formatted as:.
      *
      * type/subtype, type/subtype
      *
@@ -50,21 +50,21 @@ class TypeFixer
      */
     private function commaSeparatedTypeFix(): ?string
     {
-        if ($this->position === 0) {
+        if (0 === $this->position) {
             return null;
         }
 
         $separatorComparator = substr($this->inputString, $this->position - 1, 2);
-        if ($separatorComparator !== self::COMMA_SEPARATED_TYPE_SEPARATOR) {
+        if (self::COMMA_SEPARATED_TYPE_SEPARATOR !== $separatorComparator) {
             return null;
         }
 
-        $possibleTypeSubtypes = array(
+        $possibleTypeSubtypes = [
             substr($this->inputString, 0, $this->position - 1),
             substr($this->inputString, $this->position + 1)
-        );
+        ];
 
-        $typeSubtypes = array();
+        $typeSubtypes = [];
 
         foreach ($possibleTypeSubtypes as $possibleTypeSubtype) {
             $typeSubtype = $this->getTypeSubtypeFromPossibleTypeSubtype($possibleTypeSubtype);
@@ -103,7 +103,7 @@ class TypeFixer
     }
 
     /**
-     * Attempt to fix media types that are formatted as:
+     * Attempt to fix media types that are formatted as:.
      *
      * type/subtype attribute=value
      *
@@ -111,11 +111,11 @@ class TypeFixer
      */
     private function spaceSeparatingTypeAndAttributeFix(): ?string
     {
-        if ($this->position === 0) {
+        if (0 === $this->position) {
             return null;
         }
 
-        if ($this->inputString[$this->position] !== ' ') {
+        if (' ' !== $this->inputString[$this->position]) {
             return null;
         }
 
