@@ -4,25 +4,19 @@ namespace webignition\InternetMediaType\Parameter;
 
 use webignition\InternetMediaTypeInterface\ParameterInterface;
 
-class Parameter implements ParameterInterface
+class Parameter implements ParameterInterface, \Stringable
 {
     /**
-     * The parameter attribute.
-     *
      * For a parameter of 'charset=UTF8', this woud be 'charset'
      *
      * @var string
      */
-    private $attribute;
+    private string $attribute;
 
     /**
-     * The parameter value
-     *
      * For a parameter of 'charset=UTF8', this would be 'UTF8'
-     *
-     * @var null|string
      */
-    private $value;
+    private ?string $value;
 
     public function __construct(string $attribute, ?string $value = null)
     {

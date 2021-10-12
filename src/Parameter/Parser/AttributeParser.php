@@ -20,21 +20,15 @@ class AttributeParser extends StringParser
      *
      * @var string[]
      */
-    private $invalidCharacters = array(
+    private array $invalidCharacters = array(
         ' ',
         '"',
         '\\'
     );
 
-    /**
-     * @var bool
-     */
-    private $hasAttemptedToFixAttributeInvalidInternalCharacter = false;
+    private bool $hasAttemptedToFixAttributeInvalidInternalCharacter = false;
 
-    /**
-     * @var Configuration
-     */
-    private $configuration;
+    private Configuration $configuration;
 
     public function __construct()
     {
@@ -52,13 +46,9 @@ class AttributeParser extends StringParser
     }
 
     /**
-     * @param string $inputString
-     *
-     * @return string
-     *
      * @throws AttributeParserException
      */
-    public function parse($inputString): string
+    public function parse(string $inputString): string
     {
         return parent::parse(trim($inputString));
     }
@@ -114,8 +104,6 @@ class AttributeParser extends StringParser
                     $this->getCurrentCharacterPointer()
                 );
         }
-
-        return;
     }
 
     private function shouldIgnoreInvalidCharacter(): bool

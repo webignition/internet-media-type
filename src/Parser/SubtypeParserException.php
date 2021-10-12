@@ -6,15 +6,9 @@ class SubtypeParserException extends ParseException
 {
     public const INTERNAL_INVALID_CHARACTER_CODE = 1;
 
-    /**
-     * @var int
-     */
-    private $position;
-
-    public function __construct(string $message, int $code, int $position)
+    public function __construct(string $message, int $code, private int $position)
     {
         parent::__construct($message, $code);
-        $this->position = $position;
     }
 
     public function setPosition(int $position): void

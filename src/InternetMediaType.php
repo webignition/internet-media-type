@@ -6,32 +6,22 @@ use webignition\InternetMediaType\Parameter\Parameter;
 use webignition\InternetMediaTypeInterface\InternetMediaTypeInterface;
 use webignition\InternetMediaTypeInterface\ParameterInterface;
 
-class InternetMediaType implements InternetMediaTypeInterface
+class InternetMediaType implements InternetMediaTypeInterface, \Stringable
 {
     /**
-     * Main media type.
-     *
      * For a 'text/html' media type, this would be 'text'
-     *
-     * @var string
      */
-    private $type = null;
+    private ?string $type = null;
 
     /**
-     * Subtype, a type within a type
-     *
      * For a 'text/html' media type, this would be 'html'
-     *
-     * @var string
      */
-    private $subtype = null;
+    private ?string $subtype = null;
 
     /**
-     * Collection of Parameter objects
-     *
      * @var ParameterInterface[]
      */
-    private $parameters = [];
+    private array $parameters = [];
 
     /**
      * @param array<mixed> $parameters
@@ -94,10 +84,13 @@ class InternetMediaType implements InternetMediaTypeInterface
     {
         $attribute = trim(strtolower($attribute));
 
-        return isset($this->parameters[$attribute]) ? $this->parameters[$attribute] : null;
+        return $this->parameters[$attribute] ?? null;
     }
 
-    public function getParameters()
+    /**
+     * @return ParameterInterface[]
+     */
+    public function getParameters(): array
     {
         return $this->parameters;
     }
@@ -142,8 +135,6 @@ class InternetMediaType implements InternetMediaTypeInterface
 
     /**
      * @param string[] $parameterStringCollection
-     *
-     * @return bool
      */
     private function isEmptyParameterStringCollection(array $parameterStringCollection): bool
     {

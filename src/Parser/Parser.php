@@ -17,25 +17,10 @@ class Parser
     public const TYPE_SUBTYPE_SEPARATOR = '/';
     public const TYPE_PARAMETER_SEPARATOR = ';';
 
-    /**
-     * @var TypeParser
-     */
-    private $typeParser = null;
-
-    /**
-     * @var SubtypeParser
-     */
-    private $subtypeParser = null;
-
-    /**
-     * @var ParameterParser
-     */
-    private $parameterParser = null;
-
-    /**
-     * @var Configuration
-     */
-    private $configuration;
+    private TypeParser $typeParser;
+    private SubtypeParser $subtypeParser;
+    private ParameterParser $parameterParser;
+    private Configuration $configuration;
 
     public function __construct()
     {
@@ -50,10 +35,6 @@ class Parser
     }
 
     /**
-     * @param string $internetMediaTypeString
-     *
-     * @return InternetMediaTypeInterface|null
-     *
      * @throws ParseException
      */
     public function parse(string $internetMediaTypeString): ?InternetMediaTypeInterface
@@ -104,13 +85,6 @@ class Parser
         }
     }
 
-    /**
-     * @param string $inputString
-     * @param string $type
-     * @param string $subtype
-     *
-     * @return string
-     */
     private function createParameterString(string $inputString, string $type, string $subtype): string
     {
         $parts = explode(self::TYPE_PARAMETER_SEPARATOR, $inputString, 2);
@@ -125,7 +99,6 @@ class Parser
     /**
      * Get collection of string representations of each parameter
      *
-     * @param string $parameterString
      *
      * @return string[]
      */
@@ -153,7 +126,7 @@ class Parser
      *
      * @throws AttributeParserException
      */
-    private function getParameters($parameterStrings): array
+    private function getParameters(array $parameterStrings): array
     {
         $parameters = array();
         foreach ($parameterStrings as $parameterString) {

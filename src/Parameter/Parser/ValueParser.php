@@ -17,22 +17,15 @@ class ValueParser extends StringParser
 
     /**
      * Attribute part of the attribute=value parameter string
-     *
-     * @var string
      */
-    private $attribute = '';
+    private string $attribute = '';
 
     public function setAttribute(string $attribute): void
     {
         $this->attribute = $attribute;
     }
 
-    /**
-     * @param string $inputString
-     *
-     * @return string
-     */
-    public function parse($inputString): string
+    public function parse(string $inputString): string
     {
         $output = parent::parse($this->getNonAttributePart($inputString));
 
