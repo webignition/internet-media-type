@@ -66,11 +66,9 @@ class SubtypeParser extends StringParser
     }
 
     /**
-     * @return string
-     *
      * @throws SubtypeParserException
      */
-    protected function parseCurrentCharacter(): ?string
+    protected function parseCurrentCharacter(): void
     {
         switch ($this->getCurrentState()) {
             case self::STATE_UNKNOWN:
@@ -111,7 +109,9 @@ class SubtypeParser extends StringParser
                     $fixer->setPosition($this->getCurrentCharacterPointer());
                     $fixedType = $fixer->fix();
 
-                    return $this->parse((string) $fixedType);
+                    $this->parse((string) $fixedType);
+
+                    return;
                 }
 
                 throw new SubtypeParserException(
@@ -120,8 +120,6 @@ class SubtypeParser extends StringParser
                     $this->getCurrentCharacterPointer()
                 );
         }
-
-        return null;
     }
 
     private function shouldAttemptToFixInvalidInternalCharacter(): bool

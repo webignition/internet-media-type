@@ -32,11 +32,12 @@ class ValueParserTest extends \PHPUnit\Framework\TestCase
     public function parseDataProvider(): array
     {
         return [
+//            [
+//                'attribute' => 'foo',
+//                'parameterString' => 'foo=bar',
+//                'expectedValue' => 'bar'
+//            ],
             [
-                'attribute' => 'foo',
-                'parameterString' => 'foo=bar',
-                'expectedValue' => 'bar'
-            ],            [
                 'attribute' => 'foo',
                 'parameterString' => 'foo="bar"',
                 'expectedValue' => 'bar'

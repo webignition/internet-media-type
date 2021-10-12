@@ -40,7 +40,7 @@ class TypeParser extends StringParser
     /**
      * @throws TypeParserException
      */
-    protected function parseCurrentCharacter(): ?string
+    protected function parseCurrentCharacter(): void
     {
         switch ($this->getCurrentState()) {
             case self::STATE_UNKNOWN:
@@ -69,8 +69,6 @@ class TypeParser extends StringParser
                     1
                 );
         }
-
-        return null;
     }
 
     private function isCurrentCharacterInvalid(): bool

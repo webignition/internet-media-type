@@ -64,11 +64,9 @@ class AttributeParser extends StringParser
     }
 
     /**
-     * @return string
-     *
      * @throws AttributeParserException
      */
-    protected function parseCurrentCharacter(): ?string
+    protected function parseCurrentCharacter(): void
     {
         switch ($this->getCurrentState()) {
             case self::STATE_UNKNOWN:
@@ -105,7 +103,9 @@ class AttributeParser extends StringParser
                     $attributeFixer->setInputString($this->getInputString());
                     $fixedInputString = $attributeFixer->fix();
 
-                    return $this->parse($fixedInputString);
+                    $this->parse($fixedInputString);
+
+                    return;
                 }
 
                 throw new AttributeParserException(
@@ -115,7 +115,7 @@ class AttributeParser extends StringParser
                 );
         }
 
-        return null;
+        return;
     }
 
     private function shouldIgnoreInvalidCharacter(): bool

@@ -32,7 +32,7 @@ class ValueParser extends StringParser
      *
      * @return string
      */
-    public function parse($inputString): ?string
+    public function parse($inputString): string
     {
         $output = parent::parse($this->getNonAttributePart($inputString));
 
@@ -41,11 +41,11 @@ class ValueParser extends StringParser
         }
 
         if ($output == '') {
-            return null;
+            return '';
         }
 
         $quotedStringParser = new QuotedStringParser();
-        $quotedString = $quotedStringParser->parse($output);
+        $quotedString = $quotedStringParser->parseToObject($output);
 
         return $quotedString->getValue();
     }
