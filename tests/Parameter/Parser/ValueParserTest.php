@@ -30,11 +30,11 @@ class ValueParserTest extends TestCase
     public function parseDataProvider(): array
     {
         return [
-            //            [
-            //                'attribute' => 'foo',
-            //                'parameterString' => 'foo=bar',
-            //                'expectedValue' => 'bar'
-            //            ],
+            [
+                'attribute' => 'foo',
+                'parameterString' => 'foo=bar',
+                'expectedValue' => 'bar'
+            ],
             [
                 'attribute' => 'foo',
                 'parameterString' => 'foo="bar"',
