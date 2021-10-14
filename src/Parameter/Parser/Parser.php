@@ -5,6 +5,8 @@ namespace webignition\InternetMediaType\Parameter\Parser;
 use webignition\InternetMediaType\Parameter\Parameter;
 use webignition\InternetMediaType\Parser\Configuration;
 use webignition\InternetMediaTypeInterface\ParameterInterface;
+use webignition\QuotedString\Exception as QuotedStringException;
+use webignition\StringParser\UnknownStateException;
 
 /**
  * Parses a parameter string value into a Parameter object.
@@ -42,6 +44,8 @@ class Parser
 
     /**
      * @throws AttributeParserException
+     * @throws UnknownStateException
+     * @throws QuotedStringException
      */
     public function parse(string $parameterString): ParameterInterface
     {
