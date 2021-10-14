@@ -4,11 +4,12 @@ namespace webignition\InternetMediaType\Parameter\Parser;
 
 use webignition\InternetMediaType\Parser\Configuration;
 use webignition\StringParser\StringParser;
+use webignition\StringParser\UnknownStateException;
 
 /**
  * Parses out the attribute name from an internet media type parameter string.
  */
-class AttributeParser extends StringParser
+class AttributeParser
 {
     public const ATTRIBUTE_VALUE_SEPARATOR = '=';
     public const STATE_IN_ATTRIBUTE_NAME = 1;
@@ -16,8 +17,6 @@ class AttributeParser extends StringParser
     public const STATE_LEFT_ATTRIBUTE_NAME = 3;
 
     /**
-     * Collection of characters not valid in an attribute name.
-     *
      * @var string[]
      */
     private array $invalidCharacters = [
@@ -28,10 +27,26 @@ class AttributeParser extends StringParser
 
     private bool $hasAttemptedToFixAttributeInvalidInternalCharacter = false;
 
+    private StringParser $stringParser;
     private Configuration $configuration;
 
     public function __construct()
     {
+        $this->stringParser = new StringParser([
+            StringParser::STATE_UNKNOWN => function (StringParser $stringParser) {
+                $this->handleUnknownState($stringParser);
+            },
+            self::STATE_IN_ATTRIBUTE_NAME => function (StringParser $stringParser) {
+                $this->handleInAttributeNameState($stringParser);
+            },
+            self::STATE_LEFT_ATTRIBUTE_NAME => function (StringParser $stringParser) {
+                $stringParser->stop();
+            },
+            self::STATE_INVALID_INTERNAL_CHARACTER => function (StringParser $stringParser) {
+                $this->handleInvalidInternalCharacterState($stringParser);
+            },
+        ]);
+
         $this->configuration = new Configuration();
     }
 
@@ -47,65 +62,64 @@ class AttributeParser extends StringParser
 
     /**
      * @throws AttributeParserException
+     * @throws UnknownStateException
      */
     public function parse(string $inputString): string
     {
-        return parent::parse(trim($inputString));
+        return $this->stringParser->parse(trim($inputString));
+    }
+
+    private function handleUnknownState(StringParser $stringParser): void
+    {
+        $stringParser->setState(self::STATE_IN_ATTRIBUTE_NAME);
+    }
+
+    private function handleInAttributeNameState(StringParser $stringParser): void
+    {
+        $character = $stringParser->getCurrentCharacter();
+
+        $isCharacterInvalid = in_array($character, $this->invalidCharacters);
+        $isCharacterAttributeValueSeparator = self::ATTRIBUTE_VALUE_SEPARATOR === $character;
+
+        if ($isCharacterInvalid) {
+            if ($this->shouldIgnoreInvalidCharacter()) {
+                $stringParser->incrementPointer();
+                $stringParser->setState(self::STATE_LEFT_ATTRIBUTE_NAME);
+                $stringParser->clearOutput();
+            } else {
+                $stringParser->setState(self::STATE_INVALID_INTERNAL_CHARACTER);
+            }
+        } elseif ($isCharacterAttributeValueSeparator) {
+            $stringParser->setState(self::STATE_LEFT_ATTRIBUTE_NAME);
+        } else {
+            $stringParser->appendOutputString();
+            $stringParser->incrementPointer();
+        }
     }
 
     /**
      * @throws AttributeParserException
+     * @throws UnknownStateException
      */
-    protected function parseCurrentCharacter(): void
+    private function handleInvalidInternalCharacterState(StringParser $stringParser): void
     {
-        switch ($this->getCurrentState()) {
-            case self::STATE_UNKNOWN:
-                $this->setCurrentState(self::STATE_IN_ATTRIBUTE_NAME);
+        if ($this->shouldAttemptToFixInvalidInternalCharacter()) {
+            $this->hasAttemptedToFixAttributeInvalidInternalCharacter = true;
 
-                break;
+            $attributeFixer = new AttributeFixer();
+            $attributeFixer->setInputString($stringParser->getInput());
+            $fixedInputString = $attributeFixer->fix();
 
-            case self::STATE_IN_ATTRIBUTE_NAME:
-                if ($this->isCurrentCharacterInvalid()) {
-                    if ($this->shouldIgnoreInvalidCharacter()) {
-                        $this->incrementCurrentCharacterPointer();
-                        $this->setCurrentState(self::STATE_LEFT_ATTRIBUTE_NAME);
-                        $this->clearOutputString();
-                    } else {
-                        $this->setCurrentState(self::STATE_INVALID_INTERNAL_CHARACTER);
-                    }
-                } elseif ($this->isCurrentCharacterAttributeValueSeparator()) {
-                    $this->setCurrentState(self::STATE_LEFT_ATTRIBUTE_NAME);
-                } else {
-                    $this->appendOutputString();
-                    $this->incrementCurrentCharacterPointer();
-                }
+            $this->parse($fixedInputString);
 
-                break;
-
-            case self::STATE_LEFT_ATTRIBUTE_NAME:
-                $this->stop();
-
-                break;
-
-            case self::STATE_INVALID_INTERNAL_CHARACTER:
-                if ($this->shouldAttemptToFixInvalidInternalCharacter()) {
-                    $this->hasAttemptedToFixAttributeInvalidInternalCharacter = true;
-
-                    $attributeFixer = new AttributeFixer();
-                    $attributeFixer->setInputString($this->getInputString());
-                    $fixedInputString = $attributeFixer->fix();
-
-                    $this->parse($fixedInputString);
-
-                    return;
-                }
-
-                throw new AttributeParserException(
-                    'Invalid internal character after at position ' . $this->getCurrentCharacterPointer(),
-                    1,
-                    $this->getCurrentCharacterPointer()
-                );
+            return;
         }
+
+        throw new AttributeParserException(
+            'Invalid internal character after at position ' . $stringParser->getPointer(),
+            1,
+            $stringParser->getPointer()
+        );
     }
 
     private function shouldIgnoreInvalidCharacter(): bool
@@ -129,15 +143,5 @@ class AttributeParser extends StringParser
     {
         return $this->getConfiguration()->attemptToRecoverFromInvalidInternalCharacter()
             && !$this->hasAttemptedToFixAttributeInvalidInternalCharacter;
-    }
-
-    private function isCurrentCharacterInvalid(): bool
-    {
-        return in_array($this->getCurrentCharacter(), $this->invalidCharacters);
-    }
-
-    private function isCurrentCharacterAttributeValueSeparator(): bool
-    {
-        return self::ATTRIBUTE_VALUE_SEPARATOR == $this->getCurrentCharacter();
     }
 }
