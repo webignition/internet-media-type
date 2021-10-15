@@ -3,7 +3,7 @@
 namespace webignition\Tests\InternetMediaType\Parser;
 
 use PHPUnit\Framework\TestCase;
-use webignition\InternetMediaType\Parameter\Parser\AttributeParserException;
+use webignition\InternetMediaType\Parser\AttributeParserException;
 use webignition\InternetMediaType\Parser\ParseException;
 use webignition\InternetMediaType\Parser\Parser;
 use webignition\InternetMediaType\Parser\SubtypeParserException;

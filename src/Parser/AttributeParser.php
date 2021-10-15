@@ -1,6 +1,6 @@
 <?php
 
-namespace webignition\InternetMediaType\Parameter\Parser;
+namespace webignition\InternetMediaType\Parser;
 
 use webignition\StringParser\StringParser;
 use webignition\StringParser\UnknownStateException;

@@ -1,9 +1,9 @@
 <?php
 
-namespace webignition\Tests\InternetMediaType\Parameter\Parser;
+namespace webignition\Tests\InternetMediaType\Parser;
 
 use PHPUnit\Framework\TestCase;
-use webignition\InternetMediaType\Parameter\Parser\ValueParser;
+use webignition\InternetMediaType\Parser\ValueParser;
 use webignition\QuotedString\Parser as QuotedStringParser;
 
 class ValueParserTest extends TestCase

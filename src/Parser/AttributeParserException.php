@@ -1,8 +1,6 @@
 <?php
 
-namespace webignition\InternetMediaType\Parameter\Parser;
-
-use webignition\InternetMediaType\Parser\ParseException;
+namespace webignition\InternetMediaType\Parser;
 
 class AttributeParserException extends ParseException
 {

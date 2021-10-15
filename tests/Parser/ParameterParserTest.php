@@ -1,21 +1,21 @@
 <?php
 
-namespace webignition\Tests\InternetMediaType\Parameter\Parser;
+namespace webignition\Tests\InternetMediaType\Parser;
 
 use PHPUnit\Framework\TestCase;
-use webignition\InternetMediaType\Parameter\Parser\AttributeParser;
-use webignition\InternetMediaType\Parameter\Parser\Parser;
-use webignition\InternetMediaType\Parameter\Parser\ValueParser;
+use webignition\InternetMediaType\Parser\AttributeParser;
+use webignition\InternetMediaType\Parser\ParameterParser;
+use webignition\InternetMediaType\Parser\ValueParser;
 use webignition\QuotedString\Parser as QuotedStringParser;
 
-class ParserTest extends TestCase
+class ParameterParserTest extends TestCase
 {
-    private Parser $parser;
+    private ParameterParser $parser;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->parser = new Parser(
+        $this->parser = new ParameterParser(
             new AttributeParser(),
             new ValueParser(new QuotedStringParser()),
         );
