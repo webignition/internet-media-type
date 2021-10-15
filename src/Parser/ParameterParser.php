@@ -2,6 +2,7 @@
 
 namespace webignition\InternetMediaType\Parser;
 
+use webignition\InternetMediaType\Exception\AttributeParserException;
 use webignition\InternetMediaType\Parameter;
 use webignition\InternetMediaTypeInterface\ParameterInterface;
 use webignition\QuotedString\Exception as QuotedStringException;

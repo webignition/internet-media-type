@@ -3,8 +3,8 @@
 namespace webignition\Tests\InternetMediaType\Parser;
 
 use PHPUnit\Framework\TestCase;
+use webignition\InternetMediaType\Exception\TypeParserException;
 use webignition\InternetMediaType\Parser\TypeParser;
-use webignition\InternetMediaType\Parser\TypeParserException;
 
 class TypeParserTest extends TestCase
 {

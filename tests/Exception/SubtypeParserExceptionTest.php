@@ -1,9 +1,9 @@
 <?php
 
-namespace webignition\Tests\InternetMediaType\Parser;
+namespace webignition\Tests\InternetMediaType\Exception;
 
 use PHPUnit\Framework\TestCase;
-use webignition\InternetMediaType\Parser\SubtypeParserException;
+use webignition\InternetMediaType\Exception\SubtypeParserException;
 
 class SubtypeParserExceptionTest extends TestCase
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace webignition\Tests\InternetMediaType\Parser;
+namespace webignition\Tests\InternetMediaType\Exception;
 
 use PHPUnit\Framework\TestCase;
-use webignition\InternetMediaType\Parser\AttributeParserException;
+use webignition\InternetMediaType\Exception\AttributeParserException;
 
 class AttributeParserExceptionTest extends TestCase
 {

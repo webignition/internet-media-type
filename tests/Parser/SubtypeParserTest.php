@@ -3,8 +3,8 @@
 namespace webignition\Tests\InternetMediaType\Parser;
 
 use PHPUnit\Framework\TestCase;
+use webignition\InternetMediaType\Exception\SubtypeParserException;
 use webignition\InternetMediaType\Parser\SubtypeParser;
-use webignition\InternetMediaType\Parser\SubtypeParserException;
 
 class SubtypeParserTest extends TestCase
 {

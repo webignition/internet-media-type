@@ -2,6 +2,10 @@
 
 namespace webignition\InternetMediaType\Parser;
 
+use webignition\InternetMediaType\Exception\AttributeParserException;
+use webignition\InternetMediaType\Exception\ParseException;
+use webignition\InternetMediaType\Exception\SubtypeParserException;
+use webignition\InternetMediaType\Exception\TypeParserException;
 use webignition\InternetMediaType\Fixer\AttributeFixer;
 use webignition\InternetMediaType\Fixer\TypeFixer;
 use webignition\InternetMediaType\InternetMediaType;

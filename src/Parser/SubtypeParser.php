@@ -2,6 +2,7 @@
 
 namespace webignition\InternetMediaType\Parser;
 
+use webignition\InternetMediaType\Exception\SubtypeParserException;
 use webignition\StringParser\StringParser;
 use webignition\StringParser\UnknownStateException;
 

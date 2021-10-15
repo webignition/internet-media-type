@@ -1,6 +1,6 @@
 <?php
 
-namespace webignition\InternetMediaType\Parser;
+namespace webignition\InternetMediaType\Exception;
 
 class TypeParserException extends ParseException
 {

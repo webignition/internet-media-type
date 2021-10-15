@@ -3,8 +3,8 @@
 namespace webignition\Tests\InternetMediaType\Parser;
 
 use PHPUnit\Framework\TestCase;
+use webignition\InternetMediaType\Exception\AttributeParserException;
 use webignition\InternetMediaType\Parser\AttributeParser;
-use webignition\InternetMediaType\Parser\AttributeParserException;
 
 class AttributeParserTest extends TestCase
 {
