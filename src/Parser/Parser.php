@@ -36,7 +36,6 @@ class Parser
         private AttributeFixer $attributeFixer,
     ) {
         $this->configuration = new Configuration();
-        $this->parameterParser->setConfiguration($this->configuration);
     }
 
     public static function create(): Parser
@@ -114,7 +113,6 @@ class Parser
     public function setConfiguration(Configuration $configuration): void
     {
         $this->configuration = $configuration;
-        $this->parameterParser->setConfiguration($configuration);
     }
 
     public function getConfiguration(): Configuration

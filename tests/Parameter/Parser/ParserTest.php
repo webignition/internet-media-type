@@ -6,7 +6,6 @@ use PHPUnit\Framework\TestCase;
 use webignition\InternetMediaType\Parameter\Parser\AttributeParser;
 use webignition\InternetMediaType\Parameter\Parser\Parser;
 use webignition\InternetMediaType\Parameter\Parser\ValueParser;
-use webignition\InternetMediaType\Parser\Configuration;
 use webignition\QuotedString\Parser as QuotedStringParser;
 
 class ParserTest extends TestCase
@@ -80,15 +79,5 @@ class ParserTest extends TestCase
                 'expectedValue' => 'bar',
             ],
         ];
-    }
-
-    public function testSetGetConfiguration(): void
-    {
-        $configuration = new Configuration();
-
-        $this->assertNotEquals(spl_object_hash($configuration), spl_object_hash($this->parser->getConfiguration()));
-
-        $this->parser->setConfiguration($configuration);
-        $this->assertEquals(spl_object_hash($configuration), spl_object_hash($this->parser->getConfiguration()));
     }
 }
