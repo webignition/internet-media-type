@@ -29,10 +29,10 @@ class AttributeParser
 
     private StringParser $stringParser;
     private Configuration $configuration;
-    private AttributeFixer $attributeFixer;
 
-    public function __construct()
-    {
+    public function __construct(
+        private AttributeFixer $attributeFixer,
+    ) {
         $this->stringParser = new StringParser([
             StringParser::STATE_UNKNOWN => function (StringParser $stringParser) {
                 $this->handleUnknownState($stringParser);
@@ -49,7 +49,13 @@ class AttributeParser
         ]);
 
         $this->configuration = new Configuration();
-        $this->attributeFixer = new AttributeFixer();
+    }
+
+    public static function create(): AttributeParser
+    {
+        return new AttributeParser(
+            new AttributeFixer(),
+        );
     }
 
     public function setConfiguration(Configuration $configuration): void
