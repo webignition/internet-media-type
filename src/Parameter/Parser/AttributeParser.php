@@ -107,8 +107,7 @@ class AttributeParser
             $this->hasAttemptedToFixAttributeInvalidInternalCharacter = true;
 
             $attributeFixer = new AttributeFixer();
-            $attributeFixer->setInputString($stringParser->getInput());
-            $fixedInputString = $attributeFixer->fix();
+            $fixedInputString = $attributeFixer->fix($stringParser->getInput());
 
             $this->parse($fixedInputString);
 

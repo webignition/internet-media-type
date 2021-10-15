@@ -13,9 +13,8 @@ class AttributeFixerTest extends TestCase
     public function testFixValidAttribute(string $attribute, string $expectedFixedAttribute): void
     {
         $attributeFixer = new AttributeFixer();
-        $attributeFixer->setInputString($attribute);
 
-        $this->assertEquals($expectedFixedAttribute, $attributeFixer->fix());
+        $this->assertEquals($expectedFixedAttribute, $attributeFixer->fix($attribute));
     }
 
     /**
