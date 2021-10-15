@@ -12,23 +12,10 @@ class TypeFixer
     public const COMMA_SEPARATED_TYPE_SEPARATOR = ', ';
     public const TYPE_SUBTYPE_SEPARATOR = '/';
 
-    private string $inputString;
-    private int $position;
-
-    public function setInputString(string $inputString): void
+    public function fix(string $input, int $position): ?string
     {
-        $this->inputString = $inputString;
-    }
-
-    public function setPosition(int $position): void
-    {
-        $this->position = $position;
-    }
-
-    public function fix(): ?string
-    {
-        $commaSeparatedTypeFix = $this->commaSeparatedTypeFix();
-        $spaceSeparatingTypeAndAttributeFix = $this->spaceSeparatingTypeAndAttributeFix();
+        $commaSeparatedTypeFix = $this->commaSeparatedTypeFix($input, $position);
+        $spaceSeparatingTypeAndAttributeFix = $this->spaceSeparatingTypeAndAttributeFix($input, $position);
 
         if (null === $commaSeparatedTypeFix && null === $spaceSeparatingTypeAndAttributeFix) {
             return null;
@@ -48,20 +35,20 @@ class TypeFixer
      *
      * If of this type, go for the longest valid option
      */
-    private function commaSeparatedTypeFix(): ?string
+    private function commaSeparatedTypeFix(string $input, int $position): ?string
     {
-        if (0 === $this->position) {
+        if (0 === $position) {
             return null;
         }
 
-        $separatorComparator = substr($this->inputString, $this->position - 1, 2);
+        $separatorComparator = substr($input, $position - 1, 2);
         if (self::COMMA_SEPARATED_TYPE_SEPARATOR !== $separatorComparator) {
             return null;
         }
 
         $possibleTypeSubtypes = [
-            substr($this->inputString, 0, $this->position - 1),
-            substr($this->inputString, $this->position + 1)
+            substr($input, 0, $position - 1),
+            substr($input, $position + 1)
         ];
 
         $typeSubtypes = [];
@@ -109,22 +96,22 @@ class TypeFixer
      *
      * i.e. a media type and parameters separated by a space not a semicolon
      */
-    private function spaceSeparatingTypeAndAttributeFix(): ?string
+    private function spaceSeparatingTypeAndAttributeFix(string $input, int $position): ?string
     {
-        if (0 === $this->position) {
+        if (0 === $position) {
             return null;
         }
 
-        if (' ' !== $this->inputString[$this->position]) {
+        if (' ' !== $input[$position]) {
             return null;
         }
 
         return $this->getTypeSubtypeFromPossibleTypeSubtype(
             trim(substr(
-                $this->inputString,
+                $input,
                 0,
-                $this->position
-            ), "\t\n\r\0\x0B,") . ';' . substr($this->inputString, $this->position + 1)
+                $position
+            ), "\t\n\r\0\x0B,") . ';' . substr($input, $position + 1)
         );
     }
 }
