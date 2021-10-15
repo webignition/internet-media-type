@@ -2,13 +2,12 @@
 
 namespace webignition\InternetMediaType\Parameter\Parser;
 
+use webignition\QuotedString\Exception as QuotedStringException;
 use webignition\QuotedString\Parser as QuotedStringParser;
 use webignition\StringParser\StringParser;
+use webignition\StringParser\UnknownStateException;
 
-/**
- * Parses out the value from an internet media type parameter string.
- */
-class ValueParser extends StringParser
+class ValueParser
 {
     public const ATTRIBUTE_VALUE_SEPARATOR = '=';
     public const QUOTED_STRING_DELIMITER = '"';
@@ -20,16 +19,43 @@ class ValueParser extends StringParser
      */
     private string $attribute = '';
 
+    private StringParser $stringParser;
+
+    public function __construct()
+    {
+        $this->stringParser = new StringParser([
+            StringParser::STATE_UNKNOWN => function (StringParser $stringParser) {
+                if (self::QUOTED_STRING_DELIMITER === $stringParser->getCurrentCharacter()) {
+                    $stringParser->setState(self::STATE_IN_QUOTED_VALUE);
+                } else {
+                    $stringParser->setState(self::STATE_IN_NON_QUOTED_VALUE);
+                }
+            },
+            self::STATE_IN_NON_QUOTED_VALUE => function (StringParser $stringParser) {
+                $stringParser->appendOutputString();
+                $stringParser->incrementPointer();
+            },
+            self::STATE_IN_QUOTED_VALUE => function (StringParser $stringParser) {
+                $stringParser->appendOutputString();
+                $stringParser->incrementPointer();
+            },
+        ]);
+    }
+
     public function setAttribute(string $attribute): void
     {
         $this->attribute = $attribute;
     }
 
-    public function parse(string $inputString): string
+    /**
+     * @throws QuotedStringException
+     * @throws UnknownStateException
+     */
+    public function parse(string $input): string
     {
-        $output = parent::parse($this->getNonAttributePart($inputString));
+        $output = $this->stringParser->parse($this->getNonAttributePart($input));
 
-        if (self::STATE_IN_NON_QUOTED_VALUE == $this->getCurrentState()) {
+        if (self::STATE_IN_NON_QUOTED_VALUE == $this->stringParser->getState()) {
             return $output;
         }
 
@@ -43,41 +69,11 @@ class ValueParser extends StringParser
         return $quotedString->getValue();
     }
 
-    protected function parseCurrentCharacter(): void
-    {
-        switch ($this->getCurrentState()) {
-            case self::STATE_UNKNOWN:
-                $this->deriveState();
-
-                break;
-
-            default:
-                $this->appendOutputString();
-                $this->incrementCurrentCharacterPointer();
-
-                break;
-        }
-    }
-
-    private function getNonAttributePart(string $inputString): string
+    private function getNonAttributePart(string $input): string
     {
         return trim(substr(
-            $inputString,
+            $input,
             strlen($this->attribute) + strlen(self::ATTRIBUTE_VALUE_SEPARATOR)
         ));
-    }
-
-    private function deriveState(): void
-    {
-        if ($this->isCurrentCharacterQuotedStringDelimiter()) {
-            $this->setCurrentState(self::STATE_IN_QUOTED_VALUE);
-        } else {
-            $this->setCurrentState(self::STATE_IN_NON_QUOTED_VALUE);
-        }
-    }
-
-    private function isCurrentCharacterQuotedStringDelimiter(): bool
-    {
-        return self::QUOTED_STRING_DELIMITER == $this->getCurrentCharacter();
     }
 }

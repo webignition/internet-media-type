@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "33a86a2487c9015d09053153d605c120",
+    "content-hash": "25321260b0724e6978e221f7c8b2a0c7",
     "packages": [
         {
             "name": "webignition/internet-media-type-interface",
@@ -56,21 +56,21 @@
         },
         {
             "name": "webignition/quoted-string",
-            "version": "2.0",
+            "version": "3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/quoted-string.git",
-                "reference": "0f6115b3699a488db8765312cbb383af572fe8a2"
+                "reference": "00487e149d2bf26189dd4e75ac5ff03a788f55f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/quoted-string/zipball/0f6115b3699a488db8765312cbb383af572fe8a2",
-                "reference": "0f6115b3699a488db8765312cbb383af572fe8a2",
+                "url": "https://api.github.com/repos/webignition/quoted-string/zipball/00487e149d2bf26189dd4e75ac5ff03a788f55f5",
+                "reference": "00487e149d2bf26189dd4e75ac5ff03a788f55f5",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8",
-                "webignition/string-parser": ">=2,<3"
+                "webignition/string-parser": ">=3,<4"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^3.2",
@@ -103,22 +103,22 @@
             ],
             "support": {
                 "issues": "https://github.com/webignition/quoted-string/issues",
-                "source": "https://github.com/webignition/quoted-string/tree/2.0"
+                "source": "https://github.com/webignition/quoted-string/tree/3.0"
             },
-            "time": "2021-10-11T15:23:35+00:00"
+            "time": "2021-10-14T11:06:26+00:00"
         },
         {
             "name": "webignition/string-parser",
-            "version": "2.0",
+            "version": "3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/string-parser.git",
-                "reference": "dc8f688e3577f79099c1b3c298176f169de60b48"
+                "reference": "85c0e035335122fa6388abbf9db564864d7e00b6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/string-parser/zipball/dc8f688e3577f79099c1b3c298176f169de60b48",
-                "reference": "dc8f688e3577f79099c1b3c298176f169de60b48",
+                "url": "https://api.github.com/repos/webignition/string-parser/zipball/85c0e035335122fa6388abbf9db564864d7e00b6",
+                "reference": "85c0e035335122fa6388abbf9db564864d7e00b6",
                 "shasum": ""
             },
             "require": {
@@ -154,9 +154,9 @@
             ],
             "support": {
                 "issues": "https://github.com/webignition/string-parser/issues",
-                "source": "https://github.com/webignition/string-parser/tree/2.0"
+                "source": "https://github.com/webignition/string-parser/tree/3.0"
             },
-            "time": "2021-10-11T14:44:12+00:00"
+            "time": "2021-10-14T10:17:23+00:00"
         }
     ],
     "packages-dev": [

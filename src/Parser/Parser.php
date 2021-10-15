@@ -7,6 +7,8 @@ use webignition\InternetMediaType\Parameter\Parser\AttributeParserException;
 use webignition\InternetMediaType\Parameter\Parser\Parser as ParameterParser;
 use webignition\InternetMediaTypeInterface\InternetMediaTypeInterface;
 use webignition\InternetMediaTypeInterface\ParameterInterface;
+use webignition\QuotedString\Exception as QuotedStringException;
+use webignition\StringParser\UnknownStateException;
 
 /**
  * Parses a string representation of an Internet media type into an
@@ -36,6 +38,8 @@ class Parser
 
     /**
      * @throws ParseException
+     * @throws QuotedStringException
+     * @throws UnknownStateException
      */
     public function parse(string $internetMediaTypeString): ?InternetMediaTypeInterface
     {
@@ -153,6 +157,8 @@ class Parser
      * @param string[] $parameterStrings
      *
      * @throws AttributeParserException
+     * @throws QuotedStringException
+     * @throws UnknownStateException
      *
      * @return ParameterInterface[]
      */
