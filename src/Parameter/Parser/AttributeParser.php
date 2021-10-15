@@ -80,13 +80,7 @@ class AttributeParser
         $isCharacterAttributeValueSeparator = self::ATTRIBUTE_VALUE_SEPARATOR === $character;
 
         if ($isCharacterInvalid) {
-            if ($this->configuration->ignoreInvalidAttributes()) {
-                $stringParser->incrementPointer();
-                $stringParser->setState(self::STATE_LEFT_ATTRIBUTE_NAME);
-                $stringParser->clearOutput();
-            } else {
-                $stringParser->setState(self::STATE_INVALID_INTERNAL_CHARACTER);
-            }
+            $stringParser->setState(self::STATE_INVALID_INTERNAL_CHARACTER);
         } elseif ($isCharacterAttributeValueSeparator) {
             $stringParser->setState(self::STATE_LEFT_ATTRIBUTE_NAME);
         } else {

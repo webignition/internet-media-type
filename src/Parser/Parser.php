@@ -3,6 +3,7 @@
 namespace webignition\InternetMediaType\Parser;
 
 use webignition\InternetMediaType\InternetMediaType;
+use webignition\InternetMediaType\Parameter\Parameter;
 use webignition\InternetMediaType\Parameter\Parser\AttributeFixer;
 use webignition\InternetMediaType\Parameter\Parser\AttributeParser;
 use webignition\InternetMediaType\Parameter\Parser\AttributeParserException;
@@ -186,7 +187,11 @@ class Parser
     {
         $parameters = [];
         foreach ($parameterStrings as $parameterString) {
-            $parameters[] = $this->parseParameterString($parameterString);
+            $parameter = $this->parseParameterString($parameterString);
+
+            if ($parameter instanceof ParameterInterface) {
+                $parameters[] = $parameter;
+            }
         }
 
         return $parameters;
@@ -224,11 +229,16 @@ class Parser
      * @throws QuotedStringException
      * @throws UnknownStateException
      */
-    private function parseParameterString(string $parameterString): ParameterInterface
+    private function parseParameterString(string $parameterString): ?ParameterInterface
     {
         try {
             return $this->parameterParser->parse($parameterString);
         } catch (AttributeParserException $attributeParserException) {
+            $shouldIgnoreInvalidAttributes = $this->getConfiguration()->ignoreInvalidAttributes();
+            if ($shouldIgnoreInvalidAttributes) {
+                return null;
+            }
+
             $shouldAttemptToFixInvalidInternalCharacter =
                 $this->getConfiguration()->attemptToRecoverFromInvalidInternalCharacter()
                 && !$this->hasAttemptedToFixAttributeInvalidInternalCharacter;
