@@ -1,6 +1,6 @@
 <?php
 
-namespace webignition\InternetMediaType\Parameter\Parser;
+namespace webignition\InternetMediaType\Parser;
 
 use webignition\QuotedString\Exception as QuotedStringException;
 use webignition\QuotedString\Parser as QuotedStringParser;

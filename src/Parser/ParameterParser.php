@@ -1,8 +1,9 @@
 <?php
 
-namespace webignition\InternetMediaType\Parameter\Parser;
+namespace webignition\InternetMediaType\Parser;
 
-use webignition\InternetMediaType\Parameter\Parameter;
+use webignition\InternetMediaType\Exception\AttributeParserException;
+use webignition\InternetMediaType\Parameter;
 use webignition\InternetMediaTypeInterface\ParameterInterface;
 use webignition\QuotedString\Exception as QuotedStringException;
 use webignition\StringParser\UnknownStateException;
@@ -22,7 +23,7 @@ use webignition\StringParser\UnknownStateException;
  *
  * http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html#sec3.7
  */
-class Parser
+class ParameterParser
 {
     public function __construct(
         private AttributeParser $attributeParser,

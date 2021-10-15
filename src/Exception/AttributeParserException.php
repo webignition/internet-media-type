@@ -1,14 +1,19 @@
 <?php
 
-namespace webignition\InternetMediaType\Parser;
+namespace webignition\InternetMediaType\Exception;
 
-class SubtypeParserException extends ParseException
+class AttributeParserException extends ParseException
 {
     public const INTERNAL_INVALID_CHARACTER_CODE = 1;
 
     public function __construct(string $message, int $code, private int $position)
     {
         parent::__construct($message, $code);
+    }
+
+    public function isInvalidInternalCharacterException(): bool
+    {
+        return self::INTERNAL_INVALID_CHARACTER_CODE === $this->getCode();
     }
 
     public function setPosition(int $position): void
@@ -19,10 +24,5 @@ class SubtypeParserException extends ParseException
     public function getPosition(): int
     {
         return $this->position;
-    }
-
-    public function isInvalidInternalCharacterException(): bool
-    {
-        return self::INTERNAL_INVALID_CHARACTER_CODE === $this->getCode();
     }
 }

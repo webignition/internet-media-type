@@ -1,7 +1,8 @@
 <?php
 
-namespace webignition\InternetMediaType\Parameter\Parser;
+namespace webignition\InternetMediaType\Parser;
 
+use webignition\InternetMediaType\Exception\AttributeParserException;
 use webignition\StringParser\StringParser;
 use webignition\StringParser\UnknownStateException;
 

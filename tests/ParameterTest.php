@@ -1,9 +1,9 @@
 <?php
 
-namespace webignition\Tests\InternetMediaType\Parameter;
+namespace webignition\Tests\InternetMediaType;
 
 use PHPUnit\Framework\TestCase;
-use webignition\InternetMediaType\Parameter\Parameter;
+use webignition\InternetMediaType\Parameter;
 
 class ParameterTest extends TestCase
 {

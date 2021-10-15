@@ -2,13 +2,14 @@
 
 namespace webignition\InternetMediaType\Parser;
 
+use webignition\InternetMediaType\Exception\AttributeParserException;
+use webignition\InternetMediaType\Exception\ParseException;
+use webignition\InternetMediaType\Exception\SubtypeParserException;
+use webignition\InternetMediaType\Exception\TypeParserException;
 use webignition\InternetMediaType\Fixer\AttributeFixer;
 use webignition\InternetMediaType\Fixer\TypeFixer;
 use webignition\InternetMediaType\InternetMediaType;
-use webignition\InternetMediaType\Parameter\Parser\AttributeParser;
-use webignition\InternetMediaType\Parameter\Parser\AttributeParserException;
-use webignition\InternetMediaType\Parameter\Parser\Parser as ParameterParser;
-use webignition\InternetMediaType\Parameter\Parser\ValueParser;
+use webignition\InternetMediaType\Parser\ParameterParser as ParameterParser;
 use webignition\InternetMediaTypeInterface\InternetMediaTypeInterface;
 use webignition\InternetMediaTypeInterface\ParameterInterface;
 use webignition\QuotedString\Exception as QuotedStringException;
