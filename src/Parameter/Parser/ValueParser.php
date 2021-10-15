@@ -14,11 +14,6 @@ class ValueParser
     public const STATE_IN_NON_QUOTED_VALUE = 1;
     public const STATE_IN_QUOTED_VALUE = 2;
 
-    /**
-     * Attribute part of the attribute=value parameter string.
-     */
-    private string $attribute = '';
-
     private StringParser $stringParser;
 
     public function __construct()
@@ -42,18 +37,15 @@ class ValueParser
         ]);
     }
 
-    public function setAttribute(string $attribute): void
-    {
-        $this->attribute = $attribute;
-    }
-
     /**
      * @throws QuotedStringException
      * @throws UnknownStateException
      */
-    public function parse(string $input): string
+    public function parse(string $parameter, string $attribute): string
     {
-        $output = $this->stringParser->parse($this->getNonAttributePart($input));
+        $nonAttributePart = $this->getNonAttributePart($parameter, $attribute);
+
+        $output = $this->stringParser->parse($nonAttributePart);
 
         if (self::STATE_IN_NON_QUOTED_VALUE == $this->stringParser->getState()) {
             return $output;
@@ -69,11 +61,11 @@ class ValueParser
         return $quotedString->getValue();
     }
 
-    private function getNonAttributePart(string $input): string
+    private function getNonAttributePart(string $parameter, string $attribute): string
     {
         return trim(substr(
-            $input,
-            strlen($this->attribute) + strlen(self::ATTRIBUTE_VALUE_SEPARATOR)
+            $parameter,
+            strlen($attribute) + strlen(self::ATTRIBUTE_VALUE_SEPARATOR)
         ));
     }
 }
