@@ -3,9 +3,9 @@
 namespace webignition\InternetMediaType\Parser;
 
 use webignition\InternetMediaType\Exception\AttributeParserException;
+use webignition\InternetMediaType\Exception\ComponentExceptionInterface;
 use webignition\InternetMediaType\Exception\ParseException;
 use webignition\InternetMediaType\Exception\SubtypeParserException;
-use webignition\InternetMediaType\Exception\TypeParserException;
 use webignition\InternetMediaType\Fixer\AttributeFixer;
 use webignition\InternetMediaType\Fixer\TypeFixer;
 use webignition\InternetMediaType\InternetMediaType;
@@ -76,27 +76,8 @@ class Parser
             $parameters = $this->getParameters($parameterStrings);
 
             return new InternetMediaType($type, $subtype, $parameters);
-        } catch (TypeParserException $typeParserException) {
-            throw new ParseException(
-                $typeParserException->getMessage(),
-                $typeParserException->getCode(),
-                $inputString,
-                $typeParserException
-            );
-        } catch (SubtypeParserException $subtypeParserException) {
-            throw new ParseException(
-                $subtypeParserException->getMessage(),
-                $subtypeParserException->getCode(),
-                $inputString,
-                $subtypeParserException
-            );
-        } catch (AttributeParserException $attributeParserException) {
-            throw new ParseException(
-                $attributeParserException->getMessage(),
-                $attributeParserException->getCode(),
-                $inputString,
-                $attributeParserException
-            );
+        } catch (ComponentExceptionInterface $exception) {
+            throw new ParseException($inputString, $exception);
         }
     }
 

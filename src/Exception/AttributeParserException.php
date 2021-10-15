@@ -2,7 +2,7 @@
 
 namespace webignition\InternetMediaType\Exception;
 
-class AttributeParserException extends ParseException
+class AttributeParserException extends \Exception implements ComponentExceptionInterface
 {
     public const INTERNAL_INVALID_CHARACTER_CODE = 1;
 
