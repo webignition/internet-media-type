@@ -4,24 +4,29 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "25321260b0724e6978e221f7c8b2a0c7",
+    "content-hash": "044dc98bad93644f45d050992d09d190",
     "packages": [
         {
             "name": "webignition/internet-media-type-interface",
-            "version": "0.4",
+            "version": "1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/internet-media-type-interface.git",
-                "reference": "dde668e8fa9e0c49b9925a4eeadfa0bc65b26747"
+                "reference": "0025d1539288442b76c0df5689cbce7929fd17a7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/internet-media-type-interface/zipball/dde668e8fa9e0c49b9925a4eeadfa0bc65b26747",
-                "reference": "dde668e8fa9e0c49b9925a4eeadfa0bc65b26747",
+                "url": "https://api.github.com/repos/webignition/internet-media-type-interface/zipball/0025d1539288442b76c0df5689cbce7929fd17a7",
+                "reference": "0025d1539288442b76c0df5689cbce7929fd17a7",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2.0"
+                "php": ">=7.4"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.2",
+                "phpstan/phpstan": "^0.12.99",
+                "squizlabs/php_codesniffer": "^3.6"
             },
             "type": "library",
             "autoload": {
@@ -50,9 +55,9 @@
             ],
             "support": {
                 "issues": "https://github.com/webignition/internet-media-type-interface/issues",
-                "source": "https://github.com/webignition/internet-media-type-interface/tree/master"
+                "source": "https://github.com/webignition/internet-media-type-interface/tree/1.0"
             },
-            "time": "2018-10-09T09:16:21+00:00"
+            "time": "2021-10-15T15:27:08+00:00"
         },
         {
             "name": "webignition/quoted-string",

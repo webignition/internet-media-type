@@ -38,7 +38,7 @@
     },
     "require": {
         "php": ">=8",
-        "webignition/internet-media-type-interface":">=0.4,<1.0",
+        "webignition/internet-media-type-interface":"^1.0",
         "webignition/quoted-string":"^3.0",
         "webignition/string-parser": "^3.0"
 
