@@ -2,7 +2,7 @@
 
 namespace webignition\InternetMediaType\Parameter\Parser;
 
-use webignition\InternetMediaType\Parameter\Parameter;
+use webignition\InternetMediaType\Parameter;
 use webignition\InternetMediaTypeInterface\ParameterInterface;
 use webignition\QuotedString\Exception as QuotedStringException;
 use webignition\StringParser\UnknownStateException;

@@ -1,6 +1,6 @@
 <?php
 
-namespace webignition\InternetMediaType\Parameter;
+namespace webignition\InternetMediaType;
 
 use webignition\InternetMediaTypeInterface\ParameterInterface;
 
