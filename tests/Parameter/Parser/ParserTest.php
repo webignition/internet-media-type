@@ -63,6 +63,16 @@ class ParserTest extends TestCase
                 'expectedAttribute' => 'foo',
                 'expectedValue' => null,
             ],
+            'foo=bar' => [
+                'parameterString' => 'foo=bar',
+                'expectedAttribute' => 'foo',
+                'expectedValue' => 'bar',
+            ],
+            'foo="bar"' => [
+                'parameterString' => 'foo="bar"',
+                'expectedAttribute' => 'foo',
+                'expectedValue' => 'bar',
+            ],
         ];
     }
 
