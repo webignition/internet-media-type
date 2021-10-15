@@ -26,16 +26,22 @@ use webignition\StringParser\UnknownStateException;
 class Parser
 {
     private Configuration $configuration;
-    private AttributeParser $attributeParser;
-    private ValueParser $valueParser;
 
-    public function __construct()
-    {
+    public function __construct(
+        private AttributeParser $attributeParser,
+        private ValueParser $valueParser,
+    ) {
         $this->configuration = new Configuration();
-        $this->attributeParser = AttributeParser::create();
-        $this->valueParser = ValueParser::create();
 
         $this->attributeParser->setConfiguration($this->configuration);
+    }
+
+    public static function create(): Parser
+    {
+        return new Parser(
+            AttributeParser::create(),
+            ValueParser::create(),
+        );
     }
 
     public function setConfiguration(Configuration $configuration): void
