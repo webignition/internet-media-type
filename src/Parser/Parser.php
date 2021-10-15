@@ -65,26 +65,12 @@ class Parser
             }
 
             return $internetMediaType;
-        } catch (TypeParserException $typeParserException) {
+        } catch (TypeParserException | SubtypeParserException | AttributeParserException $exception) {
             throw new ParseException(
-                $typeParserException->getMessage(),
-                $typeParserException->getCode(),
+                $exception->getMessage(),
+                $exception->getCode(),
                 $inputString,
-                $typeParserException
-            );
-        } catch (SubtypeParserException $subtypeParserException) {
-            throw new ParseException(
-                $subtypeParserException->getMessage(),
-                $subtypeParserException->getCode(),
-                $inputString,
-                $subtypeParserException
-            );
-        } catch (AttributeParserException $attributeParserException) {
-            throw new ParseException(
-                $attributeParserException->getMessage(),
-                $attributeParserException->getCode(),
-                $inputString,
-                $attributeParserException
+                $exception
             );
         }
     }
