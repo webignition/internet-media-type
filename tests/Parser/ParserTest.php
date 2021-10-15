@@ -4,7 +4,6 @@ namespace webignition\Tests\InternetMediaType\Parser;
 
 use PHPUnit\Framework\TestCase;
 use webignition\InternetMediaType\Parameter\Parser\AttributeParserException;
-use webignition\InternetMediaType\Parser\Configuration;
 use webignition\InternetMediaType\Parser\ParseException;
 use webignition\InternetMediaType\Parser\Parser;
 use webignition\InternetMediaType\Parser\SubtypeParserException;
@@ -137,7 +136,7 @@ class ParserTest extends TestCase
         string $expectedSubtype,
         array $expectedParameters
     ): void {
-        $this->parser->getConfiguration()->enableAttemptToRecoverFromInvalidInternalCharacter();
+        $this->parser->setAttemptToRecoverFromInvalidInternalCharacter(true);
         $internetMediaType = $this->parser->parse($internetMediaTypeString);
         self::assertInstanceOf(InternetMediaTypeInterface::class, $internetMediaType);
 
@@ -195,68 +194,6 @@ class ParserTest extends TestCase
                 'expectedParameters' => [
                     'charset' => 'UTF-8',
                 ],
-            ],
-        ];
-    }
-
-    public function testSetConfiguration(): void
-    {
-        $configuration = new Configuration();
-
-        $this->assertNotEquals(spl_object_hash($configuration), spl_object_hash($this->parser->getConfiguration()));
-
-        $this->parser->setConfiguration($configuration);
-        $this->assertEquals(spl_object_hash($configuration), spl_object_hash($this->parser->getConfiguration()));
-    }
-
-    /**
-     * @dataProvider setIgnoreInvalidAttributesDataProvider
-     */
-    public function testSetIgnoreInvalidAttributes(bool $ignoreInvalidAttributes): void
-    {
-        $this->parser->setIgnoreInvalidAttributes($ignoreInvalidAttributes);
-        $this->assertEquals($ignoreInvalidAttributes, $this->parser->getConfiguration()->ignoreInvalidAttributes());
-    }
-
-    /**
-     * @return array<mixed>
-     */
-    public function setIgnoreInvalidAttributesDataProvider(): array
-    {
-        return [
-            'true' => [
-                'ignoreInvalidAttributes' => true,
-            ],
-            'false' => [
-                'ignoreInvalidAttributes' => false,
-            ],
-        ];
-    }
-
-    /**
-     * @dataProvider setAttemptToRecoverFromInvalidInternalCharacterDataProvider
-     */
-    public function testSetAttemptToRecoverFromInvalidInternalCharacter(
-        bool $attemptToRecoverFromInvalidInternalCharacter
-    ): void {
-        $this->parser->setAttemptToRecoverFromInvalidInternalCharacter($attemptToRecoverFromInvalidInternalCharacter);
-        $this->assertEquals(
-            $attemptToRecoverFromInvalidInternalCharacter,
-            $this->parser->getConfiguration()->attemptToRecoverFromInvalidInternalCharacter()
-        );
-    }
-
-    /**
-     * @return array<mixed>
-     */
-    public function setAttemptToRecoverFromInvalidInternalCharacterDataProvider(): array
-    {
-        return [
-            'true' => [
-                'attemptToRecoverFromInvalidInternalCharacter' => true,
-            ],
-            'false' => [
-                'attemptToRecoverFromInvalidInternalCharacter' => false,
             ],
         ];
     }

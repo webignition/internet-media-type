@@ -3,7 +3,6 @@
 namespace webignition\InternetMediaType\Parser;
 
 use webignition\InternetMediaType\InternetMediaType;
-use webignition\InternetMediaType\Parameter\Parameter;
 use webignition\InternetMediaType\Parameter\Parser\AttributeFixer;
 use webignition\InternetMediaType\Parameter\Parser\AttributeParser;
 use webignition\InternetMediaType\Parameter\Parser\AttributeParserException;
@@ -24,7 +23,8 @@ class Parser
     public const TYPE_SUBTYPE_SEPARATOR = '/';
     public const TYPE_PARAMETER_SEPARATOR = ';';
 
-    private Configuration $configuration;
+    private bool $ignoreInvalidAttributes = false;
+    private bool $attemptToRecoverFromInvalidInternalCharacter = false;
     private bool $hasAttemptedToFixSubtypeInvalidInternalCharacter = false;
     private bool $hasAttemptedToFixAttributeInvalidInternalCharacter = false;
 
@@ -35,7 +35,6 @@ class Parser
         private TypeFixer $typeFixer,
         private AttributeFixer $attributeFixer,
     ) {
-        $this->configuration = new Configuration();
     }
 
     public static function create(): Parser
@@ -110,33 +109,15 @@ class Parser
         }
     }
 
-    public function setConfiguration(Configuration $configuration): void
-    {
-        $this->configuration = $configuration;
-    }
-
-    public function getConfiguration(): Configuration
-    {
-        return $this->configuration;
-    }
-
     public function setIgnoreInvalidAttributes(bool $ignoreInvalidAttributes): void
     {
-        if (filter_var($ignoreInvalidAttributes, FILTER_VALIDATE_BOOLEAN)) {
-            $this->getConfiguration()->enableIgnoreInvalidAttributes();
-        } else {
-            $this->getConfiguration()->disableIgnoreInvalidAttributes();
-        }
+        $this->ignoreInvalidAttributes = $ignoreInvalidAttributes;
     }
 
     public function setAttemptToRecoverFromInvalidInternalCharacter(
         bool $attemptToRecoverFromInvalidInternalCharacter
     ): void {
-        if (filter_var($attemptToRecoverFromInvalidInternalCharacter, FILTER_VALIDATE_BOOLEAN)) {
-            $this->getConfiguration()->enableAttemptToRecoverFromInvalidInternalCharacter();
-        } else {
-            $this->getConfiguration()->disableAttemptToRecoverFromInvalidInternalCharacter();
-        }
+        $this->attemptToRecoverFromInvalidInternalCharacter = $attemptToRecoverFromInvalidInternalCharacter;
     }
 
     private function createParameterString(string $inputString, string $type, string $subtype): string
@@ -205,7 +186,7 @@ class Parser
             return $this->subtypeParser->parse($inputString);
         } catch (SubtypeParserException $subtypeParserException) {
             $shouldAttemptToFixInvalidInternalCharacter =
-                $this->getConfiguration()->attemptToRecoverFromInvalidInternalCharacter()
+                $this->attemptToRecoverFromInvalidInternalCharacter
                 && !$this->hasAttemptedToFixSubtypeInvalidInternalCharacter;
 
             if ($shouldAttemptToFixInvalidInternalCharacter) {
@@ -217,6 +198,8 @@ class Parser
                     return $this->subtypeParser->parse($fixedType);
                 }
             }
+
+            $this->hasAttemptedToFixSubtypeInvalidInternalCharacter = false;
 
             throw $subtypeParserException;
         }
@@ -232,13 +215,12 @@ class Parser
         try {
             return $this->parameterParser->parse($parameterString);
         } catch (AttributeParserException $attributeParserException) {
-            $shouldIgnoreInvalidAttributes = $this->getConfiguration()->ignoreInvalidAttributes();
-            if ($shouldIgnoreInvalidAttributes) {
+            if ($this->ignoreInvalidAttributes) {
                 return null;
             }
 
             $shouldAttemptToFixInvalidInternalCharacter =
-                $this->getConfiguration()->attemptToRecoverFromInvalidInternalCharacter()
+                $this->attemptToRecoverFromInvalidInternalCharacter
                 && !$this->hasAttemptedToFixAttributeInvalidInternalCharacter;
 
             if ($shouldAttemptToFixInvalidInternalCharacter) {
@@ -248,6 +230,8 @@ class Parser
 
                 return $this->parameterParser->parse($fixedInputString);
             }
+
+            $this->hasAttemptedToFixAttributeInvalidInternalCharacter = false;
 
             throw $attributeParserException;
         }
