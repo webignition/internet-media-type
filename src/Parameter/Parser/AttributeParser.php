@@ -2,7 +2,6 @@
 
 namespace webignition\InternetMediaType\Parameter\Parser;
 
-use webignition\InternetMediaType\Parser\Configuration;
 use webignition\StringParser\StringParser;
 use webignition\StringParser\UnknownStateException;
 
@@ -26,7 +25,6 @@ class AttributeParser
     ];
 
     private StringParser $stringParser;
-    private Configuration $configuration;
 
     public function __construct()
     {
@@ -44,18 +42,6 @@ class AttributeParser
                 $this->handleInvalidInternalCharacterState($stringParser);
             },
         ]);
-
-        $this->configuration = new Configuration();
-    }
-
-    public function setConfiguration(Configuration $configuration): void
-    {
-        $this->configuration = $configuration;
-    }
-
-    public function getConfiguration(): Configuration
-    {
-        return $this->configuration;
     }
 
     /**
