@@ -1,6 +1,6 @@
 <?php
 
-namespace webignition\InternetMediaType\Parameter\Parser;
+namespace webignition\InternetMediaType\Fixer;
 
 /**
  * Attempts to fix unparseable internet media types based purely on

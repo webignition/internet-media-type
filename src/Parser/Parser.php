@@ -2,8 +2,9 @@
 
 namespace webignition\InternetMediaType\Parser;
 
+use webignition\InternetMediaType\Fixer\AttributeFixer;
+use webignition\InternetMediaType\Fixer\TypeFixer;
 use webignition\InternetMediaType\InternetMediaType;
-use webignition\InternetMediaType\Parameter\Parser\AttributeFixer;
 use webignition\InternetMediaType\Parameter\Parser\AttributeParser;
 use webignition\InternetMediaType\Parameter\Parser\AttributeParserException;
 use webignition\InternetMediaType\Parameter\Parser\Parser as ParameterParser;
