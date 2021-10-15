@@ -32,7 +32,7 @@ class Parser
         $this->subtypeParser = new SubtypeParser();
         $this->subtypeParser->setConfiguration($this->configuration);
 
-        $this->parameterParser = new ParameterParser();
+        $this->parameterParser = ParameterParser::create();
         $this->parameterParser->setConfiguration($this->configuration);
     }
 
