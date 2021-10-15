@@ -16,10 +16,8 @@ class TypeFixerTest extends TestCase
         ?string $expectedType
     ): void {
         $typeFixer = new TypeFixer();
-        $typeFixer->setPosition($invalidCharacterPosition);
-        $typeFixer->setInputString($internetMediaTypeString);
 
-        $this->assertEquals($expectedType, $typeFixer->fix());
+        $this->assertEquals($expectedType, $typeFixer->fix($internetMediaTypeString, $invalidCharacterPosition));
     }
 
     /**
@@ -57,10 +55,8 @@ class TypeFixerTest extends TestCase
     public function testFixExceptionWhenParsing(string $internetMediaTypeString, int $invalidCharacterPosition): void
     {
         $typeFixer = new TypeFixer();
-        $typeFixer->setPosition($invalidCharacterPosition);
-        $typeFixer->setInputString($internetMediaTypeString);
 
-        $this->assertNull($typeFixer->fix());
+        $this->assertNull($typeFixer->fix($internetMediaTypeString, $invalidCharacterPosition));
     }
 
     /**

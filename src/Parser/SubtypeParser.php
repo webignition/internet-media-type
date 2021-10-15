@@ -115,9 +115,7 @@ class SubtypeParser
             $this->hasAttemptedToFixAttributeInvalidInternalCharacter = true;
 
             $fixer = new TypeFixer();
-            $fixer->setInputString($stringParser->getInput());
-            $fixer->setPosition($pointer);
-            $fixedType = $fixer->fix();
+            $fixedType = $fixer->fix($stringParser->getInput(), $pointer);
 
             $this->parse((string) $fixedType);
 
