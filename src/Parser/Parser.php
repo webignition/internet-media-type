@@ -65,26 +65,15 @@ class Parser
     {
         $inputString = trim($internetMediaTypeString);
 
-        $internetMediaType = new InternetMediaType();
-
         try {
-            $internetMediaType->setType($this->typeParser->parse($inputString));
-            $internetMediaType->setSubtype($this->parseSubtype($inputString));
+            $type = $this->typeParser->parse($inputString);
+            $subtype = $this->parseSubtype($inputString);
 
-            $parameterString = $this->createParameterString(
-                $inputString,
-                (string) $internetMediaType->getType(),
-                (string) $internetMediaType->getSubtype()
-            );
+            $parameterString = $this->createParameterString($inputString, $type, $subtype);
             $parameterStrings = $this->getParameterStrings($parameterString);
-
             $parameters = $this->getParameters($parameterStrings);
 
-            foreach ($parameters as $parameter) {
-                $internetMediaType->addParameter($parameter);
-            }
-
-            return $internetMediaType;
+            return new InternetMediaType($type, $subtype, $parameters);
         } catch (TypeParserException $typeParserException) {
             throw new ParseException(
                 $typeParserException->getMessage(),

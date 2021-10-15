@@ -10,12 +10,12 @@ class InternetMediaType implements InternetMediaTypeInterface, \Stringable
     /**
      * For a 'text/html' media type, this would be 'text'.
      */
-    private ?string $type = null;
+    private ?string $type;
 
     /**
      * For a 'text/html' media type, this would be 'html'.
      */
-    private ?string $subtype = null;
+    private ?string $subtype;
 
     /**
      * @var ParameterInterface[]
@@ -27,13 +27,8 @@ class InternetMediaType implements InternetMediaTypeInterface, \Stringable
      */
     public function __construct(?string $type = null, ?string $subtype = null, array $parameters = [])
     {
-        if (!empty($type)) {
-            $this->setType($type);
-        }
-
-        if (!empty($subtype)) {
-            $this->setSubtype($subtype);
-        }
+        $this->type = $type;
+        $this->subtype = $subtype;
 
         foreach ($parameters as $parameter) {
             if ($parameter instanceof ParameterInterface) {
@@ -65,19 +60,17 @@ class InternetMediaType implements InternetMediaTypeInterface, \Stringable
         return trim($string);
     }
 
-    public function setType(string $type): void
-    {
-        $this->type = strtolower($type);
-    }
-
     public function getType(): ?string
     {
         return $this->type;
     }
 
-    public function setSubtype(string $subtype): void
+    public function withType(string $type): InternetMediaTypeInterface
     {
-        $this->subtype = strtolower($subtype);
+        $new = clone $this;
+        $new->type = strtolower($type);
+
+        return $new;
     }
 
     public function getSubtype(): ?string
@@ -85,9 +78,20 @@ class InternetMediaType implements InternetMediaTypeInterface, \Stringable
         return $this->subtype;
     }
 
-    public function addParameter(ParameterInterface $parameter): void
+    public function withSubtype(string $subtype): InternetMediaTypeInterface
     {
-        $this->parameters[$parameter->getAttribute()] = $parameter;
+        $new = clone $this;
+        $new->subtype = strtolower($subtype);
+
+        return $new;
+    }
+
+    public function withParameter(ParameterInterface $parameter): InternetMediaTypeInterface
+    {
+        $new = clone $this;
+        $new->addParameter($parameter);
+
+        return $new;
     }
 
     public function hasParameter(string $attribute): bool
@@ -95,11 +99,15 @@ class InternetMediaType implements InternetMediaTypeInterface, \Stringable
         return !is_null($this->getParameter($attribute));
     }
 
-    public function removeParameter(ParameterInterface $parameter): void
+    public function removeParameter(ParameterInterface $parameter): InternetMediaTypeInterface
     {
-        if ($this->hasParameter($parameter->getAttribute())) {
-            unset($this->parameters[$parameter->getAttribute()]);
+        $new = clone $this;
+        if ($new->hasParameter($parameter->getAttribute())) {
+            $new = clone $this;
+            unset($new->parameters[$parameter->getAttribute()]);
         }
+
+        return $new;
     }
 
     public function getParameter(string $attribute): ?ParameterInterface
@@ -144,5 +152,10 @@ class InternetMediaType implements InternetMediaTypeInterface, \Stringable
         }
 
         return true;
+    }
+
+    private function addParameter(ParameterInterface $parameter): void
+    {
+        $this->parameters[$parameter->getAttribute()] = $parameter;
     }
 }
