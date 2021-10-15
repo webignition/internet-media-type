@@ -173,18 +173,18 @@ class InternetMediaTypeTest extends TestCase
     }
 
     /**
-     * @dataProvider addParameterDataProvider
+     * @dataProvider withParameterDataProvider
      *
      * @param array<string, string> $expectedParameters
      */
-    public function testAddParameter(
+    public function testWithParameter(
         InternetMediaType $internetMediaType,
         ParameterInterface $parameterToAdd,
         array $expectedParameters
     ): void {
-        $internetMediaType->addParameter($parameterToAdd);
+        $new = $internetMediaType->withParameter($parameterToAdd);
 
-        foreach ($internetMediaType->getParameters() as $index => $parameter) {
+        foreach ($new->getParameters() as $index => $parameter) {
             $this->assertEquals($expectedParameters[$index], (string) $parameter);
         }
     }
@@ -192,7 +192,7 @@ class InternetMediaTypeTest extends TestCase
     /**
      * @return array<mixed>
      */
-    public function addParameterDataProvider(): array
+    public function withParameterDataProvider(): array
     {
         return [
             'no existing parameters' => [
@@ -273,10 +273,10 @@ class InternetMediaTypeTest extends TestCase
         ParameterInterface $parameterToRemove,
         array $expectedParametersAsStrings
     ): void {
-        $internetMediaType->removeParameter($parameterToRemove);
+        $new = $internetMediaType->removeParameter($parameterToRemove);
 
         $parametersAsStrings = [];
-        foreach ($internetMediaType->getParameters() as $parameter) {
+        foreach ($new->getParameters() as $parameter) {
             $parametersAsStrings[] = (string) $parameter;
         }
 
