@@ -11,22 +11,11 @@ class AttributeFixer
 {
     public const COMMA_SEPARATED_TYPE_SEPARATOR = ', ';
 
-    private string $inputString;
-
-    public function setInputString(string $inputString): void
+    public function fix(string $input): string
     {
-        $this->inputString = $inputString;
-    }
-
-    public function fix(): string
-    {
-        $fixedString = $this->inputString;
-
-        if ($this->isInvalid($this->inputString)) {
-            $fixedString = $this->colonSeparatedAttributeValueFix($this->inputString);
-        }
-
-        return $fixedString;
+        return $this->isInvalid($input)
+            ? $this->colonSeparatedAttributeValueFix($input)
+            : $input;
     }
 
     private function isInvalid(string $parameterString): bool
