@@ -3,7 +3,6 @@
 namespace webignition\InternetMediaType\Parameter\Parser;
 
 use webignition\InternetMediaType\Parameter\Parameter;
-use webignition\InternetMediaType\Parser\Configuration;
 use webignition\InternetMediaTypeInterface\ParameterInterface;
 use webignition\QuotedString\Exception as QuotedStringException;
 use webignition\StringParser\UnknownStateException;
@@ -25,23 +24,10 @@ use webignition\StringParser\UnknownStateException;
  */
 class Parser
 {
-    private Configuration $configuration;
-
     public function __construct(
         private AttributeParser $attributeParser,
         private ValueParser $valueParser,
     ) {
-        $this->configuration = new Configuration();
-    }
-
-    public function setConfiguration(Configuration $configuration): void
-    {
-        $this->configuration = $configuration;
-    }
-
-    public function getConfiguration(): Configuration
-    {
-        return $this->configuration;
     }
 
     /**
