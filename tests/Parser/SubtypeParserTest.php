@@ -55,31 +55,4 @@ class SubtypeParserTest extends TestCase
 
         $this->parser->parse('text/h t m l; charset=ISO-8859-4');
     }
-
-    /**
-     * @dataProvider parseAndFixInvalidSubtypeDataProvider
-     */
-    public function testParseAndFixInvalidSubtype(string $internetMediaTypeString, string $expectedSubtype): void
-    {
-        $this->parser->getConfiguration()->enableAttemptToRecoverFromInvalidInternalCharacter();
-
-        $this->assertEquals($expectedSubtype, $this->parser->parse($internetMediaTypeString));
-    }
-
-    /**
-     * @return array<mixed>
-     */
-    public function parseAndFixInvalidSubtypeDataProvider(): array
-    {
-        return [
-            'type/subtype doubled and comma-separated' => [
-                'internetMediaTypeString' => 'text/plain, text/plain',
-                'expectedSubtype' => 'plain'
-            ],
-            'type/subtype with parameters separated by space instead of semicolon' => [
-                'internetMediaTypeString' => 'text/html charset=utf-8',
-                'expectedSubtype' => 'html'
-            ],
-        ];
-    }
 }

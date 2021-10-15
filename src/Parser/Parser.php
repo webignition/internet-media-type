@@ -23,6 +23,7 @@ class Parser
     private SubtypeParser $subtypeParser;
     private ParameterParser $parameterParser;
     private Configuration $configuration;
+    private bool $hasAttemptedToFixAttributeInvalidInternalCharacter = false;
 
     public function __construct()
     {
@@ -30,7 +31,6 @@ class Parser
         $this->typeParser = new TypeParser();
 
         $this->subtypeParser = new SubtypeParser();
-        $this->subtypeParser->setConfiguration($this->configuration);
 
         $this->parameterParser = new ParameterParser();
         $this->parameterParser->setConfiguration($this->configuration);
@@ -49,7 +49,7 @@ class Parser
 
         try {
             $internetMediaType->setType($this->typeParser->parse($inputString));
-            $internetMediaType->setSubtype($this->subtypeParser->parse($inputString));
+            $internetMediaType->setSubtype($this->parseSubtype($inputString));
 
             $parameterString = $this->createParameterString(
                 $inputString,
@@ -92,7 +92,6 @@ class Parser
     public function setConfiguration(Configuration $configuration): void
     {
         $this->configuration = $configuration;
-        $this->subtypeParser->setConfiguration($configuration);
         $this->parameterParser->setConfiguration($configuration);
     }
 
@@ -170,5 +169,33 @@ class Parser
         }
 
         return $parameters;
+    }
+
+    /**
+     * @throws SubtypeParserException
+     * @throws UnknownStateException
+     */
+    private function parseSubtype(string $inputString): string
+    {
+        try {
+            return $this->subtypeParser->parse($inputString);
+        } catch (SubtypeParserException $subtypeParserException) {
+            $shouldAttemptToFixInvalidInternalCharacter =
+                $this->getConfiguration()->attemptToRecoverFromInvalidInternalCharacter()
+                && !$this->hasAttemptedToFixAttributeInvalidInternalCharacter;
+
+            if ($shouldAttemptToFixInvalidInternalCharacter) {
+                $this->hasAttemptedToFixAttributeInvalidInternalCharacter = true;
+
+                $fixer = new TypeFixer();
+                $fixedType = $fixer->fix($inputString, $subtypeParserException->getPosition());
+
+                if (is_string($fixedType)) {
+                    return $this->subtypeParser->parse($fixedType);
+                }
+            }
+
+            throw $subtypeParserException;
+        }
     }
 }
