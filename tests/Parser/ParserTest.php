@@ -18,7 +18,7 @@ class ParserTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->parser = new Parser();
+        $this->parser = Parser::create();
     }
 
     /**
