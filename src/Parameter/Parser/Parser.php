@@ -36,14 +36,6 @@ class Parser
         $this->attributeParser->setConfiguration($this->configuration);
     }
 
-    public static function create(): Parser
-    {
-        return new Parser(
-            AttributeParser::create(),
-            ValueParser::create(),
-        );
-    }
-
     public function setConfiguration(Configuration $configuration): void
     {
         $this->configuration = $configuration;

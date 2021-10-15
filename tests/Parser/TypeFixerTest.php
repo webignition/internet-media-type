@@ -3,7 +3,9 @@
 namespace webignition\Tests\InternetMediaType\Parser;
 
 use PHPUnit\Framework\TestCase;
+use webignition\InternetMediaType\Parser\SubtypeParser;
 use webignition\InternetMediaType\Parser\TypeFixer;
+use webignition\InternetMediaType\Parser\TypeParser;
 
 class TypeFixerTest extends TestCase
 {
@@ -13,7 +15,10 @@ class TypeFixerTest extends TestCase
     {
         parent::setUp();
 
-        $this->typeFixer = TypeFixer::create();
+        $this->typeFixer = new TypeFixer(
+            new TypeParser(),
+            new SubtypeParser()
+        );
     }
 
     /**

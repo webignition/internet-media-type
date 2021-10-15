@@ -3,11 +3,15 @@
 namespace webignition\InternetMediaType\Parser;
 
 use webignition\InternetMediaType\InternetMediaType;
+use webignition\InternetMediaType\Parameter\Parser\AttributeFixer;
+use webignition\InternetMediaType\Parameter\Parser\AttributeParser;
 use webignition\InternetMediaType\Parameter\Parser\AttributeParserException;
 use webignition\InternetMediaType\Parameter\Parser\Parser as ParameterParser;
+use webignition\InternetMediaType\Parameter\Parser\ValueParser;
 use webignition\InternetMediaTypeInterface\InternetMediaTypeInterface;
 use webignition\InternetMediaTypeInterface\ParameterInterface;
 use webignition\QuotedString\Exception as QuotedStringException;
+use webignition\QuotedString\Parser as QuotedStringParser;
 use webignition\StringParser\UnknownStateException;
 
 /**
@@ -37,10 +41,15 @@ class Parser
         $typeParser = new TypeParser();
         $subtypeParser = new SubtypeParser();
 
+        $parameterParser = new ParameterParser(
+            new AttributeParser(new AttributeFixer()),
+            new ValueParser(new QuotedStringParser())
+        );
+
         return new Parser(
             $typeParser,
             $subtypeParser,
-            ParameterParser::create(),
+            $parameterParser,
             new TypeFixer($typeParser, $subtypeParser)
         );
     }
