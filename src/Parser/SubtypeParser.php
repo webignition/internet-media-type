@@ -3,6 +3,7 @@
 namespace webignition\InternetMediaType\Parser;
 
 use webignition\StringParser\StringParser;
+use webignition\StringParser\UnknownStateException;
 
 /**
  * Parses out the subtype from an internet media type string.
@@ -66,6 +67,7 @@ class SubtypeParser
 
     /**
      * @throws SubtypeParserException
+     * @throws UnknownStateException
      */
     public function parse(string $input): string
     {
@@ -103,6 +105,7 @@ class SubtypeParser
 
     /**
      * @throws SubtypeParserException
+     * @throws UnknownStateException
      */
     private function handleInvalidInternalCharacterState(StringParser $stringParser): void
     {
