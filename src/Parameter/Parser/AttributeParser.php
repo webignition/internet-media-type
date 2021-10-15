@@ -25,7 +25,6 @@ class AttributeParser
         '\\'
     ];
 
-    private bool $hasAttemptedToFixAttributeInvalidInternalCharacter = false;
     private StringParser $stringParser;
     private Configuration $configuration;
 
@@ -81,7 +80,7 @@ class AttributeParser
         $isCharacterAttributeValueSeparator = self::ATTRIBUTE_VALUE_SEPARATOR === $character;
 
         if ($isCharacterInvalid) {
-            if ($this->shouldIgnoreInvalidCharacter()) {
+            if ($this->configuration->ignoreInvalidAttributes()) {
                 $stringParser->incrementPointer();
                 $stringParser->setState(self::STATE_LEFT_ATTRIBUTE_NAME);
                 $stringParser->clearOutput();
@@ -106,22 +105,5 @@ class AttributeParser
             1,
             $stringParser->getPointer()
         );
-    }
-
-    private function shouldIgnoreInvalidCharacter(): bool
-    {
-        if (false === $this->getConfiguration()->ignoreInvalidAttributes()) {
-            return false;
-        }
-
-        if (false === $this->getConfiguration()->attemptToRecoverFromInvalidInternalCharacter()) {
-            return true;
-        }
-
-        if ($this->hasAttemptedToFixAttributeInvalidInternalCharacter) {
-            return true;
-        }
-
-        return false;
     }
 }

@@ -3,7 +3,6 @@
 namespace webignition\Tests\InternetMediaType\Parameter\Parser;
 
 use PHPUnit\Framework\TestCase;
-use webignition\InternetMediaType\Parameter\Parser\AttributeFixer;
 use webignition\InternetMediaType\Parameter\Parser\AttributeParser;
 use webignition\InternetMediaType\Parameter\Parser\AttributeParserException;
 
@@ -76,29 +75,6 @@ class AttributeParserTest extends TestCase
             'ch arset=ISO-8859-4' => [
                 'attribute' => 'ch ar set=ISO-8859-4',
                 'expectedInvalidInternalCharacterPosition' => 2
-            ],
-        ];
-    }
-
-    /**
-     * @dataProvider parseInvalidInternalCharacterDataProviderFoo
-     */
-    public function testParseInvalidInternalCharacterAttemptRecoveryIgnoreInvalidAttributes(string $attribute): void
-    {
-        $this->parser->getConfiguration()->enableAttemptToRecoverFromInvalidInternalCharacter();
-        $this->parser->getConfiguration()->enableIgnoreInvalidAttributes();
-
-        $this->assertEmpty($this->parser->parse($attribute));
-    }
-
-    /**
-     * @return array<mixed>
-     */
-    public function parseInvalidInternalCharacterDataProviderFoo(): array
-    {
-        return [
-            'ch ar set=ISO-8859-4' => [
-                'attribute' => 'ch ar set=ISO-8859-4',
             ],
         ];
     }
