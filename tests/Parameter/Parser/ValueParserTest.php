@@ -20,8 +20,7 @@ class ValueParserTest extends TestCase
      */
     public function testParse(string $attribute, string $parameterString, string $expectedValue): void
     {
-        $this->parser->setAttribute($attribute);
-        $this->assertEquals($expectedValue, $this->parser->parse($parameterString));
+        $this->assertEquals($expectedValue, $this->parser->parse($parameterString, $attribute));
     }
 
     /**

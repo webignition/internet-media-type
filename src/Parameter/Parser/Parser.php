@@ -56,7 +56,8 @@ class Parser
             return new Parameter('', '');
         }
 
-        $value = $this->createValueParser($attribute)->parse($parameterString);
+        $valueParser = new ValueParser();
+        $value = $valueParser->parse($parameterString, $attribute);
 
         return new Parameter($attribute, $value);
     }
@@ -67,13 +68,5 @@ class Parser
         $attributeParser->setConfiguration($this->getConfiguration());
 
         return $attributeParser;
-    }
-
-    private function createValueParser(string $attribute): ValueParser
-    {
-        $valueParser = new ValueParser();
-        $valueParser->setAttribute($attribute);
-
-        return $valueParser;
     }
 }
