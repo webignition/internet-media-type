@@ -29,6 +29,7 @@ class AttributeParser
 
     private StringParser $stringParser;
     private Configuration $configuration;
+    private AttributeFixer $attributeFixer;
 
     public function __construct()
     {
@@ -48,6 +49,7 @@ class AttributeParser
         ]);
 
         $this->configuration = new Configuration();
+        $this->attributeFixer = new AttributeFixer();
     }
 
     public function setConfiguration(Configuration $configuration): void
@@ -106,8 +108,7 @@ class AttributeParser
         if ($this->shouldAttemptToFixInvalidInternalCharacter()) {
             $this->hasAttemptedToFixAttributeInvalidInternalCharacter = true;
 
-            $attributeFixer = new AttributeFixer();
-            $fixedInputString = $attributeFixer->fix($stringParser->getInput());
+            $fixedInputString = $this->attributeFixer->fix($stringParser->getInput());
 
             $this->parse($fixedInputString);
 
