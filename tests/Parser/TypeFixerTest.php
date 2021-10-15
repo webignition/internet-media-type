@@ -3,10 +3,24 @@
 namespace webignition\Tests\InternetMediaType\Parser;
 
 use PHPUnit\Framework\TestCase;
+use webignition\InternetMediaType\Parser\SubtypeParser;
 use webignition\InternetMediaType\Parser\TypeFixer;
+use webignition\InternetMediaType\Parser\TypeParser;
 
 class TypeFixerTest extends TestCase
 {
+    private TypeFixer $typeFixer;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->typeFixer = new TypeFixer(
+            new TypeParser(),
+            new SubtypeParser()
+        );
+    }
+
     /**
      * @dataProvider fixSuccessDataProvider
      */
@@ -15,9 +29,10 @@ class TypeFixerTest extends TestCase
         int $invalidCharacterPosition,
         ?string $expectedType
     ): void {
-        $typeFixer = new TypeFixer();
-
-        $this->assertEquals($expectedType, $typeFixer->fix($internetMediaTypeString, $invalidCharacterPosition));
+        $this->assertEquals(
+            $expectedType,
+            $this->typeFixer->fix($internetMediaTypeString, $invalidCharacterPosition)
+        );
     }
 
     /**
@@ -54,9 +69,7 @@ class TypeFixerTest extends TestCase
      */
     public function testFixExceptionWhenParsing(string $internetMediaTypeString, int $invalidCharacterPosition): void
     {
-        $typeFixer = new TypeFixer();
-
-        $this->assertNull($typeFixer->fix($internetMediaTypeString, $invalidCharacterPosition));
+        $this->assertNull($this->typeFixer->fix($internetMediaTypeString, $invalidCharacterPosition));
     }
 
     /**

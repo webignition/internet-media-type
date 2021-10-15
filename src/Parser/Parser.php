@@ -3,11 +3,15 @@
 namespace webignition\InternetMediaType\Parser;
 
 use webignition\InternetMediaType\InternetMediaType;
+use webignition\InternetMediaType\Parameter\Parser\AttributeFixer;
+use webignition\InternetMediaType\Parameter\Parser\AttributeParser;
 use webignition\InternetMediaType\Parameter\Parser\AttributeParserException;
 use webignition\InternetMediaType\Parameter\Parser\Parser as ParameterParser;
+use webignition\InternetMediaType\Parameter\Parser\ValueParser;
 use webignition\InternetMediaTypeInterface\InternetMediaTypeInterface;
 use webignition\InternetMediaTypeInterface\ParameterInterface;
 use webignition\QuotedString\Exception as QuotedStringException;
+use webignition\QuotedString\Parser as QuotedStringParser;
 use webignition\StringParser\UnknownStateException;
 
 /**
@@ -19,21 +23,35 @@ class Parser
     public const TYPE_SUBTYPE_SEPARATOR = '/';
     public const TYPE_PARAMETER_SEPARATOR = ';';
 
-    private TypeParser $typeParser;
-    private SubtypeParser $subtypeParser;
-    private ParameterParser $parameterParser;
     private Configuration $configuration;
     private bool $hasAttemptedToFixAttributeInvalidInternalCharacter = false;
 
-    public function __construct()
-    {
+    public function __construct(
+        private TypeParser $typeParser,
+        private SubtypeParser $subtypeParser,
+        private ParameterParser $parameterParser,
+        private TypeFixer $typeFixer,
+    ) {
         $this->configuration = new Configuration();
-        $this->typeParser = new TypeParser();
-
-        $this->subtypeParser = new SubtypeParser();
-
-        $this->parameterParser = new ParameterParser();
         $this->parameterParser->setConfiguration($this->configuration);
+    }
+
+    public static function create(): Parser
+    {
+        $typeParser = new TypeParser();
+        $subtypeParser = new SubtypeParser();
+
+        $parameterParser = new ParameterParser(
+            new AttributeParser(new AttributeFixer()),
+            new ValueParser(new QuotedStringParser())
+        );
+
+        return new Parser(
+            $typeParser,
+            $subtypeParser,
+            $parameterParser,
+            new TypeFixer($typeParser, $subtypeParser)
+        );
     }
 
     /**
@@ -187,8 +205,7 @@ class Parser
             if ($shouldAttemptToFixInvalidInternalCharacter) {
                 $this->hasAttemptedToFixAttributeInvalidInternalCharacter = true;
 
-                $fixer = new TypeFixer();
-                $fixedType = $fixer->fix($inputString, $subtypeParserException->getPosition());
+                $fixedType = $this->typeFixer->fix($inputString, $subtypeParserException->getPosition());
 
                 if (is_string($fixedType)) {
                     return $this->subtypeParser->parse($fixedType);

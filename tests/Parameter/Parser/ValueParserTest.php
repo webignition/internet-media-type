@@ -4,6 +4,7 @@ namespace webignition\Tests\InternetMediaType\Parameter\Parser;
 
 use PHPUnit\Framework\TestCase;
 use webignition\InternetMediaType\Parameter\Parser\ValueParser;
+use webignition\QuotedString\Parser as QuotedStringParser;
 
 class ValueParserTest extends TestCase
 {
@@ -12,7 +13,9 @@ class ValueParserTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->parser = new ValueParser();
+        $this->parser = new ValueParser(
+            new QuotedStringParser()
+        );
     }
 
     /**

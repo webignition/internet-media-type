@@ -3,6 +3,7 @@
 namespace webignition\Tests\InternetMediaType\Parameter\Parser;
 
 use PHPUnit\Framework\TestCase;
+use webignition\InternetMediaType\Parameter\Parser\AttributeFixer;
 use webignition\InternetMediaType\Parameter\Parser\AttributeParser;
 use webignition\InternetMediaType\Parameter\Parser\AttributeParserException;
 
@@ -13,7 +14,10 @@ class AttributeParserTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->parser = new AttributeParser();
+
+        $this->parser = new AttributeParser(
+            new AttributeFixer()
+        );
     }
 
     /**

@@ -27,14 +27,19 @@ class Parser
 {
     private Configuration $configuration;
 
-    public function __construct()
-    {
+    public function __construct(
+        private AttributeParser $attributeParser,
+        private ValueParser $valueParser,
+    ) {
         $this->configuration = new Configuration();
+
+        $this->attributeParser->setConfiguration($this->configuration);
     }
 
     public function setConfiguration(Configuration $configuration): void
     {
         $this->configuration = $configuration;
+        $this->attributeParser->setConfiguration($configuration);
     }
 
     public function getConfiguration(): Configuration
@@ -50,23 +55,14 @@ class Parser
     public function parse(string $parameterString): ParameterInterface
     {
         $inputString = trim($parameterString);
-        $attribute = $this->createAttributeParser()->parse($inputString);
+        $attribute = $this->attributeParser->parse($inputString);
 
-        if (empty($attribute)) {
+        if ('' === $attribute) {
             return new Parameter('', '');
         }
 
-        $valueParser = new ValueParser();
-        $value = $valueParser->parse($parameterString, $attribute);
+        $value = $this->valueParser->parse($parameterString, $attribute);
 
         return new Parameter($attribute, $value);
-    }
-
-    private function createAttributeParser(): AttributeParser
-    {
-        $attributeParser = new AttributeParser();
-        $attributeParser->setConfiguration($this->getConfiguration());
-
-        return $attributeParser;
     }
 }

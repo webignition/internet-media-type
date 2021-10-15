@@ -30,8 +30,9 @@ class AttributeParser
     private StringParser $stringParser;
     private Configuration $configuration;
 
-    public function __construct()
-    {
+    public function __construct(
+        private AttributeFixer $attributeFixer,
+    ) {
         $this->stringParser = new StringParser([
             StringParser::STATE_UNKNOWN => function (StringParser $stringParser) {
                 $this->handleUnknownState($stringParser);
@@ -106,8 +107,7 @@ class AttributeParser
         if ($this->shouldAttemptToFixInvalidInternalCharacter()) {
             $this->hasAttemptedToFixAttributeInvalidInternalCharacter = true;
 
-            $attributeFixer = new AttributeFixer();
-            $fixedInputString = $attributeFixer->fix($stringParser->getInput());
+            $fixedInputString = $this->attributeFixer->fix($stringParser->getInput());
 
             $this->parse($fixedInputString);
 

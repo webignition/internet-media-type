@@ -16,8 +16,9 @@ class ValueParser
 
     private StringParser $stringParser;
 
-    public function __construct()
-    {
+    public function __construct(
+        private QuotedStringParser $quotedStringParser,
+    ) {
         $this->stringParser = new StringParser([
             StringParser::STATE_UNKNOWN => function (StringParser $stringParser) {
                 if (self::QUOTED_STRING_DELIMITER === $stringParser->getCurrentCharacter()) {
@@ -55,8 +56,7 @@ class ValueParser
             return '';
         }
 
-        $quotedStringParser = new QuotedStringParser();
-        $quotedString = $quotedStringParser->parseToObject($output);
+        $quotedString = $this->quotedStringParser->parseToObject($output);
 
         return $quotedString->getValue();
     }
