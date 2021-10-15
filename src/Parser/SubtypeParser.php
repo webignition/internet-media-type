@@ -28,14 +28,10 @@ class SubtypeParser
         '\\'
     ];
 
-    private bool $hasAttemptedToFixAttributeInvalidInternalCharacter = false;
-
-    private Configuration $configuration;
     private StringParser $stringParser;
 
     public function __construct()
     {
-        $this->configuration = new Configuration();
         $this->stringParser = new StringParser([
             StringParser::STATE_UNKNOWN => function (StringParser $stringParser) {
                 $stringParser->setState(self::STATE_IN_TYPE);
@@ -50,19 +46,15 @@ class SubtypeParser
                 $stringParser->stop();
             },
             self::STATE_INVALID_INTERNAL_CHARACTER => function (StringParser $stringParser) {
-                $this->handleInvalidInternalCharacterState($stringParser);
+                $pointer = $stringParser->getPointer();
+
+                throw new SubtypeParserException(
+                    sprintf('Invalid internal character after at position %d', $pointer),
+                    SubtypeParserException::INTERNAL_INVALID_CHARACTER_CODE,
+                    $pointer
+                );
             },
         ]);
-    }
-
-    public function setConfiguration(Configuration $configuration): void
-    {
-        $this->configuration = $configuration;
-    }
-
-    public function getConfiguration(): Configuration
-    {
-        return $this->configuration;
     }
 
     /**
@@ -72,12 +64,6 @@ class SubtypeParser
     public function parse(string $input): string
     {
         return $this->stringParser->parse(trim($input));
-    }
-
-    private function shouldAttemptToFixInvalidInternalCharacter(): bool
-    {
-        return $this->getConfiguration()->attemptToRecoverFromInvalidInternalCharacter()
-            && !$this->hasAttemptedToFixAttributeInvalidInternalCharacter;
     }
 
     private function handleInTypeState(StringParser $stringParser): void
@@ -101,31 +87,5 @@ class SubtypeParser
             $stringParser->appendOutputString();
             $stringParser->incrementPointer();
         }
-    }
-
-    /**
-     * @throws SubtypeParserException
-     * @throws UnknownStateException
-     */
-    private function handleInvalidInternalCharacterState(StringParser $stringParser): void
-    {
-        $pointer = $stringParser->getPointer();
-
-        if ($this->shouldAttemptToFixInvalidInternalCharacter()) {
-            $this->hasAttemptedToFixAttributeInvalidInternalCharacter = true;
-
-            $fixer = new TypeFixer();
-            $fixedType = $fixer->fix($stringParser->getInput(), $pointer);
-
-            $this->parse((string) $fixedType);
-
-            return;
-        }
-
-        throw new SubtypeParserException(
-            sprintf('Invalid internal character after at position %d', $pointer),
-            SubtypeParserException::INTERNAL_INVALID_CHARACTER_CODE,
-            $pointer
-        );
     }
 }
