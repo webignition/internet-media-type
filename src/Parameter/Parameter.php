@@ -18,8 +18,8 @@ class Parameter implements ParameterInterface, \Stringable
 
     public function __construct(string $attribute, ?string $value = null)
     {
-        $this->setAttribute($attribute);
-        $this->setValue($value);
+        $this->attribute = trim(strtolower($attribute));
+        $this->value = $value;
     }
 
     public function __toString(): string
@@ -35,19 +35,9 @@ class Parameter implements ParameterInterface, \Stringable
         return $this->attribute . self::ATTRIBUTE_VALUE_SEPARATOR . $this->value;
     }
 
-    public function setAttribute(string $attribute): void
-    {
-        $this->attribute = trim(strtolower($attribute));
-    }
-
     public function getAttribute(): string
     {
         return $this->attribute;
-    }
-
-    public function setValue(?string $value): void
-    {
-        $this->value = $value;
     }
 
     public function getValue(): ?string
