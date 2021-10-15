@@ -12,7 +12,7 @@ class ValueParserTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->parser = new ValueParser();
+        $this->parser = ValueParser::create();
     }
 
     /**

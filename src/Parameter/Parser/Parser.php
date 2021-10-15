@@ -33,7 +33,7 @@ class Parser
     {
         $this->configuration = new Configuration();
         $this->attributeParser = AttributeParser::create();
-        $this->valueParser = new ValueParser();
+        $this->valueParser = ValueParser::create();
 
         $this->attributeParser->setConfiguration($this->configuration);
     }
