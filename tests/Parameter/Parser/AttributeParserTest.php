@@ -13,7 +13,7 @@ class AttributeParserTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->parser = new AttributeParser();
+        $this->parser = AttributeParser::create();
     }
 
     /**
