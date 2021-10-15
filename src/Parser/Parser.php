@@ -42,8 +42,9 @@ class Parser
         $subtypeParser = new SubtypeParser();
 
         $parameterParser = new ParameterParser(
-            new AttributeParser(new AttributeFixer()),
-            new ValueParser(new QuotedStringParser())
+            new AttributeParser(),
+            new ValueParser(new QuotedStringParser()),
+            new AttributeFixer(),
         );
 
         return new Parser(
