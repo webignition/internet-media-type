@@ -65,12 +65,26 @@ class Parser
             }
 
             return $internetMediaType;
-        } catch (TypeParserException | SubtypeParserException | AttributeParserException $exception) {
+        } catch (TypeParserException $typeParserException) {
             throw new ParseException(
-                $exception->getMessage(),
-                $exception->getCode(),
+                $typeParserException->getMessage(),
+                $typeParserException->getCode(),
                 $inputString,
-                $exception
+                $typeParserException
+            );
+        } catch (SubtypeParserException $subtypeParserException) {
+            throw new ParseException(
+                $subtypeParserException->getMessage(),
+                $subtypeParserException->getCode(),
+                $inputString,
+                $subtypeParserException
+            );
+        } catch (AttributeParserException $attributeParserException) {
+            throw new ParseException(
+                $attributeParserException->getMessage(),
+                $attributeParserException->getCode(),
+                $inputString,
+                $attributeParserException
             );
         }
     }
@@ -142,10 +156,11 @@ class Parser
      *
      * @param string[] $parameterStrings
      *
-     * @return ParameterInterface[]
      * @throws AttributeParserException
      * @throws QuotedStringException
      * @throws UnknownStateException
+     *
+     * @return ParameterInterface[]
      */
     private function getParameters(array $parameterStrings): array
     {
