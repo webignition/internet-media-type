@@ -13,21 +13,7 @@ class AttributeFixer
 
     public function fix(string $input): string
     {
-        return $this->isInvalid($input)
-            ? $this->colonSeparatedAttributeValueFix($input)
-            : $input;
-    }
-
-    private function isInvalid(string $parameterString): bool
-    {
-        try {
-            $parser = new AttributeParser();
-            $parser->parse($parameterString);
-        } catch (\Exception) {
-            return true;
-        }
-
-        return false;
+        return $this->colonSeparatedAttributeValueFix($input);
     }
 
     /**
@@ -41,10 +27,6 @@ class AttributeFixer
      */
     private function colonSeparatedAttributeValueFix(string $parameterString): string
     {
-        if (!preg_match('/.+:\s+.+/', $parameterString)) {
-            return $parameterString;
-        }
-
         return (string) preg_replace('/:\s+/', '=', $parameterString);
     }
 }
