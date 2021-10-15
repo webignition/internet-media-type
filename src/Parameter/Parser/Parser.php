@@ -26,12 +26,10 @@ use webignition\StringParser\UnknownStateException;
 class Parser
 {
     private Configuration $configuration;
-    private bool $hasAttemptedToFixAttributeInvalidInternalCharacter = false;
 
     public function __construct(
         private AttributeParser $attributeParser,
         private ValueParser $valueParser,
-        private AttributeFixer $attributeFixer,
     ) {
         $this->configuration = new Configuration();
 
@@ -57,7 +55,7 @@ class Parser
     public function parse(string $parameterString): ParameterInterface
     {
         $inputString = trim($parameterString);
-        $attribute = $this->parseAttribute($inputString);
+        $attribute = $this->attributeParser->parse($inputString);
 
         if ('' === $attribute) {
             return new Parameter('', '');
@@ -66,30 +64,5 @@ class Parser
         $value = $this->valueParser->parse($parameterString, $attribute);
 
         return new Parameter($attribute, $value);
-    }
-
-    /**
-     * @throws AttributeParserException
-     * @throws UnknownStateException
-     */
-    private function parseAttribute(string $inputString): string
-    {
-        try {
-            return $this->attributeParser->parse($inputString);
-        } catch (AttributeParserException $attributeParserException) {
-            $shouldAttemptToFixInvalidInternalCharacter =
-                $this->getConfiguration()->attemptToRecoverFromInvalidInternalCharacter()
-                && !$this->hasAttemptedToFixAttributeInvalidInternalCharacter;
-
-            if ($shouldAttemptToFixInvalidInternalCharacter) {
-                $this->hasAttemptedToFixAttributeInvalidInternalCharacter = true;
-
-                $fixedInputString = $this->attributeFixer->fix($inputString);
-
-                return $this->attributeParser->parse($fixedInputString);
-            }
-
-            throw $attributeParserException;
-        }
     }
 }

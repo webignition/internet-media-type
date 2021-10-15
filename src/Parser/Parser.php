@@ -24,6 +24,7 @@ class Parser
     public const TYPE_PARAMETER_SEPARATOR = ';';
 
     private Configuration $configuration;
+    private bool $hasAttemptedToFixSubtypeInvalidInternalCharacter = false;
     private bool $hasAttemptedToFixAttributeInvalidInternalCharacter = false;
 
     public function __construct(
@@ -31,6 +32,7 @@ class Parser
         private SubtypeParser $subtypeParser,
         private ParameterParser $parameterParser,
         private TypeFixer $typeFixer,
+        private AttributeFixer $attributeFixer,
     ) {
         $this->configuration = new Configuration();
         $this->parameterParser->setConfiguration($this->configuration);
@@ -44,14 +46,14 @@ class Parser
         $parameterParser = new ParameterParser(
             new AttributeParser(),
             new ValueParser(new QuotedStringParser()),
-            new AttributeFixer(),
         );
 
         return new Parser(
             $typeParser,
             $subtypeParser,
             $parameterParser,
-            new TypeFixer($typeParser, $subtypeParser)
+            new TypeFixer($typeParser, $subtypeParser),
+            new AttributeFixer(),
         );
     }
 
@@ -184,7 +186,7 @@ class Parser
     {
         $parameters = [];
         foreach ($parameterStrings as $parameterString) {
-            $parameters[] = $this->parameterParser->parse($parameterString);
+            $parameters[] = $this->parseParameterString($parameterString);
         }
 
         return $parameters;
@@ -201,10 +203,10 @@ class Parser
         } catch (SubtypeParserException $subtypeParserException) {
             $shouldAttemptToFixInvalidInternalCharacter =
                 $this->getConfiguration()->attemptToRecoverFromInvalidInternalCharacter()
-                && !$this->hasAttemptedToFixAttributeInvalidInternalCharacter;
+                && !$this->hasAttemptedToFixSubtypeInvalidInternalCharacter;
 
             if ($shouldAttemptToFixInvalidInternalCharacter) {
-                $this->hasAttemptedToFixAttributeInvalidInternalCharacter = true;
+                $this->hasAttemptedToFixSubtypeInvalidInternalCharacter = true;
 
                 $fixedType = $this->typeFixer->fix($inputString, $subtypeParserException->getPosition());
 
@@ -214,6 +216,32 @@ class Parser
             }
 
             throw $subtypeParserException;
+        }
+    }
+
+    /**
+     * @throws AttributeParserException
+     * @throws QuotedStringException
+     * @throws UnknownStateException
+     */
+    private function parseParameterString(string $parameterString): ParameterInterface
+    {
+        try {
+            return $this->parameterParser->parse($parameterString);
+        } catch (AttributeParserException $attributeParserException) {
+            $shouldAttemptToFixInvalidInternalCharacter =
+                $this->getConfiguration()->attemptToRecoverFromInvalidInternalCharacter()
+                && !$this->hasAttemptedToFixAttributeInvalidInternalCharacter;
+
+            if ($shouldAttemptToFixInvalidInternalCharacter) {
+                $this->hasAttemptedToFixAttributeInvalidInternalCharacter = true;
+
+                $fixedInputString = $this->attributeFixer->fix($parameterString);
+
+                return $this->parameterParser->parse($fixedInputString);
+            }
+
+            throw $attributeParserException;
         }
     }
 }
