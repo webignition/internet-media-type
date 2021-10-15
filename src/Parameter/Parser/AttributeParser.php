@@ -51,13 +51,6 @@ class AttributeParser
         $this->configuration = new Configuration();
     }
 
-    public static function create(): AttributeParser
-    {
-        return new AttributeParser(
-            new AttributeFixer(),
-        );
-    }
-
     public function setConfiguration(Configuration $configuration): void
     {
         $this->configuration = $configuration;

@@ -38,13 +38,6 @@ class ValueParser
         ]);
     }
 
-    public static function create(): ValueParser
-    {
-        return new ValueParser(
-            new QuotedStringParser(),
-        );
-    }
-
     /**
      * @throws QuotedStringException
      * @throws UnknownStateException

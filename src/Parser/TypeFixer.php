@@ -18,14 +18,6 @@ class TypeFixer
     ) {
     }
 
-    public static function create(): TypeFixer
-    {
-        return new TypeFixer(
-            new TypeParser(),
-            new SubtypeParser(),
-        );
-    }
-
     public function fix(string $input, int $position): ?string
     {
         $commaSeparatedTypeFix = $this->commaSeparatedTypeFix($input, $position);

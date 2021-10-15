@@ -3,8 +3,12 @@
 namespace webignition\Tests\InternetMediaType\Parameter\Parser;
 
 use PHPUnit\Framework\TestCase;
+use webignition\InternetMediaType\Parameter\Parser\AttributeFixer;
+use webignition\InternetMediaType\Parameter\Parser\AttributeParser;
 use webignition\InternetMediaType\Parameter\Parser\Parser;
+use webignition\InternetMediaType\Parameter\Parser\ValueParser;
 use webignition\InternetMediaType\Parser\Configuration;
+use webignition\QuotedString\Parser as QuotedStringParser;
 
 class ParserTest extends TestCase
 {
@@ -13,7 +17,10 @@ class ParserTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->parser = Parser::create();
+        $this->parser = new Parser(
+            new AttributeParser(new AttributeFixer()),
+            new ValueParser(new QuotedStringParser())
+        );
     }
 
     /**
