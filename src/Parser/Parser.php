@@ -26,6 +26,7 @@ class Parser
         private TypeParser $typeParser,
         private SubtypeParser $subtypeParser,
         private ParameterParser $parameterParser,
+        private TypeFixer $typeFixer,
     ) {
         $this->configuration = new Configuration();
         $this->parameterParser->setConfiguration($this->configuration);
@@ -33,10 +34,14 @@ class Parser
 
     public static function create(): Parser
     {
+        $typeParser = new TypeParser();
+        $subtypeParser = new SubtypeParser();
+
         return new Parser(
-            new TypeParser(),
-            new SubtypeParser(),
+            $typeParser,
+            $subtypeParser,
             ParameterParser::create(),
+            new TypeFixer($typeParser, $subtypeParser)
         );
     }
 
@@ -191,8 +196,7 @@ class Parser
             if ($shouldAttemptToFixInvalidInternalCharacter) {
                 $this->hasAttemptedToFixAttributeInvalidInternalCharacter = true;
 
-                $fixer = new TypeFixer();
-                $fixedType = $fixer->fix($inputString, $subtypeParserException->getPosition());
+                $fixedType = $this->typeFixer->fix($inputString, $subtypeParserException->getPosition());
 
                 if (is_string($fixedType)) {
                     return $this->subtypeParser->parse($fixedType);
