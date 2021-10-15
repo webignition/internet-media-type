@@ -229,19 +229,19 @@ class ParserTest extends TestCase
             'type parser exception' => [
                 'contentTypeString' => 'f o o',
                 'expectedMessage' => 'Invalid internal character after at position 1',
-                'expectedCode' => 1,
+                'expectedCode' => ParseException::CODE_TYPE_ERROR,
                 'expectedPreviousExceptionClass' => TypeParserException::class,
             ],
             'subtype parser exception' => [
                 'contentTypeString' => 'text/h t m l',
                 'expectedMessage' => 'Invalid internal character after at position 6',
-                'expectedCode' => 1,
+                'expectedCode' => ParseException::CODE_SUBTYPE_ERROR,
                 'expectedPreviousExceptionClass' => SubtypeParserException::class,
             ],
             'attribute parser exception' => [
                 'contentTypeString' => 'text/html; c h a r s e t',
                 'expectedMessage' => 'Invalid internal character after at position 1',
-                'expectedCode' => 1,
+                'expectedCode' => ParseException::CODE_ATTRIBUTE_ERROR,
                 'expectedPreviousExceptionClass' => AttributeParserException::class,
             ],
         ];

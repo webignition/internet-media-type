@@ -2,6 +2,6 @@
 
 namespace webignition\InternetMediaType\Exception;
 
-class TypeParserException extends ParseException
+class TypeParserException extends \Exception implements ComponentExceptionInterface
 {
 }
