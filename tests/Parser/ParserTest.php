@@ -93,12 +93,36 @@ class ParserTest extends TestCase
         ];
     }
 
-    public function testIgnoreInvalidAttributes(): void
+    /**
+     * @dataProvider ignoreInvalidAttributesDataProvider
+     */
+    public function testIgnoreInvalidAttributes(string $internetMediaTypeString, string $expected): void
     {
         $this->parser->setIgnoreInvalidAttributes(true);
-        $internetMediaType = $this->parser->parse('foo/bar; charset: UTF-8');
+        $internetMediaType = $this->parser->parse($internetMediaTypeString);
 
-        $this->assertEquals('foo/bar', (string) $internetMediaType);
+        $this->assertEquals($expected, (string) $internetMediaType);
+    }
+
+    /**
+     * @return array<mixed>
+     */
+    public function ignoreInvalidAttributesDataProvider(): array
+    {
+        return [
+            'single invalid attribute only' => [
+                'internetMediaTypeString' => 'foo/bar; charset: UTF-8',
+                'expected' => 'foo/bar',
+            ],
+            'single trailing invalid attribute' => [
+                'internetMediaTypeString' => 'foo/bar; attribute=value; charset: UTF-8',
+                'expected' => 'foo/bar; attribute=value',
+            ],
+            'single leading invalid attribute' => [
+                'internetMediaTypeString' => 'foo/bar; charset: UTF-8; attribute=value',
+                'expected' => 'foo/bar; attribute=value',
+            ],
+        ];
     }
 
     /**

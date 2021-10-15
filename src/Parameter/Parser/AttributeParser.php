@@ -2,7 +2,6 @@
 
 namespace webignition\InternetMediaType\Parameter\Parser;
 
-use webignition\InternetMediaType\Parser\Configuration;
 use webignition\StringParser\StringParser;
 use webignition\StringParser\UnknownStateException;
 
@@ -26,7 +25,6 @@ class AttributeParser
     ];
 
     private StringParser $stringParser;
-    private Configuration $configuration;
 
     public function __construct()
     {
@@ -44,18 +42,6 @@ class AttributeParser
                 $this->handleInvalidInternalCharacterState($stringParser);
             },
         ]);
-
-        $this->configuration = new Configuration();
-    }
-
-    public function setConfiguration(Configuration $configuration): void
-    {
-        $this->configuration = $configuration;
-    }
-
-    public function getConfiguration(): Configuration
-    {
-        return $this->configuration;
     }
 
     /**
@@ -80,13 +66,7 @@ class AttributeParser
         $isCharacterAttributeValueSeparator = self::ATTRIBUTE_VALUE_SEPARATOR === $character;
 
         if ($isCharacterInvalid) {
-            if ($this->configuration->ignoreInvalidAttributes()) {
-                $stringParser->incrementPointer();
-                $stringParser->setState(self::STATE_LEFT_ATTRIBUTE_NAME);
-                $stringParser->clearOutput();
-            } else {
-                $stringParser->setState(self::STATE_INVALID_INTERNAL_CHARACTER);
-            }
+            $stringParser->setState(self::STATE_INVALID_INTERNAL_CHARACTER);
         } elseif ($isCharacterAttributeValueSeparator) {
             $stringParser->setState(self::STATE_LEFT_ATTRIBUTE_NAME);
         } else {

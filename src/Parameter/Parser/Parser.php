@@ -32,14 +32,11 @@ class Parser
         private ValueParser $valueParser,
     ) {
         $this->configuration = new Configuration();
-
-        $this->attributeParser->setConfiguration($this->configuration);
     }
 
     public function setConfiguration(Configuration $configuration): void
     {
         $this->configuration = $configuration;
-        $this->attributeParser->setConfiguration($configuration);
     }
 
     public function getConfiguration(): Configuration

@@ -79,24 +79,14 @@ class AttributeParserTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider parseAndIgnoreInvalidCharacterDataProvider
-     */
-    public function testParseAndIgnoreInvalidCharacter(string $attribute): void
+    public function testParseInvalidAttribute(): void
     {
-        $this->parser->getConfiguration()->enableIgnoreInvalidAttributes();
-        $this->assertEmpty($this->parser->parse($attribute));
-    }
+        self::expectExceptionObject(new AttributeParserException(
+            'Invalid internal character after at position 7',
+            1,
+            7
+        ));
 
-    /**
-     * @return array<mixed>
-     */
-    public function parseAndIgnoreInvalidCharacterDataProvider(): array
-    {
-        return [
-            'charset"foo": utf8' => [
-                'attribute' => 'charset"foo": utf8',
-            ],
-        ];
+        $this->parser->parse('charset"foo": utf8');
     }
 }
