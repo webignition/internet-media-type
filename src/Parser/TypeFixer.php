@@ -12,6 +12,20 @@ class TypeFixer
     public const COMMA_SEPARATED_TYPE_SEPARATOR = ', ';
     public const TYPE_SUBTYPE_SEPARATOR = '/';
 
+    public function __construct(
+        private TypeParser $typeParser,
+        private SubtypeParser $subtypeParser,
+    ) {
+    }
+
+    public static function create(): TypeFixer
+    {
+        return new TypeFixer(
+            new TypeParser(),
+            new SubtypeParser(),
+        );
+    }
+
     public function fix(string $input, int $position): ?string
     {
         $commaSeparatedTypeFix = $this->commaSeparatedTypeFix($input, $position);
@@ -77,11 +91,8 @@ class TypeFixer
     private function getTypeSubtypeFromPossibleTypeSubtype(string $possibleTypeSubtype): ?string
     {
         try {
-            $typeParser = new TypeParser();
-            $type = $typeParser->parse($possibleTypeSubtype);
-
-            $subtypeParser = new SubtypeParser();
-            $subtype = $subtypeParser->parse($possibleTypeSubtype);
+            $type = $this->typeParser->parse($possibleTypeSubtype);
+            $subtype = $this->subtypeParser->parse($possibleTypeSubtype);
 
             return $type . self::TYPE_SUBTYPE_SEPARATOR . $subtype;
         } catch (\Exception) {

@@ -191,7 +191,7 @@ class Parser
             if ($shouldAttemptToFixInvalidInternalCharacter) {
                 $this->hasAttemptedToFixAttributeInvalidInternalCharacter = true;
 
-                $fixer = new TypeFixer();
+                $fixer = TypeFixer::create();
                 $fixedType = $fixer->fix($inputString, $subtypeParserException->getPosition());
 
                 if (is_string($fixedType)) {
