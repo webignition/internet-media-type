@@ -1,10 +1,10 @@
 <?php
 
-namespace webignition\Tests\InternetMediaType\Parser;
+namespace webignition\Tests\InternetMediaType\Fixer;
 
 use PHPUnit\Framework\TestCase;
+use webignition\InternetMediaType\Fixer\TypeFixer;
 use webignition\InternetMediaType\Parser\SubtypeParser;
-use webignition\InternetMediaType\Parser\TypeFixer;
 use webignition\InternetMediaType\Parser\TypeParser;
 
 class TypeFixerTest extends TestCase

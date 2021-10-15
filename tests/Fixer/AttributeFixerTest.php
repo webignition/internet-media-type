@@ -1,9 +1,9 @@
 <?php
 
-namespace webignition\Tests\InternetMediaType\Parameter\Parser;
+namespace webignition\Tests\InternetMediaType\Fixer;
 
 use PHPUnit\Framework\TestCase;
-use webignition\InternetMediaType\Parameter\Parser\AttributeFixer;
+use webignition\InternetMediaType\Fixer\AttributeFixer;
 
 class AttributeFixerTest extends TestCase
 {
