@@ -92,4 +92,34 @@ class ParserTest extends TestCase
         $this->parser->setConfiguration($configuration);
         $this->assertEquals(spl_object_hash($configuration), spl_object_hash($this->parser->getConfiguration()));
     }
+
+    /**
+     * @dataProvider parseAndFixInvalidInternalCharacterDataProvider
+     */
+    public function testParseAndFixInvalidInternalCharacter(
+        string $parameterString,
+        string $expectedAttribute,
+        string $expectedValue
+    ): void {
+        $this->parser->getConfiguration()->enableAttemptToRecoverFromInvalidInternalCharacter();
+
+        $parameter = $this->parser->parse($parameterString);
+
+        $this->assertEquals($expectedAttribute, $parameter->getAttribute());
+        $this->assertEquals($expectedValue, $parameter->getValue());
+    }
+
+    /**
+     * @return array<mixed>
+     */
+    public function parseAndFixInvalidInternalCharacterDataProvider(): array
+    {
+        return [
+            'charset: utf8' => [
+                'parameterString' => 'charset: utf8',
+                'expectedAttribute' => 'charset',
+                'expectedValue' => 'utf8',
+            ],
+        ];
+    }
 }

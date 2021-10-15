@@ -106,28 +106,6 @@ class AttributeParserTest extends TestCase
     }
 
     /**
-     * @dataProvider parseAndFixInvalidInternalCharacterDataProvider
-     */
-    public function testParseAndFixInvalidInternalCharacter(string $attribute, string $expectedName): void
-    {
-        $this->parser->getConfiguration()->enableAttemptToRecoverFromInvalidInternalCharacter();
-        $this->assertEquals($expectedName, $this->parser->parse($attribute));
-    }
-
-    /**
-     * @return array<mixed>
-     */
-    public function parseAndFixInvalidInternalCharacterDataProvider(): array
-    {
-        return [
-            'charset: utf8' => [
-                'attribute' => 'charset: utf8',
-                'expectedName' => 'charset',
-            ],
-        ];
-    }
-
-    /**
      * @dataProvider parseAndIgnoreInvalidCharacterDataProvider
      */
     public function testParseAndIgnoreInvalidCharacter(string $attribute): void
