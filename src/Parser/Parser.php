@@ -19,21 +19,25 @@ class Parser
     public const TYPE_SUBTYPE_SEPARATOR = '/';
     public const TYPE_PARAMETER_SEPARATOR = ';';
 
-    private TypeParser $typeParser;
-    private SubtypeParser $subtypeParser;
-    private ParameterParser $parameterParser;
     private Configuration $configuration;
     private bool $hasAttemptedToFixAttributeInvalidInternalCharacter = false;
 
-    public function __construct()
-    {
+    public function __construct(
+        private TypeParser $typeParser,
+        private SubtypeParser $subtypeParser,
+        private ParameterParser $parameterParser,
+    ) {
         $this->configuration = new Configuration();
-        $this->typeParser = new TypeParser();
-
-        $this->subtypeParser = new SubtypeParser();
-
-        $this->parameterParser = ParameterParser::create();
         $this->parameterParser->setConfiguration($this->configuration);
+    }
+
+    public static function create(): Parser
+    {
+        return new Parser(
+            new TypeParser(),
+            new SubtypeParser(),
+            ParameterParser::create(),
+        );
     }
 
     /**
