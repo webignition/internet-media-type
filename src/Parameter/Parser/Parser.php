@@ -32,7 +32,7 @@ class Parser
     public function __construct()
     {
         $this->configuration = new Configuration();
-        $this->attributeParser = new AttributeParser();
+        $this->attributeParser = AttributeParser::create();
         $this->valueParser = new ValueParser();
 
         $this->attributeParser->setConfiguration($this->configuration);
