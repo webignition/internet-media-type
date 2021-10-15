@@ -18,8 +18,9 @@ class ParserTest extends TestCase
     {
         parent::setUp();
         $this->parser = new Parser(
-            new AttributeParser(new AttributeFixer()),
-            new ValueParser(new QuotedStringParser())
+            new AttributeParser(),
+            new ValueParser(new QuotedStringParser()),
+            new AttributeFixer(),
         );
     }
 

@@ -26,13 +26,11 @@ class AttributeParser
     ];
 
     private bool $hasAttemptedToFixAttributeInvalidInternalCharacter = false;
-
     private StringParser $stringParser;
     private Configuration $configuration;
 
-    public function __construct(
-        private AttributeFixer $attributeFixer,
-    ) {
+    public function __construct()
+    {
         $this->stringParser = new StringParser([
             StringParser::STATE_UNKNOWN => function (StringParser $stringParser) {
                 $this->handleUnknownState($stringParser);
@@ -100,20 +98,9 @@ class AttributeParser
 
     /**
      * @throws AttributeParserException
-     * @throws UnknownStateException
      */
     private function handleInvalidInternalCharacterState(StringParser $stringParser): void
     {
-        if ($this->shouldAttemptToFixInvalidInternalCharacter()) {
-            $this->hasAttemptedToFixAttributeInvalidInternalCharacter = true;
-
-            $fixedInputString = $this->attributeFixer->fix($stringParser->getInput());
-
-            $this->parse($fixedInputString);
-
-            return;
-        }
-
         throw new AttributeParserException(
             'Invalid internal character after at position ' . $stringParser->getPointer(),
             1,
@@ -136,11 +123,5 @@ class AttributeParser
         }
 
         return false;
-    }
-
-    private function shouldAttemptToFixInvalidInternalCharacter(): bool
-    {
-        return $this->getConfiguration()->attemptToRecoverFromInvalidInternalCharacter()
-            && !$this->hasAttemptedToFixAttributeInvalidInternalCharacter;
     }
 }

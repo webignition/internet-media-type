@@ -15,9 +15,7 @@ class AttributeParserTest extends TestCase
     {
         parent::setUp();
 
-        $this->parser = new AttributeParser(
-            new AttributeFixer()
-        );
+        $this->parser = new AttributeParser();
     }
 
     /**
